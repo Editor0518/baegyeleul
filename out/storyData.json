@@ -1,0 +1,3591 @@
+{
+  "gameInfo": {
+    "title": "안개 속 인연",
+    "subtitle": "숲에서 시작된 작은 만남",
+    "me": "여행자(나)",
+    "backgroundMusic": "background_intro.mp3"
+  },
+  "characters": {
+    "sage": {
+      "id": "sage",
+      "name": "세이지",
+      "color": "#85A465",
+      "initialAffection": 0,
+      "minAffection": 0,
+      "maxAffection": 6,
+      "imageFolder": "sage",
+      "emotions": {
+        "default": "sage_01_default.png",
+        "smile": "sage_02_smile.png",
+        "serious": "sage_03_serious.png",
+        "angry": "sage_04_angry.png"
+      }
+    },
+    "ruby": {
+      "id": "ruby",
+      "name": "루비",
+      "color": "#B24B74",
+      "initialAffection": 0,
+      "minAffection": 0,
+      "maxAffection": 6,
+      "imageFolder": "ruby",
+      "emotions": {
+        "default": "ruby_01_default.png",
+        "smile": "ruby_02_smile.png",
+        "surprise": "ruby_03_surprise.png",
+        "hurry": "ruby_04_hurry.png"
+      }
+    }
+  },
+  "places": {
+    "deepforest": {
+      "id": "deepforest",
+      "name": "깊은 숲속",
+      "image": "deepforest.png",
+      "color": ""
+    },
+    "forest": {
+      "id": "forest",
+      "name": "숲길",
+      "image": "forest.png",
+      "color": ""
+    },
+    "flowerfield": {
+      "id": "flowerfield",
+      "name": "꽃밭",
+      "image": "flowerfield.png",
+      "color": ""
+    },
+    "valley": {
+      "id": "valley",
+      "name": "계곡",
+      "image": "valley.png",
+      "color": ""
+    },
+    "village": {
+      "id": "village",
+      "name": "마을",
+      "image": "village.png",
+      "color": ""
+    },
+    "road": {
+      "id": "road",
+      "name": "큰길",
+      "image": "road.png",
+      "color": ""
+    }
+  },
+  "storyScenes": [
+    {
+      "id": "scene1",
+      "type": "normal",
+      "place": "deepforest",
+      "backgroundMusic": "background_intro.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "새벽 안개가 낮게 깔린 숲.",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "발목까지 흙이 질척거리고, 나뭇가지에는 밤새 맺힌 물방울이 매달려 있다.",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "길은 어느새 자취를 감추고, 남은 건 뒤섞인 발자국과 부서진 낙엽뿐이다.",
+          "characters": []
+        },
+        {
+          "speaker": "me",
+          "text": "“…여기…였던 것 같은데.”",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "당신은 몇 번이고 뒤를 돌아보지만, 돌아갈 방향조차 헷갈리기 시작한다. 숨이 점점 가빠진다.",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "잠시 정적. 그때, 한쪽에서 바스락— 하고 잎사귀를 밟는 소리가 들린다.",
+          "characters": []
+        },
+        {
+          "speaker": "???",
+          "text": "…거기 멈추세요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "angry",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "더 이상 움직이지 않는 게 좋습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "조금만 더 가면 발 아래가 미끄럽고 축축해져요. 길을 잘 아는 사람도 몇 번은 미끄러지는 구간입니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그는 부드럽게 말하면서도, 당신의 발치와 주위를 세심하게 훑어본다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "…처음 보는 얼굴이군요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "손에 짐도 별로 없고, 옷차림도 이 근처 사람은 아니고…",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "…길을, 잃었습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "그렇겠지요. 이 시간에, 이 깊이까지 들어올 이유가 있었다면…",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그가 짧게 숨을 내쉰다. 안개가 그의 입김과 뒤섞여 흩어진다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "다친 곳은 없습니까?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "큰 상처는 없습니다. 다만… 어디가 어딘지 모르겠어서요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "그럼 다행입니다. …숨소리가 조금 거칠지만, 그 정도는 휴식을 취하면 회복되겠죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "이 숲은, 길을 잃은 사람에게 친절한 곳이 아닙니다. 한 번 방향 감각을 놓치면, 같은 자리만 돌고 도는 경우도 많죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 나무 한 그루를 가볍게 두드린다. 꽤 오래 이 근처를 지켜본 사람의 손놀림이다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "조금 실례되는 질문일 수도 있겠습니다만… 당신은, 이 숲에 일부러 들어온 겁니까? 아니면, 정말로 우연히 길을 잃고 들어온 겁니까?”",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그의 목소리는 여전히 차분하지만, 눈동자 속에는 아주 옅은 경계심이 번져 있다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "…마을을 찾고 있었습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "지도에서 본 길을 따라오다 보니, 어느 순간 숲 속으로 들어와 있었어요. 돌아가려 해도, 어느 쪽이었는지 더 이상 기억이 나지 않습니다",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "마을이라.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "이 근처에는, 밖에서 쉽게 찾기 어려운 마을이 하나 있지요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "…일단, 여기서 오래 서 있는 건 좋지 않습니다. 발도 충분히 미끄럽고, 안개도 더 짙어질 겁니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그때, 뒤쪽에서 탁탁탁 가볍게 달려오는 발소리가 들린다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "세이지—! 세이지, 어디 있어?!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "hurry",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "아! 여기 있네! …어? 누구야?!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "작은 수녀복을 입은 어린 아이가 숨을 헐떡이며 당신과 그 사이로 다가온다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "???",
+          "text": "와… 진짜로 누가 있었네! 길 잃었어?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "surprise",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "루비. 뛰지 말라고 몇 번이나 말했습니까.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "surprise",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "에헤헤… 근데 세이지가 늦어서 걱정됐단 말이야. …근데 정말, 얼굴이 엄청 창백해. 안 다쳤어?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비는 당신을 빙글 한 바퀴 돌며 위아래로 훑어본다. 너무 솔직해서, 오히려 경계심이 조금 풀리는 눈동자다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "…네, 괜찮습니다. 다만, 길을 잃었습니다. 마을을 찾다 보니, 어느새 이렇게 돼버렸네요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "마을?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 세이지를 올려다본다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "확실히, 마을을 찾는 사람이라면 이쪽 길을 택했을 수도 있겠군요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "…하지만, 이만큼 깊이 들어와 버리는 건 흔한 일은 아닙니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "그러니까 더 도와줘야지!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "이대로 두면, 진짜 한 바퀴, 두 바퀴, 세 바퀴… 계속 도는 거야!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "루비, 그렇게 과장하지 않아도 됩니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그러면서도 세이지는 작게 눈을 내리깔며 웃는다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그 웃음에는, 오래전부터 같은 말을 해 온 사람의 체념과 그래도 손을 놓지 않는 사람의 온기가 같이 섞여 있다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "어쩌면, 우연이 아닐지도 모르겠습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "…우연이 아니라고요?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이 숲에서 길을 잃고도, 이렇게 우리가 도와줄 수 있는 곳까지 오는 사람은… 아주 드뭅니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "그러니, 오늘만큼은 행운이라고 생각해도 좋겠지요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "어쨌든 지금은, 더 깊이 안 들어가는 게 좋아!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "우리랑 같이 조금만 걸을래? 여기 그대로 있으면 더 추워질 거야.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 환하게 웃으며 손을 살짝 내민다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "루비 말이 맞습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "걸으면서, 조금 더 이야기를 듣도록 하죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "마을을 찾는 이유도, 이 숲까지 오게 된 경위도…",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "이 숲에서의 첫 만남은, 그렇게 조심스럽게 시작된다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "scene2_1"
+    },
+    {
+      "id": "scene2_1",
+      "type": "normal",
+      "place": "deepforest",
+      "backgroundMusic": "background_intro.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "얇아진 안개 사이로 옅은 빛이 스며든다. 아직 햇살은 숲까지 닿지 않았지만, 발끝에 닿는 흙이 덜 미끄러워진 게 느껴진다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "셋의 발걸음이 조심스레 맞춰진다. 루비는 반걸음 앞에서 통통 튀듯 걷는다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "아까보다 숨 쉬기 좀 편하지? 여기는 바람이 잘 통해서 덜 답답해!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "숨이 가빠지면 위험합니다. 속도를 조절하시죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 당신의 걸음에 맞추며 흘깃 눈으로 확인한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "scene2_choice1"
+    },
+    {
+      "id": "scene2_choice1",
+      "type": "choice",
+      "place": "deepforest",
+      "backgroundMusic": "background_intro.mp3",
+      "dialogues": [
+        {
+          "speaker": "ruby",
+          "text": "듣고 보니까… 아직 이름을 안 들었네? 뭐라고 불러야 해?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "저는… ○○○예요.만나서 반가워요.",
+          "next": null,
+          "index": 1,
+          "affectionChanges": {
+            "sage": 2,
+            "ruby": 2
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "우와! ○○○! 이름 예쁘다! 난 이렇게 바로 말해주는 거 좋아해!",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "smile",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "smile",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "“지금은… ○○○라고만 불러주세요.",
+          "next": null,
+          "index": 2,
+          "affectionChanges": {
+            "sage": 1,
+            "ruby": 1
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "흐음… 비밀 많은 사람이구나? 근데 괜찮아! 천천히 알면 되지!",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "smile",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "smile",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "지금은 이름보단… 여기서 벗어나는 게 먼저 아닐까요.",
+          "next": "bad_ending",
+          "index": 3,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": 0
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "아… 그렇지. 그게 더 중요하긴 하지…",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "serious",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        }
+      ],
+      "next": "scene2_2"
+    },
+    {
+      "id": "scene2_2",
+      "type": "normal",
+      "place": "deepforest",
+      "backgroundMusic": "background_intro.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "루비는 옷자락을 휘날리며 뛰어간다. 세이지는 작은 숨을 내쉰다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "마을을 찾고 있다고 했었죠. 혹시… 그곳에 아는 사람이 있습니까?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "목소리는 부드럽지만, 대답을 기다리는 시선은 조심스럽게 깊다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "…글쎄요, 처음 가는 곳입니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "그럼 진짜로 모르는 상태에서 온 거구나! 우와… 용기 있다!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "surprise",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "용기라고 부를 수도 있지만, 무모하다고 할 수도 있습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "surprise",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "잠시 후, 안개 틈에 두 갈래 길이 나타난다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "surprise",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "나뭇잎이 좌우로 갈라져 두 개의 전혀 다른 빛을 비춘다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "surprise",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "이쪽은 꽃밭으로 이어져! 햇살 들면 반짝반짝 엄청 예쁘다구!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "그리고 이쪽은 작은 폭포 근처와 이어져 있습니다. 물길을 따라 걷다 보면 큰 길이 나옵니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "어디로 가든 결국 마을 쪽으로 가는 길이야! 그러니까 네가 가고 싶은 길로 가도 돼!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "…다만, 길은 같아도 걷는 방식과 그 길에서 만나는 순간들은 달라지겠죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "사람과 사람이 함께 걷는 길은, 늘 그렇게 조금씩 다른 모습을 보여주니까요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지의 말에 당신은 눈을 들어 두 갈래 길을 바라본다. 어느 길이든 목적지는 같지만, 누구와 어떤 마음으로 걷느냐에 따라 다른 풍경을 마주하게 될 것만 같다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "scene2_choice2"
+    },
+    {
+      "id": "scene2_choice2",
+      "type": "choice",
+      "place": "deepforest",
+      "backgroundMusic": "background_intro.mp3",
+      "dialogues": [
+        {
+          "speaker": "sage",
+          "text": "서두를 필요는 없습니다. …원하시는 방향으로 가죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "꽃밭이 보이는 길로 간다.",
+          "next": "scene3a_1",
+          "index": 1,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": 1
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "좋아! 꽃밭은 예쁘고 따뜻하고… 기분 좋아지는 곳이야!",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "smile",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "물소리가 들리는 길로 간다.",
+          "next": "scene3b_1",
+          "index": 2,
+          "affectionChanges": {
+            "sage": 1,
+            "ruby": 0
+          },
+          "reaction": {
+            "speaker": "sage",
+            "text": "길을 바로잡기엔 그쪽이 더 안정적이죠. 상황을 살피기에도 좋습니다.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left",
+                "active": true
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center"
+              }
+            ]
+          }
+        }
+      ],
+      "next": "scene3a_1"
+    },
+    {
+      "id": "scene3a_1",
+      "type": "normal",
+      "place": "flowerfield",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "왼쪽 길을 따라가자, 루비는 이곳에 익숙하다는 듯 발걸음을 가볍게 놀린다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "이곳에 오면 마음이 말랑해지는 기분이 들어!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비의 목소리는 꽃잎처럼 살랑이며 퍼진다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "정말… 예쁘네요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "맞지! 난 이곳이 세상에서 제일 좋아! 세이지도 가끔 여기 오긴 하는데…",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "…정작 세이지는 주변만 살피느라 꽃은 잘 안 보더라구.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그 말에는 조금의 걱정과 조금의 아쉬움이 숨어 있다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "저는… 루비가 좋아하는 걸 지킨다고 생각합니다. 그게 중요하니까요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "응! 그래서 세이지 멋져! …그래도 가끔은 꽃도 봐줘!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 빙긋이 웃는다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "scene3a_choice1"
+    },
+    {
+      "id": "scene3a_choice1",
+      "type": "choice",
+      "place": "flowerfield",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "ruby",
+          "text": "있지 이 꽃 이름이 뭔지 알아?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "아름답네요…",
+          "next": null,
+          "index": 1,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": 1
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "그치? 나도 여기 오면 기분이 좀 괜찮아져.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "smile",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "이름은 모르지만… 귀하게 느껴져요.",
+          "next": null,
+          "index": 2,
+          "affectionChanges": {
+            "sage": 1,
+            "ruby": 2
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "맞아! 여긴 아무 데나 있는 꽃이 아니야! 돌보는 사람도 없이, 스스로 예뻐진 아이들!",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "꽃보다… 길이 더 중요하잖아요?",
+          "next": null,
+          "index": 3,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": -1
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "아… 그렇긴 한데… 그래도 조금만 보는 건 괜찮잖아?",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        }
+      ],
+      "next": "scene3a_2"
+    },
+    {
+      "id": "scene3a_2",
+      "type": "normal",
+      "place": "flowerfield",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "루비는 꽃을 손끝으로 가볍게 감싸 쥔다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "scene3a_choice2"
+    },
+    {
+      "id": "scene3a_choice2",
+      "type": "choice",
+      "place": "flowerfield",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "ruby",
+          "text": "너한테도… 이런 ‘좋아하는 곳’이 있어?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "아직은 모르지만… 언젠가 찾을 수 있겠죠.",
+          "next": null,
+          "index": 1,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": 1
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "...",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "지금 이곳이… 조금 그런 느낌이에요.",
+          "next": null,
+          "index": 2,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": 1
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "...",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "없어요. 그런 건.",
+          "next": null,
+          "index": 3,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": -1
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "...",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        }
+      ],
+      "next": "scene3a_3"
+    },
+    {
+      "id": "scene3a_3",
+      "type": "normal",
+      "place": "flowerfield",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "당신의 대답을 들은 루비는 잠시 입술을 다물고 생각에 잠긴다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "…우리 마을도 너한테 그런 곳이 될 수 있으면 좋겠다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "루비. 너무 많은 걸 기대시키지 말아요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 앞을 가리킨다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "자, 이제 진짜 마을로 가자! 꽃냄새도 맡았으니까 힘도 조금 나는 것 같지 않아?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "hurry",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이 길로 조금 더 가면 다시 하나로 합쳐집니다. 안개가 완전히 걷힐 무렵이면 마을의 등불이 보일 겁니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "hurry",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "꽃 향은 점점 뒷걸음질치고 작은 길이 보이기 시작한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "hurry",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "scene4"
+    },
+    {
+      "id": "scene3b_1",
+      "type": "normal",
+      "place": "valley",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "오른쪽 길을 따라가자, 나뭇잎 사이 흐르는 물소리가 점점 가까워진다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "와! 여기 되게 시원하지? 여길 따라가면 큰 길이 나와!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 옆에서 물줄기가 흘러내리는 바위 아래를 조용히 바라본다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "저는 물소리가 좋습니다. 모든 걸 감추지도, 그렇다고 다 드러내지도 않는 소리라서요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "…조금 차갑죠. 그래도 나쁘지 않습니다. 차가운 건, 가끔 필요한 일이니까요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그의 목소리는 물소리와 섞여 낮게 번져갔다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비는 잠시 멈춰 두 사람을 지켜본 뒤, 조용히 뒤쪽에서 물장구를 치며 논다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            }
+          ]
+        }
+      ],
+      "next": "scene3b_choice1"
+    },
+    {
+      "id": "scene3b_choice1",
+      "type": "choice",
+      "place": "valley",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "sage",
+          "text": "이 숲까지 와서… 마을을 찾는 이유가 있습니까?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "그곳에… 누군가 제 이야기를 들어줄 수 있을 것 같아서요.",
+          "next": null,
+          "index": 1,
+          "affectionChanges": {
+            "sage": 3,
+            "ruby": 0
+          },
+          "reaction": {
+            "speaker": "sage",
+            "text": "…누군가에게 닿길 바라는 마음. 그게 사람을 움직이게 하죠.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "smile",
+                "position": "left",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "잠시 쉬고 싶어서요. 어디라도 좋으니… 편히 숨 쉴 수 있는 곳이면.”",
+          "next": null,
+          "index": 2,
+          "affectionChanges": {
+            "sage": 1,
+            "ruby": 0
+          },
+          "reaction": {
+            "speaker": "sage",
+            "text": "쉼을 찾는 건 누구나 같은 법이죠. 이 숲에서 그런 생각을 하셨다면… 지쳤던 걸 겁니다.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "정확히는 저도 잘 모르겠어요. 걸어가다 보니…  마을이 필요해진 거죠.",
+          "next": null,
+          "index": 3,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": 0
+          },
+          "reaction": {
+            "speaker": "sage",
+            "text": "이유가 분명하지 않아도 됩니다. …사람은 종종, 발이 먼저 움직이니까요.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "그냥 길이 나온 대로 왔을 뿐이에요.",
+          "next": null,
+          "index": 4,
+          "affectionChanges": {
+            "sage": -1,
+            "ruby": 0
+          },
+          "reaction": {
+            "speaker": "sage",
+            "text": "그렇다면 앞으로의 발걸음이 더 중요해지겠군요.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left",
+                "active": true
+              }
+            ]
+          }
+        }
+      ],
+      "next": "scene3b_2"
+    },
+    {
+      "id": "scene3b_2",
+      "type": "normal",
+      "place": "valley",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "sage",
+          "text": "사람이 길을 잃는 건… 어느 날 갑자기, 한순간이죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "묘하게도 목적지가 선명할수록 더 멀리 빙 돌아가게 되기도 합니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "당신은… 길을 잃어본 적 있나요?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 아주 잠시 망설인다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "혼자 걸을 땐 보이지 않던 길이 누군가와 함께면 보이기도 하죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지의 말의 끝이 안개에 희미하게 젖는다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "serious",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "세이지—!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "뒤를 돌아보니 루비가 활짝 웃으며 손을 흔든다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 루비에게 미소 같은 숨을 흘린다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이 길은, 결국 마을과 이어집니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "…조금 돌아가더라도 함께 간다면 늦진 않겠죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 앞을 가리키며 부드럽게 말한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "서두르지 말고, 갑시다. 아직은… 당신과 더 이야기하고 싶어서요.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "next": "scene4"
+    },
+    {
+      "id": "scene4",
+      "type": "normal",
+      "place": "forest",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "안개는 거의 사라질 쯤, 갑자기 세이지가 걸음을 멈춰 돌아본다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이제 정말 마을이 가까워졌습니다. …마지막으로, 여쭤보고 싶습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "scene4_choice"
+    },
+    {
+      "id": "scene4_choice",
+      "type": "choice",
+      "place": "forest",
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "sage",
+          "text": "이 숲을 지나며… 지금 마음은 어떠신가요?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "조금은… 안심이 되고 있어요.",
+          "next": null,
+          "index": 1,
+          "affectionChanges": {
+            "sage": 1,
+            "ruby": 1
+          },
+          "reaction": {
+            "speaker": "sage",
+            "text": "그렇게 느꼈다면… 다행이네요.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "smile",
+                "position": "left",
+                "active": true
+              },
+              {
+                "id": "ruby",
+                "emotion": "smile",
+                "position": "center"
+              }
+            ]
+          }
+        },
+        {
+          "text": "아직 잘 모르겠어요.",
+          "next": null,
+          "index": 2,
+          "affectionChanges": {
+            "sage": 0,
+            "ruby": 0
+          },
+          "reaction": {
+            "speaker": "ruby",
+            "text": "괜찮아! 앞으로 생각하면 돼!",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center",
+                "active": true
+              }
+            ]
+          }
+        },
+        {
+          "text": "…오늘 하루는 잊고 싶어요.",
+          "next": null,
+          "index": 3,
+          "affectionChanges": {
+            "sage": -1,
+            "ruby": -1
+          },
+          "reaction": {
+            "speaker": "sage",
+            "text": "…그런 날도 있지요.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "serious",
+                "position": "left",
+                "active": true
+              },
+              {
+                "id": "ruby",
+                "emotion": "default",
+                "position": "center"
+              }
+            ]
+          }
+        },
+        {
+          "text": "앞으로도… 이야기 나누고 싶어요.",
+          "next": null,
+          "index": 4,
+          "affectionChanges": {
+            "sage": 2,
+            "ruby": 2
+          },
+          "reaction": {
+            "speaker": "narrator",
+            "text": "루비의 눈이 반짝였다.",
+            "characters": [
+              {
+                "id": "sage",
+                "emotion": "default",
+                "position": "left"
+              },
+              {
+                "id": "ruby",
+                "emotion": "surprise",
+                "position": "center"
+              }
+            ]
+          }
+        }
+      ],
+      "next": "check_scene"
+    },
+    {
+      "id": "check_scene",
+      "type": "normal",
+      "place": "forest",
+      "checkAffection": true,
+      "backgroundMusic": "background_select.mp3",
+      "dialogues": [
+        {
+          "speaker": "sage",
+          "text": "천천히, 계속 걸어봅시다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "바라보는 풍경이 조금씩 달라지기 시작했다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "best_ending_sage"
+    },
+    {
+      "id": "best_ending_sage",
+      "type": "ending",
+      "place": "village",
+      "cutsceneImage": "best_ending_sage.png",
+      "backgroundMusic": "background_happy.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "해가 기울어가는 시간. 노을빛이 마을 지붕 위로 부드럽게 번진다.",
+          "characters": []
+        },
+        {
+          "speaker": "sage",
+          "text": "…수고 많으셨습니다. 생각보다 먼 길이었죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 손에 들고 있던 작은 나뭇잎 책갈피를 꺼낸다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이건… 제가 있는 곳을 찾을 때 도움이 될 겁니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이 표식을 따라오시면 제가 있는 곳으로 올 수 있습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "바람에 세이지의 머리가 살짝 흔들린다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "sage",
+          "text": "사람이… 너무 익숙한 곳에만 머물면 그 자리에서 멈춘 채로 아물어야 할 마음도 굳어버립니다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "그의 목소리는 차분하지만, 이 말만큼은 오래 머금어 온 듯했다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "sage",
+          "text": "그러니 가끔은 새로운 사람들이 필요하지요.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "그는 한 발 앞으로 다가오며 말을 잇는다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "sage",
+          "text": "오늘 당신과 걸었던 길을 저는 잊지 않을 겁니다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 고개를 숙여 인사한다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "sage",
+          "text": "몸 조심하십시오. 그리고… 필요할 때 언제든 오십시오.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "나는 책갈피를 손에 꽉 쥐었다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "잔잔한 저녁 바람이 약초 향기를 가만히 밀어낸다.",
+          "characters": [],
+          "cutscene": true
+        }
+      ],
+      "next": "best_ending_ruby"
+    },
+    {
+      "id": "best_ending_ruby",
+      "type": "ending",
+      "place": "village",
+      "cutsceneImage": "best_ending_ruby.png",
+      "backgroundMusic": "background_happy.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "해가 기울어가는 시간. 노을빛이 마을 지붕 위로 부드럽게 번진다.",
+          "characters": []
+        },
+        {
+          "speaker": "ruby",
+          "text": "오늘 재밌었지? 난 재밌었어!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "생각해보니까 너랑 있으면, 숲길도 좀 덜 지루하더라구!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그녀가 포켓에서 작은 종잇조각을 꺼낸다. 삐뚤삐뚤하지만 정성을 들인 글씨.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "이거! 내 집이 있는 골목이야!",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "ruby",
+          "text": "다음에 길 헷갈리면 그냥 여기로 와! 내가 알려줄게!",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 살짝 미소 짓는다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 세이지를 한번 쓱 보고 작게 장난을 건다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "ruby",
+          "text": "세이지도 인정했어! 봤지?",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "ruby",
+          "text": "우리… 다음엔 마을 구경 제대로! 맛있는 거 먹고! 얘기도 많이 하고!",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비다운 명랑함. 가볍고 따뜻하다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 손을 힘차게 흔든다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "ruby",
+          "text": "잘 가! 다음에 또 만나자!",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "노을 속 루비의 웃음은 저무는 하루보다 지금 막 시작되는 내일에 가까웠다.",
+          "characters": [],
+          "cutscene": true
+        }
+      ],
+      "next": "good_ending_sage"
+    },
+    {
+      "id": "good_ending_sage",
+      "type": "ending",
+      "place": "village",
+      "cutsceneImage": "good_ending_sage.png",
+      "backgroundMusic": "background_happy.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "마을의 돌담이 부드러운 오렌지빛으로 물들어 있다.",
+          "characters": []
+        },
+        {
+          "speaker": "sage",
+          "text": "여기까지면 됩니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "오늘… 힘드셨을 텐데 무사히 도착하셔서 다행입니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이 마을은 조용한 곳입니다. 잠시 쉬어가실 수는 있겠죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그의 말엔 환대도, 배척도 모두 아닌 조용한 인정만이 담겨 있다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 어디선가 손을 흔든다. 하지만 세이지는 당신 쪽에서 눈을 떼지 않는다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "…함께한 시간이 괜찮은 기억으로 남길 바랍니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 짧게 인사를 고개로 대신한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "그럼… 안녕히 가십시오.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "그 이상의 말은 주고받지 않았다.",
+          "characters": [],
+          "cutscene": true
+        },
+        {
+          "speaker": "narrator",
+          "text": "언젠가 다시 만날 수도 있지만 그것은 바람의 방향이나 길의 흐름에 맡겨야 하는 일.",
+          "characters": [],
+          "cutscene": true
+        }
+      ],
+      "next": "good_ending_ruby"
+    },
+    {
+      "id": "good_ending_ruby",
+      "type": "ending",
+      "place": "village",
+      "cutsceneImage": "good_ending_ruby.png",
+      "backgroundMusic": "background_happy.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "마을의 돌담이 부드러운 오렌지빛으로 물들어 있다.",
+          "characters": []
+        },
+        {
+          "speaker": "ruby",
+          "text": "와—! 드디어 도착했다!",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "너도 이제 좀 안심되지?",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그녀는 큭—하고 숨을 들이쉬며 주머니에서 작은 꽃잎 하나를 꺼낸다.",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "이건 그냥… 기념품!",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "오늘 같이 걸은 거, 잊지 말라고!",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "농담처럼 말하고는 꽃잎을 손에 가볍게 올려준다.",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 멀찍이서 보고 있지만 개입하지 않는다.",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "저기까지 가면 쉬어갈 수 있는 곳도 있고 아마… 좋은 곳 있을 거야!",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비는 손을 살짝 흔들며 뒷걸음질 친다.",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "몸조심해! …그럼, 안녕!",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "그리고 재빠르게 몸을 돌려 자신의 길로 향한다.",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "웃음이 남아 있는 작별.",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "서로가 서로를 ‘좋게 기억할 사람’이 되는 걸로 오늘은 충분했다.",
+          "characters": []
+        }
+      ],
+      "next": "duo_ending_sage_ruby"
+    },
+    {
+      "id": "duo_ending_sage_ruby",
+      "type": "ending",
+      "place": "village",
+      "cutsceneImage": "duo_ending_sage_ruby.png",
+      "backgroundMusic": "background_happy.mp3",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "해가 기울어가는 시간. 노을빛이 마을 지붕 위로 부드럽게 번진다.",
+          "characters": []
+        },
+        {
+          "speaker": "ruby",
+          "text": "이제 진짜 마을이야! 궁금한 곳이 엄청 많지? 내가 쫙~ 소개해줄게!",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "당신이 대답하기도 전에 루비는 벌써 몇 곳을 떠올리고 있다.",
+          "characters": [
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "…먼저 쉬셔도 됩니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 당신의 눈이 어디를 향하는지 잠시 살피다가 차분하게 말한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "아! 일단, 쉬어야지!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "당신 손에 두 개의 표시가 놓인다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 건넨 작은 메모, 세이지가 건넨 약초 책갈피.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "이건… 혹시 또 길을 헷갈릴까 봐! 그냥… 필요하면 쓰라고!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "저 역시, 부담을 드리려는 건 아닙니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지도 고개를 끄덕이며 말을 잇는다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "꼭 오라는 건 아니지만… 오면 난 좋지. 헤헤.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 살짝 기침한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "천천히 둘러보시고, 편한 때에 편한 이유로 오시면 됩니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "두 사람의 말투는 다르지만, 건네는 마음은 같다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "당신의 다음 걸음을 기다리고 있다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "smile",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        }
+      ],
+      "next": "normal_ending"
+    },
+    {
+      "id": "normal_ending",
+      "type": "ending",
+      "place": "road",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "숲의 그림자 끝. 밝게 트인 길 위에서 세이지가 멈춘다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이곳까지가 좋겠습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "me",
+          "text": "…그럼, 마을은요?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지가 짧게 시선을 떨군다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이 숲 안의 마을은 외부인을 쉽게 들이지 않습니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "대신, 저 큰길을 따라가시면 다른 마을이 나옵니다. 도움이 더 쉬울 겁니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "가로수 너머 해가 부서져 반짝인다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "응! 사람들이 많이 다니는 길이니까 위험한 일은 없을 거야!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "거기 가면 먹을 것도 있고 잠잘 데도 있을걸?",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 아주 작은 고개 숙임으로 당신을 향한 예의를 표한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "오늘 함께한 만큼만, 서로를 기억하는 것으로 충분하겠죠.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "잘 가! 그리고… 어디서든 무사해야 해!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "필요 이상의 기대도, 불필요한 부담도 없는 작별.",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "당신은 다른 마을로 향하는 길 위에 선다.",
+          "characters": []
+        }
+      ],
+      "next": "bad_ending"
+    },
+    {
+      "id": "bad_ending",
+      "type": "ending",
+      "place": "forest",
+      "dialogues": [
+        {
+          "speaker": "narrator",
+          "text": "숲의 그림자가 조금 옅어졌을 때, 세이지가 발걸음을 멈춘다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "이 길로 나가 햇빛이 닿은 큰길로 나가시면, 사람들이 오가는 마을이 하나 있습니다. 그곳을 찾아가면 됩니다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "응! 여기서 오른쪽으로 조금만 가면 넓은 길 있지? 그 길을 따라가면 금방 마을이 보여!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "루비가 당신 곁으로 와서 손가락으로 길을 따라 쭉 긋는다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "ruby",
+          "text": "그러니까— 무사히 잘 가기만 하면 돼!",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "세이지는 마지막으로 예의를 지키는 고개 숙임으로 작별을 전한다.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left"
+            },
+            {
+              "id": "ruby",
+              "emotion": "smile",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "sage",
+          "text": "오늘 이 정도면 서로에게 충분하겠지요. 부디, 몸 조심하십시오.",
+          "characters": [
+            {
+              "id": "sage",
+              "emotion": "default",
+              "position": "left",
+              "active": true
+            },
+            {
+              "id": "ruby",
+              "emotion": "default",
+              "position": "center"
+            }
+          ]
+        },
+        {
+          "speaker": "narrator",
+          "text": "길은 이미 눈앞에 마련되어 있다. 서두를 것도, 망설일 것도 없다.",
+          "characters": []
+        },
+        {
+          "speaker": "narrator",
+          "text": "다음은 당신의 발걸음이 선택할 시간이다.",
+          "characters": []
+        }
+      ]
+    }
+  ],
+  "endingConfig": {
+    "thresholds": {
+      "bad": 0,
+      "normal": 0,
+      "good": 4,
+      "best": 5
+    },
+    "common": {
+      "normal": {
+        "title": "이 길도 괜찮을 거야",
+        "message": "그들은 당신을 큰길까지 배웅하고, 다른 마을로 향할 수 있도록 조용히 길을 열어주었다."
+      },
+      "bad": {
+        "title": "잠시 스친 인연",
+        "message": "그들은 서로에게 얽힐 마음 없이, 적당한 거리에서 자연스러운 작별을 건넸다."
+      }
+    },
+    "duo": [
+      {
+        "characters": ["sage", "ruby"],
+        "title": "두 갈래의 환영",
+        "message": "그들은 당신을 믿고 반겨주었으며, 각자의 방식으로 마을의 문을 열어 두었다."
+      }
+    ],
+    "characterEndings": {
+      "sage": {
+        "best": {
+          "title": "세이지 - 조심스러운 문이 열릴 때",
+          "message": "세이지는 당신에게 조용한 신뢰를 내어주었고, 다시 찾아오길 기다리게 되었다."
+        },
+        "good": {
+          "title": "세이지 - 서로의 길 위에",
+          "message": "세이지는 당신과의 시간을 괜찮은 인연으로 남기며, 조용히 각자의 길을 택했다."
+        }
+      },
+      "ruby": {
+        "best": {
+          "title": "루비 — 다시 만나, 분명히!",
+          "message": "루비는 당신과 함께한 시간을 기쁘게 받아들였고, 언제든 다시 찾아올 수 있도록 마음을 열어 두었다."
+        },
+        "good": {
+          "title": "루비 - 좋은 기억으로 남는다면",
+          "message": "루비는 오늘을 좋은 기억으로 남기고, 명랑하게 작별 인사를 건넸다."
+        }
+      }
+    }
+  }
+}
