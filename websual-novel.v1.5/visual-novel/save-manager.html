@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세이브 관리 시스템 - 테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #555;
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .save-slot {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .save-slot:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .slot-info {
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .slot-number {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .slot-details {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .slot-empty {
+            color: #999;
+            font-style: italic;
+        }
+
+        .slot-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #218838;
+        }
+
+        .btn-load {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-load:hover {
+            background: #0069d9;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .btn-refresh {
+            background: #6c757d;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .btn-refresh:hover {
+            background: #5a6268;
+        }
+
+        .file-section {
+            background: #fff9e6;
+            border: 2px dashed #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .file-section h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .file-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-file {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-file:hover {
+            background: #e0a800;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-input-label {
+            padding: 8px 16px;
+            background: #17a2b8;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .file-input-label:hover {
+            background: #138496;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            color: #0c5460;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .save-slot {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .slot-info {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .slot-actions {
+                justify-content: space-between;
+            }
+
+            button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 비주얼 노벨 세이브 관리</h1>
+
+        <div class="info-box">
+            <p>
+                <strong>💡 사용 팁:</strong> 이 페이지는 독립적으로 작동하지 않습니다. 
+                게임을 플레이하는 동안 브라우저 콘솔(F12)을 열어 이 함수들을 직접 호출하거나, 
+                게임 UI에 버튼을 추가하여 사용하세요.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>📁 세이브 슬롯 (최대 5개)</h2>
+            <div id="save-slots-container">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+            <button class="btn-refresh" onclick="refreshSlots()">🔄 새로고침</button>
+        </div>
+
+        <div class="section">
+            <div class="file-section">
+                <h3>💾 파일로 저장/불러오기</h3>
+                <p style="color: #856404; margin-bottom: 15px; font-size: 14px;">
+                    브라우저 저장소와 별도로 파일로 백업하거나 불러올 수 있습니다.
+                </p>
+                <div class="file-buttons">
+                    <button class="btn-file" onclick="testSaveFile()">📥 파일로 저장</button>
+                    <label for="file-input" class="file-input-label">📤 파일에서 불러오기</label>
+                    <input type="file" id="file-input" accept=".json" onchange="testLoadFile(this.files[0])">
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔍 개발자 콘솔 명령어</h2>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px;">
+                <p style="margin-bottom: 10px;"><strong>세이브:</strong> saveToSlot(1) ~ saveToSlot(5)</p>
+                <p style="margin-bottom: 10px;"><strong>로드:</strong> loadFromSlot(1) ~ loadFromSlot(5)</p>
+                <p style="margin-bottom: 10px;"><strong>삭제:</strong> deleteSaveSlot(1) ~ deleteSaveSlot(5)</p>
+                <p style="margin-bottom: 10px;"><strong>슬롯 정보:</strong> getSaveSlotInfo(1)</p>
+                <p><strong>전체 슬롯:</strong> getAllSaveSlots()</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 슬롯 표시 갱신
+        function refreshSlots() {
+            const container = document.getElementById('save-slots-container');
+            container.innerHTML = '';
+
+            // 테스트용 더미 데이터 (실제로는 getAllSaveSlots() 사용)
+            for (let i = 1; i <= 5; i++) {
+                const slot = createSlotElement(i);
+                container.appendChild(slot);
+            }
+
+            // 실제 게임에서는 아래 코드 사용
+            // if (typeof getAllSaveSlots === 'function') {
+            //     const slots = getAllSaveSlots();
+            //     slots.forEach(slotData => {
+            //         const slot = createSlotElementFromData(slotData);
+            //         container.appendChild(slot);
+            //     });
+            // }
+        }
+
+        // 슬롯 엘리먼트 생성 (테스트용)
+        function createSlotElement(slotNumber) {
+            const div = document.createElement('div');
+            div.className = 'save-slot';
+            
+            div.innerHTML = `
+                <div class="slot-info">
+                    <div class="slot-number">슬롯 ${slotNumber}</div>
+                    <div class="slot-details slot-empty" id="slot-${slotNumber}-info">
+                        빈 슬롯 (게임 플레이 중 사용 가능)
+                    </div>
+                </div>
+                <div class="slot-actions">
+                    <button class="btn-save" onclick="testSave(${slotNumber})">저장</button>
+                    <button class="btn-load" onclick="testLoad(${slotNumber})">불러오기</button>
+                    <button class="btn-delete" onclick="testDelete(${slotNumber})">삭제</button>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // 테스트 함수들
+        function testSave(slotNumber) {
+            if (typeof saveToSlot === 'function') {
+                saveToSlot(slotNumber);
+                refreshSlots();
+            } else {
+                alert('⚠️ 이 기능은 게임 실행 중에만 사용할 수 있습니다.\n\n게임 페이지에서 F12를 눌러 콘솔을 열고 saveToSlot(' + slotNumber + ')을 입력하세요.');
+            }
+        }
+
+        function testLoad(slotNumber) {
+            if (typeof loadFromSlot === 'function') {
+                loadFromSlot(slotNumber);
+            } else {
+                alert('⚠️ 이 기능은 게임 실행 중에만 사용할 수 있습니다.\n\n게임 페이지에서 F12를 눌러 콘솔을 열고 loadFromSlot(' + slotNumber + ')을 입력하세요.');
+            }
+        }
+
+        function testDelete(slotNumber) {
+            if (typeof deleteSaveSlot === 'function') {
+                if (confirm(`슬롯 ${slotNumber}을(를) 정말 삭제하시겠습니까?`)) {
+                    deleteSaveSlot(slotNumber);
+                    refreshSlots();
+                }
+            } else {
+                alert('⚠️ 이 기능은 게임 실행 중에만 사용할 수 있습니다.\n\n게임 페이지에서 F12를 눌러 콘솔을 열고 deleteSaveSlot(' + slotNumber + ')을 입력하세요.');
+            }
+        }
+
+        function testSaveFile() {
+            if (typeof handleSaveFile === 'function') {
+                handleSaveFile();
+            } else {
+                alert('⚠️ 이 기능은 게임 실행 중에만 사용할 수 있습니다.\n\n게임 페이지에서 F12를 눌러 콘솔을 열고 handleSaveFile()을 입력하세요.');
+            }
+        }
+
+        function testLoadFile(file) {
+            if (typeof handleLoadFile === 'function') {
+                handleLoadFile(file);
+            } else {
+                alert('⚠️ 이 기능은 게임 실행 중에만 사용할 수 있습니다.\n\n게임 페이지에서 파일 선택 input을 추가하고 handleLoadFile(file)을 사용하세요.');
+            }
+        }
+
+        // 페이지 로드 시 슬롯 표시
+        window.addEventListener('load', refreshSlots);
+    </script>
+</body>
+</html>
