@@ -5,7 +5,7 @@ import "./TitleScreen.css";
 import { useGameContext } from "@/contexts/GameContext";
 
 const TitleScreen = ({ onStart, onLoad, isMuted, onToggleMute }) => {
-  const { gameInfo } = useGameContext();
+  const { gameInfo, loadSource } = useGameContext();
 
   // 줄바꿈 문자(\n)를 <br>로 변환
   const formattedSubtitle = gameInfo.subtitle ? gameInfo.subtitle.split('\n').map((line, i) => (
@@ -54,6 +54,10 @@ const TitleScreen = ({ onStart, onLoad, isMuted, onToggleMute }) => {
         Websual Novel.v1.6 made by @rrllgg22
         <br />
         @Editor0518 added some features with it
+        <br />
+        <span style={{ fontSize: "0.8em", opacity: 0.7 }}>
+          [Data Source: {loadSource || "loading..."}]
+        </span>
       </p>
     </div>
   );

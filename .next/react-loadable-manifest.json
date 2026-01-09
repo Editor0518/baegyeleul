@@ -6,6 +6,18 @@
       "static/chunks/_app-pages-browser_components_VisualNovel_jsx.js"
     ]
   },
+  "contexts\\GameContext.jsx -> @/utils/convertXlsxToStoryData": {
+    "id": "contexts\\GameContext.jsx -> @/utils/convertXlsxToStoryData",
+    "files": [
+      "static/chunks/_app-pages-browser_utils_convertXlsxToStoryData_js.js"
+    ]
+  },
+  "contexts\\GameContext.jsx -> xlsx": {
+    "id": "contexts\\GameContext.jsx -> xlsx",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_xlsx_xlsx_mjs.js"
+    ]
+  },
   "node_modules\\next\\dist\\client\\dev\\hot-reloader\\app\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts": {
     "id": "node_modules\\next\\dist\\client\\dev\\hot-reloader\\app\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts",
     "files": [

@@ -37,6 +37,7 @@ export const GameContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [loadProgress, setLoadProgress] = useState({ loaded: 0, total: LOAD_PROGRESS_TOTAL });
+  const [loadSource, setLoadSource] = useState(null); // "xlsx" 또는 "json"
 
   // 검증 결과
   const [validationErrors, setValidationErrors] = useState([]);
@@ -59,32 +60,37 @@ export const GameContextProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const getCacheBustedUrl = useCallback(() => {
-    const cacheBust = `cb=${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    return `${PUBLISHED_XLSX_URL}&${cacheBust}`;
-  }, []);
-
   const loadStoryDataFromXlsx = useCallback(async (onProgress) => {
     onProgress?.(0, LOAD_PROGRESS_TOTAL);
 
-    const response = await fetch(getCacheBustedUrl(), { cache: "no-cache" });
-    if (!response.ok) {
-      throw new Error(`Failed to load published xlsx: ${response.status}`);
+    // 캐시 버스팅 URL 생성
+    const cacheBust = `cb=${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const urlWithCacheBust = `${PUBLISHED_XLSX_URL}&${cacheBust}`;
+
+    try {
+      const response = await fetch(urlWithCacheBust, { cache: "no-cache" });
+      if (!response.ok) {
+        throw new Error(`XLSX 응답 오류: ${response.status} ${response.statusText}`);
+      }
+
+      onProgress?.(1, LOAD_PROGRESS_TOTAL);
+
+      const buffer = await response.arrayBuffer();
+      onProgress?.(2, LOAD_PROGRESS_TOTAL);
+
+      const xlsxModule = await import("xlsx");
+      const XLSX = xlsxModule.default || xlsxModule;
+      const { convertXlsxToStoryData } = await import("@/utils/convertXlsxToStoryData");
+      const storyDataFromSheet = convertXlsxToStoryData(buffer, XLSX);
+
+      onProgress?.(3, LOAD_PROGRESS_TOTAL);
+      return storyDataFromSheet;
+    } catch (error) {
+      console.error("[GameContext] XLSX URL:", urlWithCacheBust);
+      console.error("[GameContext] XLSX 로드 실패:", error.message);
+      throw error;
     }
-
-    onProgress?.(1, LOAD_PROGRESS_TOTAL);
-
-    const buffer = await response.arrayBuffer();
-    onProgress?.(2, LOAD_PROGRESS_TOTAL);
-
-    const xlsxModule = await import("xlsx");
-    const XLSX = xlsxModule.default || xlsxModule;
-    const { convertXlsxToStoryData } = await import("@/utils/convertXlsxToStoryData");
-    const storyDataFromSheet = convertXlsxToStoryData(buffer, XLSX);
-
-    onProgress?.(3, LOAD_PROGRESS_TOTAL);
-    return storyDataFromSheet;
-  }, []);
+  }, [PUBLISHED_XLSX_URL]);
 
   const loadStoryDataFromJson = useCallback(async () => {
     const timestamp = Date.now();
@@ -100,11 +106,16 @@ export const GameContextProvider = ({ children }) => {
   // 스토리 데이터 로드
   useEffect(() => {
     const loadStoryData = async () => {
+      console.log("[GameContext] 스토리 데이터 로드 시작");
+      console.log("[GameContext] PUBLISHED_XLSX_URL:", PUBLISHED_XLSX_URL);
       setLoadProgress({ loaded: 0, total: LOAD_PROGRESS_TOTAL });
       try {
+        console.log("[GameContext] XLSX 로드 시도...");
         const data = await loadStoryDataFromXlsx((loaded, total = LOAD_PROGRESS_TOTAL) => {
           setLoadProgress({ loaded, total });
         });
+        console.log("[GameContext] ✓ XLSX 로드 성공");
+        setLoadSource("xlsx");
         applyStoryData(data);
         return;
       } catch (error) {
@@ -112,8 +123,11 @@ export const GameContextProvider = ({ children }) => {
       }
 
       try {
+        console.log("[GameContext] JSON 폴백 시작...");
         setLoadProgress({ loaded: LOAD_PROGRESS_TOTAL - 1, total: LOAD_PROGRESS_TOTAL });
         const data = await loadStoryDataFromJson();
+        console.log("[GameContext] ✓ JSON 로드 성공 (폴백)");
+        setLoadSource("json");
         applyStoryData(data);
       } catch (error) {
         console.error("[GameContext] 스토리 데이터 로드 실패:", error);
@@ -141,6 +155,7 @@ export const GameContextProvider = ({ children }) => {
     isLoading,
     loadError,
     loadProgress,
+    loadSource, // 디버그용: "xlsx" 또는 "json"
     // 검증 결과
     validationErrors,
     // 개별 데이터 접근용 헬퍼
