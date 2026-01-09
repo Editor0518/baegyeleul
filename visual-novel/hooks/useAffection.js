@@ -14,6 +14,10 @@ export const useAffection = () => {
     setAffection((prev) => {
       const updated = { ...prev };
       Object.entries(changes).forEach(([charId, change]) => {
+        // nonPlayable 캐릭터는 호감도 변화 무시
+        if (characters?.[charId]?.nonPlayable) {
+          return;
+        }
         // 현재 값 가져오기 (없으면 캐릭터의 initialAffection 사용)
         const current =
           prev[charId] ?? (characters?.[charId]?.initialAffection ?? 0);

@@ -5,7 +5,11 @@ import storyData from '../public/storyData.json';
 export const metadata = {
   title: storyData.gameInfo.title,
   description: 'Interactive Visual Novel Game',
-  viewport: 'width=device-width, initial-scale=1.0',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {

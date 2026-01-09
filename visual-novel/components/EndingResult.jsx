@@ -31,7 +31,9 @@ const EndingResult = ({ endingInfo, affection, onRestart, onBackToTitle }) => {
         <div className="final-affection">
           <h3>최종 호감도</h3>
           <div className="affection-summary">
-            {Object.values(characters).map((character) => {
+            {Object.values(characters)
+              .filter((character) => !character.nonPlayable)
+              .map((character) => {
               const affectionValue =
                 affection[character.id] ?? character.initialAffection ?? 0;
               const barWidth = getAffectionBarWidth(

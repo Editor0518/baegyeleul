@@ -195,6 +195,34 @@
   width: 100%;
   height: 100%;
   min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.5rem; /* keep scrollbar off text */
+  scroll-behavior: smooth;
+}
+
+/* Thin, themed scrollbar (shows in overlay areas only) */
+.slots-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.slots-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slots-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255,245,218,0.25), rgba(255,245,218,0.05));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.slots-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(255,245,218,0.4), rgba(255,245,218,0.15));
+}
+
+.slots-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,245,218,0.25) transparent;
 }
 
 .slot-item {

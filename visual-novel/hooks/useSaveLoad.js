@@ -8,6 +8,52 @@ const SLOT_COUNT = 3;
 
 export const useSaveLoad = () => {
   const { storyScenes, characters, places } = useGameContext();
+
+  const getSpeakerName = useCallback(
+    (speakerId) => {
+      if (!speakerId) return "알 수 없음";
+
+      if (speakerId === "narrator") return "나레이터";
+      if (speakerId === "me") return "나";
+
+      const character = characters?.[speakerId];
+      return character?.name || speakerId;
+    },
+    [characters]
+  );
+
+  const getSceneName = useCallback(
+    (scene, currentPlace, dialogueIndex = 0) => {
+      if (!scene) return "알 수 없는 장소";
+
+      if (scene.type === "title") return "타이틀 화면";
+      if (scene.type === "ending") return "엔딩";
+
+      const getPlaceName = (placeId) => {
+        if (!placeId) return "스토리 진행 중";
+        return places?.[placeId]?.name || placeId;
+      };
+
+      const placeName = getPlaceName(currentPlace);
+
+      if (scene.type === "choice") {
+        return `${placeName} - 선택`;
+      }
+
+      let speakerId = null;
+
+      if (Array.isArray(scene.dialogues) && scene.dialogues.length > 0) {
+        const currentDialogue = scene.dialogues[dialogueIndex] || scene.dialogues[0];
+        speakerId = currentDialogue?.speaker;
+      } else if (scene.dialogue?.speaker) {
+        speakerId = scene.dialogue.speaker;
+      }
+
+      const speakerName = getSpeakerName(speakerId);
+      return `${placeName} - ${speakerName}`;
+    },
+    [places, getSpeakerName]
+  );
   // 특정 슬롯에 게임 상태 저장
   const saveGame = useCallback((slotId, gameState) => {
     // SSR 가드
@@ -53,7 +99,7 @@ export const useSaveLoad = () => {
       console.error("Save failed:", error);
       return { success: false, error: error.message };
     }
-  }, []);
+  }, [getSceneName, storyScenes]);
 
   // 특정 슬롯에서 게임 상태 불러오기
   const loadGame = useCallback((slotId) => {
@@ -236,58 +282,4 @@ export const useSaveLoad = () => {
     importAllSaves,
     SLOT_COUNT,
   };
-};
-
-// speaker ID를 표시 이름으로 변환
-const getSpeakerName = (speakerId) => {
-  if (!speakerId) return "알 수 없음";
-
-  if (speakerId === "narrator") return "나레이터";
-  if (speakerId === "me") return "나";
-
-  // characters 데이터에서 이름 찾기
-  const character = characters[speakerId];
-  return character?.name || speakerId;
-};
-
-// 씬 이름 생성 헬퍼 함수
-const getSceneName = (scene, currentPlace, dialogueIndex = 0) => {
-  if (!scene) return "알 수 없는 장소";
-
-  if (scene.type === "title") {
-    return "타이틀 화면";
-  }
-
-  if (scene.type === "ending") {
-    return "엔딩";
-  }
-
-  // place ID를 번역된 이름으로 변환
-  const getPlaceName = (placeId) => {
-    if (!placeId) return "스토리 진행 중";
-    return places[placeId]?.name || placeId;
-  };
-
-  const placeName = getPlaceName(currentPlace);
-
-  if (scene.type === "choice") {
-    return `${placeName} - 선택`;
-  }
-
-  // 저장 시점의 정확한 현재 대사의 speaker 추출
-  let speakerId = null;
-
-  // 1. dialogues 배열 (새 구조)
-  if (Array.isArray(scene.dialogues) && scene.dialogues.length > 0) {
-    const currentDialogue = scene.dialogues[dialogueIndex] || scene.dialogues[0];
-    speakerId = currentDialogue?.speaker;
-  }
-  // 2. dialogue 단일 객체 (이전 구조 호환)
-  else if (scene.dialogue?.speaker) {
-    speakerId = scene.dialogue.speaker;
-  }
-
-  const speakerName = getSpeakerName(speakerId);
-
-  return `${placeName} - ${speakerName}`;
 };

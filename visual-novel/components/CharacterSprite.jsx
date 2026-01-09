@@ -65,7 +65,7 @@ const CharacterSprite = React.memo(
             isNew ? "fade-in" : "", // ✅ 처음 등장만
           ].join(" ")}
           onError={(e) => {
-            console.error(`Image load error for ${id}:`, e);
+            console.warn(`CharacterSprite: missing image for ${id} (${emotion})`);
             e.target.style.display = "none";
           }}
         />

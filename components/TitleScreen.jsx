@@ -41,7 +41,7 @@ const TitleScreen = ({ onStart, onLoad, isMuted, onToggleMute }) => {
           </button>
         </div>
       </div>
-      <p className="copyright">Websual-Novel.v1.4 made @rr11gg22</p>
+      <p className="copyright">Websual Novel.v1.6 made by @rrllgg22 <br/>@Editor0518 added some features based on it</p>
     </div>
   );
 };

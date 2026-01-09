@@ -69,6 +69,7 @@ const VisualNovel = () => {
     storyData,
     isLoading: isStoryDataLoading,
     loadError,
+    loadProgress,
     characters,
     places,
     gameInfo,
@@ -540,13 +541,24 @@ const VisualNovel = () => {
 
   const handleLoadGameState = useCallback(
     (saveData) => {
+      if (!saveData || !saveData.sceneId) {
+        console.warn("handleLoadGameState: invalid save data", saveData);
+        return;
+      }
+
       setShowTitleScreen(false);
       setHasInteracted(true);
       goToScene(saveData.sceneId);
 
       const loadedAffection = saveData.affection || {};
       const fixedAffection = {};
-      Object.values(characters).forEach((char) => {
+      const characterList = Array.isArray(characters)
+        ? characters
+        : characters
+        ? Object.values(characters)
+        : [];
+
+      characterList.forEach((char) => {
         const raw = loadedAffection[char.id] ?? char.initialAffection ?? 0;
         fixedAffection[char.id] = clampAffection(char.id, raw);
       });
@@ -556,7 +568,7 @@ const VisualNovel = () => {
       setDialogueIndex(saveData.dialogueIndex ?? 0);
 
       const placeId =
-        saveData.currentPlace && places[saveData.currentPlace]
+        saveData.currentPlace && places && places[saveData.currentPlace]
           ? saveData.currentPlace
           : "default";
       setLoadedPlace(placeId);
@@ -577,7 +589,7 @@ const VisualNovel = () => {
   // 렌더링
   // storyData 로딩 중이거나 에러 발생 시 로딩 화면 표시
   if (isStoryDataLoading || !storyData) {
-    return <InitialLoadingScreen progress={null} />;
+    return <InitialLoadingScreen progress={loadProgress} />;
   }
 
   // storyData 로드 실패 시 에러 표시

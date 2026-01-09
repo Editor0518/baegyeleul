@@ -31,6 +31,10 @@ export function clampAffection(characterId, value) {
 export function getInitialAffection() {
   const initialAffection = {};
   Object.values(characters).forEach((char) => {
+    // nonPlayable 캐릭터는 호감도 추적에서 제외
+    if (char.nonPlayable) {
+      return;
+    }
     const initial = char.initialAffection ?? 0;
     initialAffection[char.id] = clampAffection(char.id, initial);
   });

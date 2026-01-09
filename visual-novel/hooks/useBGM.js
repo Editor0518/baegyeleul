@@ -63,35 +63,54 @@ export const useBGM = ({
       return;
     }
 
+    let canceled = false;
+
+    const ensureAndPlay = async () => {
+      try {
+        const url = `/assets/musics/${newBGM}`;
+        // 리소스 존재 여부 확인 (404시 재생 시도 안 함)
+        const head = await fetch(url, { method: "HEAD" });
+        if (!head.ok) {
+          throw new Error(`BGM 파일을 찾을 수 없음 (${head.status})`);
+        }
+
+        if (canceled) return;
+
+        audioRef.current.src = url;
+        audioRef.current.volume = isMuted ? 0 : 1;
+
+        // 사용자 상호작용 전: src만 설정하고 재생하지 않음
+        if (!hasInteracted) {
+          pendingBGMRef.current = newBGM;
+          console.log("[BGM] 사용자 상호작용 대기 중, 재생 보류:", newBGM);
+          return;
+        }
+
+        currentBGMRef.current = newBGM;
+        pendingBGMRef.current = null;
+        await audioRef.current.play();
+      } catch (error) {
+        if (canceled) return;
+        console.warn("[BGM] 재생 건너뜀:", newBGM, error?.message || error);
+        currentBGMRef.current = null;
+        pendingBGMRef.current = null;
+      }
+    };
+
     // 같은 BGM이면 계속 재생 (이어서 재생)
     if (currentBGMRef.current === newBGM) {
-      // 사용자 상호작용이 있었고, 일시정지 상태면 재생
       if (hasInteracted && audioRef.current && audioRef.current.paused) {
         audioRef.current.play().catch((error) => {
-          console.error("[BGM] 재생 실패:", error);
+          console.warn("[BGM] 재생 실패:", error?.message || error);
         });
       }
-      return;
+    } else {
+      ensureAndPlay();
     }
 
-    // 다른 BGM으로 변경
-    // src 설정 및 볼륨 조정
-    audioRef.current.src = `/assets/musics/${newBGM}`;
-    audioRef.current.volume = isMuted ? 0 : 1;
-
-    // 사용자 상호작용 전: src만 설정하고 재생하지 않음
-    if (!hasInteracted) {
-      pendingBGMRef.current = newBGM;
-      console.log("[BGM] 사용자 상호작용 대기 중, 재생 보류:", newBGM);
-      return;
-    }
-
-    // 사용자 상호작용 후: BGM 재생
-    currentBGMRef.current = newBGM;
-    pendingBGMRef.current = null;
-    audioRef.current.play().catch((error) => {
-      console.error("[BGM] 재생 실패:", error);
-    });
+    return () => {
+      canceled = true;
+    };
   }, [
     currentScene,
     currentSceneId,

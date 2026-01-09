@@ -6,6 +6,15 @@ import { useGameContext } from "@/contexts/GameContext";
 
 const TitleScreen = ({ onStart, onLoad, isMuted, onToggleMute }) => {
   const { gameInfo } = useGameContext();
+
+  // 줄바꿈 문자(\n)를 <br>로 변환
+  const formattedSubtitle = gameInfo.subtitle ? gameInfo.subtitle.split('\n').map((line, i) => (
+    <React.Fragment key={i}>
+      {line}
+      {i < gameInfo.subtitle.split('\n').length - 1 && <br />}
+    </React.Fragment>
+  )) : null;
+
   return (
     <div className="title-screen">
       {/* 음소거 버튼 (우측 상단) */}
@@ -27,7 +36,7 @@ const TitleScreen = ({ onStart, onLoad, isMuted, onToggleMute }) => {
           </div>
           <div className="game-subtitle">
             <span className="icon-subtitle"></span>
-            {gameInfo.subtitle}
+            {formattedSubtitle}
           </div>
         </div>
         <div className="title-buttons">
@@ -41,7 +50,11 @@ const TitleScreen = ({ onStart, onLoad, isMuted, onToggleMute }) => {
           </button>
         </div>
       </div>
-      <p className="copyright">Websual-Novel.v1.4 made @rr11gg22</p>
+      <p className="copyright">
+        Websual Novel.v1.6 made by @rrllgg22
+        <br />
+        @Editor0518 added some features with it
+      </p>
     </div>
   );
 };
