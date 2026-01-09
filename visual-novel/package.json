@@ -7,15 +7,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fetch:sheets": "node scripts/fetchFromGoogleSheets.js",
+    "debug:sheets": "node scripts/debugGoogleSheets.js",
+    "debug:data": "node scripts/debugSheetData.js",
+    "debug:gameinfo": "node scripts/debugGameInfo.js",
+    "list:sheets": "node scripts/listGoogleSheets.js",
+    "test:sheets": "node scripts/testSheets.js"
   },
   "dependencies": {
+    "next": "^15.1.6",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "next": "^15.1.6"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "eslint": "^9.39.1",
-    "eslint-config-next": "^15.1.6"
+    "eslint-config-next": "^15.1.6",
+    "node-fetch": "^3.3.2"
   }
 }
