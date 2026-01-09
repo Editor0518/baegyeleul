@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Novel - 안개 속 인연</title>
+    <meta name="description" content="Interactive Visual Novel Game">
+    <link rel="stylesheet" href="_next/static/css/3858580747c21cc9.css">
+    <link rel="stylesheet" href="_next/static/css/94adb745d06e5332.css">
+    <link rel="stylesheet" href="_next/static/css/230cecc8ab041398.css">
+</head>
+<body>
+    <!-- 타이틀 화면 -->
+    <div class="title-screen">
+        <!-- 음악 버튼 -->
+        <div class="title-music-button-container">
+            <button class="title-music-button music-off" id="titleMusicButton">
+                <span class="game-button-icon"></span>
+            </button>
+        </div>
+
+        <!-- 타이틀 컨테이너 -->
+        <div class="title-container">
+            <div class="title-content">
+                <div class="title-box">
+                    <h1 class="game-title">안개 속 인연</h1>
+                    <span class="line-deco left"></span>
+                    <span class="line-deco right"></span>
+                </div>
+                <div class="game-subtitle">
+                    <span class="icon-subtitle"></span>
+                    숲에서 시작된 작은 만남
+                </div>
+            </div>
+
+            <div class="title-buttons">
+                <button class="start-button" id="startButton">
+                    <span class="line-deco left"></span>
+                    시작하기
+                    <span class="line-deco right"></span>
+                </button>
+                <button class="load-button" id="loadButton">
+                    <span class="line-deco left"></span>
+                    불러오기
+                    <span class="line-deco right"></span>
+                </button>
+            </div>
+        </div>
+
+        <p class="copyright">Websual-Novel.v1.3 made @rr11gg22</p>
+    </div>
+
+    <!-- 게임 화면 (숨김) -->
+    <div class="game-container" id="gameContainer" style="display: none;">
+        <!-- 헤더 -->
+        <div class="header-content">
+            <div class="place-bar">
+                <span class="icon-place-bar"></span>
+                <span class="place-name" id="placeName">숲</span>
+            </div>
+            
+            <div class="game-buttons">
+                <button class="game-button" id="saveButton">
+                    <span class="game-button-icon save"></span>
+                    <span class="game-button-text">저장</span>
+                </button>
+                <button class="game-button" id="loadGameButton">
+                    <span class="game-button-icon load"></span>
+                    <span class="game-button-text">불러오기</span>
+                </button>
+                <button class="game-button music-on" id="musicButton">
+                    <span class="game-button-icon"></span>
+                </button>
+                <button class="game-button" id="exitButton">
+                    <span class="game-button-icon exit"></span>
+                    <span class="game-button-text">나가기</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 씬 컨텐츠 -->
+        <div class="scene-content">
+            <!-- 배경 이미지 -->
+            <img id="backgroundImage" class="background-image" src="" alt="background">
+            
+            <!-- 캐릭터 표시 -->
+            <div class="character-display" id="characterDisplay"></div>
+            
+            <!-- 대화 상자 -->
+            <div class="dialogue-box" id="dialogueBox" style="display: none;">
+                <div class="dialogue-content">
+                    <div class="speaker-name">
+                        <span class="speaker-text" id="speakerName">화자</span>
+                        <span class="line-deco left"></span>
+                        <span class="line-deco right"></span>
+                    </div>
+                    <div class="dialogue-text" id="dialogueText">
+                        대사 내용
+                        <span class="next-button" id="nextButton"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 선택지 상자 -->
+            <div class="choice-box" id="choiceBox" style="display: none;">
+                <div class="choices-container" id="choicesContainer"></div>
+            </div>
+        </div>
+
+        <!-- 호감도 표시 -->
+        <div class="affection-display" id="affectionDisplay" style="display: none;">
+            <h3>호감도</h3>
+            <div class="affection-bars" id="affectionBars"></div>
+        </div>
+    </div>
+
+    <!-- 저장/로드 모달 -->
+    <div class="save-load-overlay" id="saveLoadOverlay" style="display: none;">
+        <div class="save-load-modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">저장하기</h2>
+                <button class="close-button" id="closeModal"></button>
+            </div>
+
+            <div class="global-actions">
+                <button class="global-action-btn" id="exportBtn">
+                    <span class="global-btn-icon export"></span>
+                    <span class="global-action-text">파일로 저장</span>
+                </button>
+                <button class="global-action-btn" id="importBtn">
+                    <span class="global-btn-icon import"></span>
+                    <span class="global-action-text">파일에서 불러오기</span>
+                </button>
+            </div>
+
+            <div class="slots-container" id="slotsContainer">
+                <!-- 슬롯 5개 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 엔딩 화면 -->
+    <div class="ending-result-overlay" id="endingOverlay" style="display: none;">
+        <div class="ending-result-card">
+            <div class="ending-title-content">
+                <div class="ending-type-badge" id="endingType">True Ending</div>
+                <div class="ending-title-box">
+                    <h2 class="ending-title" id="endingTitle">엔딩 제목</h2>
+                    <span class="line-deco left"></span>
+                    <span class="line-deco right"></span>
+                </div>
+                <p class="ending-message">
+                    <span class="icon-ending-message"></span>
+                    <span id="endingMessage">엔딩 메시지</span>
+                </p>
+            </div>
+
+            <div class="final-affection">
+                <h3>최종 호감도</h3>
+                <div class="affection-summary" id="finalAffection"></div>
+            </div>
+
+            <div class="ending-buttons">
+                <button class="restart-button" id="restartButton">
+                    <span class="line-deco left"></span>
+                    다시하기
+                    <span class="line-deco right"></span>
+                </button>
+                <button class="title-button" id="titleButton">
+                    <span class="line-deco left"></span>
+                    타이틀로
+                    <span class="line-deco right"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 확인 대화상자 -->
+    <div class="confirm-dialog-overlay" id="confirmOverlay" style="display: none;">
+        <div class="confirm-dialog">
+            <h3 class="confirm-title" id="confirmTitle">확인</h3>
+            <p class="confirm-message" id="confirmMessage">메시지</p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn" id="confirmYes">예</button>
+                <button class="confirm-btn" id="confirmNo">아니오</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 숨겨진 파일 입력 -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;">
+
+    <script src="game-script.js"></script>
+</body>
+</html>

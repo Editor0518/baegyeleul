@@ -1,0 +1,278 @@
+{
+  "title": "�?��! ?�할 ???�다�?즐겨??,
+  "startScene": "scene_001",
+  "titleMusic": "../websual-novel.v1.5/visual-novel/assets/musics/title.mp3",
+  "characters": [
+    {
+      "id": "char_a",
+      "name": "민�?",
+      "initialAffection": 50,
+      "sprites": {
+        "normal": "../websual-novel.v1.5/visual-novel/assets/characters/aa/aa_01_default.png",
+        "happy": "../websual-novel.v1.5/visual-novel/assets/characters/aa/aa_01_default.png",
+        "sad": "../websual-novel.v1.5/visual-novel/assets/characters/aa/aa_01_default.png",
+        "angry": "../websual-novel.v1.5/visual-novel/assets/characters/aa/aa_01_default.png"
+      }
+    },
+    {
+      "id": "char_b",
+      "name": "?�연",
+      "initialAffection": 50,
+      "sprites": {
+        "normal": "../websual-novel.v1.5/visual-novel/assets/characters/bb/bb_01_default.png",
+        "happy": "../websual-novel.v1.5/visual-novel/assets/characters/bb/bb_01_default.png",
+        "sad": "../websual-novel.v1.5/visual-novel/assets/characters/bb/bb_01_default.png",
+        "angry": "../websual-novel.v1.5/visual-novel/assets/characters/bb/bb_01_default.png"
+      }
+    }
+  ],
+  "scenes": [
+    {
+      "id": "scene_001",
+      "name": "?�롤로그",
+      "place": "교실",
+      "background": "../websual-novel.v1.5/visual-novel/assets/places/forest.png",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/daily.mp3",
+      "dialogues": [
+        {
+          "speaker": "??,
+          "text": "?�학기�? ?�작?�었??",
+          "characters": []
+        },
+        {
+          "speaker": "??,
+          "text": "?�늘???�범???�루가 ??거라�??�각?�는??..",
+          "characters": []
+        }
+      ],
+      "next": "scene_002"
+    },
+    {
+      "id": "scene_002",
+      "name": "�?만남",
+      "place": "교실",
+      "background": "../websual-novel.v1.5/visual-novel/assets/places/forest.png",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/daily.mp3",
+      "dialogues": [
+        {
+          "speaker": "민�?",
+          "text": "?�녕! ?�는 민�??? ??부?�해!",
+          "characters": [
+            {
+              "id": "char_a",
+              "expression": "happy",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "?�연",
+          "text": "?�???�연?�에?? 반�??�요.",
+          "characters": [
+            {
+              "id": "char_a",
+              "expression": "normal",
+              "active": false
+            },
+            {
+              "id": "char_b",
+              "expression": "normal",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "??,
+          "text": "???�람 모두 좋�? ?�람??같아...",
+          "characters": [
+            {
+              "id": "char_a",
+              "expression": "happy",
+              "active": false
+            },
+            {
+              "id": "char_b",
+              "expression": "happy",
+              "active": false
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_001_a",
+          "text": "민�??�게 말을 건다",
+          "affection": {
+            "민�?": 10
+          },
+          "next": "scene_003_a"
+        },
+        {
+          "id": "choice_001_b",
+          "text": "?�연?�게 말을 건다",
+          "affection": {
+            "?�연": 10
+          },
+          "next": "scene_003_b"
+        },
+        {
+          "id": "choice_001_c",
+          "text": "조용???�는??,
+          "next": "scene_003_c"
+        }
+      ]
+    },
+    {
+      "id": "scene_003_a",
+      "name": "민�? 루트",
+      "place": "교실",
+      "background": "../websual-novel.v1.5/visual-novel/assets/places/forest.png",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/daily.mp3",
+      "dialogues": [
+        {
+          "speaker": "민�?",
+          "text": "?�랑 친하�?지?�고 ?�어? 좋아!",
+          "characters": [
+            {
+              "id": "char_a",
+              "expression": "happy",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "??,
+          "text": "민�????�말 밝고 ?�발??친구??�?같다.",
+          "characters": [
+            {
+              "id": "char_a",
+              "expression": "happy",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "next": "scene_ending_a"
+    },
+    {
+      "id": "scene_003_b",
+      "name": "?�연 루트",
+      "place": "교실",
+      "background": "../websual-novel.v1.5/visual-novel/assets/places/forest.png",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/daily.mp3",
+      "dialogues": [
+        {
+          "speaker": "?�연",
+          "text": "?�??친해지�??�으??거예?? 기뻐??",
+          "characters": [
+            {
+              "id": "char_b",
+              "expression": "happy",
+              "active": true
+            }
+          ]
+        },
+        {
+          "speaker": "??,
+          "text": "?�연?� 조용?��?�??�뜻??친구??�?같다.",
+          "characters": [
+            {
+              "id": "char_b",
+              "expression": "happy",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "next": "scene_ending_b"
+    },
+    {
+      "id": "scene_003_c",
+      "name": "?�자 ?�기",
+      "place": "교실",
+      "background": "../websual-novel.v1.5/visual-novel/assets/places/forest.png",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/daily.mp3",
+      "dialogues": [
+        {
+          "speaker": "??,
+          "text": "그냥 조용???�기�??�다.",
+          "characters": []
+        },
+        {
+          "speaker": "??,
+          "text": "?��?�??�게 최선?�었?�까...?",
+          "characters": []
+        }
+      ],
+      "ending": "ending_normal"
+    },
+    {
+      "id": "scene_ending_a",
+      "name": "민�? ?�딩",
+      "place": "교실",
+      "background": "../websual-novel.v1.5/visual-novel/assets/places/forest.png",
+      "cutscene": "../websual-novel.v1.5/visual-novel/assets/cutscenes/ending_a.jpg",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/ending.mp3",
+      "dialogues": [
+        {
+          "speaker": "민�?",
+          "text": "?�리 ?�으로도 계속 친하�?지?�자!",
+          "characters": [
+            {
+              "id": "char_a",
+              "expression": "happy",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "ending": "ending_minji"
+    },
+    {
+      "id": "scene_ending_b",
+      "name": "?�연 ?�딩",
+      "place": "교실",
+      "background": "../websual-novel.v1.5/visual-novel/assets/places/forest.png",
+      "cutscene": "../websual-novel.v1.5/visual-novel/assets/cutscenes/ending_b.jpg",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/ending.mp3",
+      "dialogues": [
+        {
+          "speaker": "?�연",
+          "text": "?�께 ?�으???�말 ?�복?�요.",
+          "characters": [
+            {
+              "id": "char_b",
+              "expression": "happy",
+              "active": true
+            }
+          ]
+        }
+      ],
+      "ending": "ending_seoyeon"
+    }
+  ],
+  "endings": [
+    {
+      "id": "ending_minji",
+      "type": "TRUE ENDING",
+      "title": "밝�? 미래",
+      "message": "민�??� ?�께?�는 ?�복???�날??,
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/ending.mp3"
+    },
+    {
+      "id": "ending_seoyeon",
+      "type": "TRUE ENDING",
+      "title": "?�뜻???�행",
+      "message": "?�연�??�께?�는 ?�온???�간",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/ending.mp3"
+    },
+    {
+      "id": "ending_normal",
+      "type": "NORMAL ENDING",
+      "title": "?��??�기",
+      "message": "?�자만의 ?�간???�쁘지 ?�아",
+      "music": "../websual-novel.v1.5/visual-novel/assets/musics/daily.mp3"
+    }
+  ]
+}
+

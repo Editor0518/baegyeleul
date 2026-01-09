@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청춘! 피할 수 없다면 즐겨라</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="visual-novel" id="app">
+        <!-- 타이틀 화면 -->
+        <div class="title-screen" id="titleScreen">
+            <div class="title-container">
+                <div class="title-content">
+                    <div class="title-box">
+                        <h1 class="game-title">청춘! 피할 수 없다면 즐겨라</h1>
+                        <span class="line-deco left"></span>
+                        <span class="line-deco right"></span>
+                    </div>
+                    <p class="game-subtitle">
+                        <span class="icon-subtitle"></span>
+                        Interactive Visual Novel Game
+                    </p>
+                </div>
+                
+                <div class="title-buttons">
+                    <button class="start-button" id="startButton">
+                        게임 시작
+                        <span class="line-deco left"></span>
+                        <span class="line-deco right"></span>
+                    </button>
+                    <button class="load-button" id="titleLoadButton">
+                        이어하기
+                        <span class="line-deco left"></span>
+                        <span class="line-deco right"></span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="title-music-button-container">
+                <button class="title-music-button music-on" id="titleMusicButton">
+                    <span class="game-button-icon"></span>
+                </button>
+            </div>
+            
+            <p class="copyright">© 2026 Visual Novel Template</p>
+        </div>
+
+        <!-- 게임 화면 -->
+        <div class="game-container" id="gameContainer" style="display: none;">
+            <!-- 헤더 -->
+            <div class="header-content">
+                <div class="place-bar">
+                    <span class="icon-place-bar"></span>
+                    <span class="place-name" id="placeName">교실</span>
+                </div>
+                
+                <div class="game-buttons">
+                    <button class="game-button" id="saveButton">
+                        <span class="game-button-icon save"></span>
+                        <span class="game-button-text">저장</span>
+                    </button>
+                    <button class="game-button" id="loadButton">
+                        <span class="game-button-icon load"></span>
+                        <span class="game-button-text">불러오기</span>
+                    </button>
+                    <button class="game-button music-on" id="musicButton">
+                        <span class="game-button-icon"></span>
+                    </button>
+                    <button class="game-button" id="exitButton">
+                        <span class="game-button-icon exit"></span>
+                        <span class="game-button-text">나가기</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 씬 컨텐츠 -->
+            <div class="scene-content">
+                <!-- 배경 이미지 -->
+                <img id="backgroundImage" class="background-image" src="" alt="background">
+                
+                <!-- 컷신 이미지 -->
+                <div class="cutscene" id="cutsceneContainer" style="display: none;">
+                    <img id="cutsceneImage" class="cutscene-image" src="" alt="cutscene">
+                </div>
+                
+                <!-- 캐릭터 표시 -->
+                <div class="character-display" id="characterDisplay"></div>
+                
+                <!-- 대화창 -->
+                <div class="dialogue-box" id="dialogueBox">
+                    <div class="dialogue-content">
+                        <div class="speaker-name">
+                            <span class="speaker-text" id="speakerName">화자</span>
+                            <span class="line-deco left"></span>
+                            <span class="line-deco right"></span>
+                        </div>
+                        <p class="dialogue-text" id="dialogueText">
+                            대사 내용이 여기에 표시됩니다.
+                            <span class="next-button" id="nextButton"></span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 선택지 -->
+                <div class="choice-box" id="choiceBox" style="display: none;">
+                    <div class="choices-container" id="choicesContainer"></div>
+                </div>
+            </div>
+
+            <!-- 호감도 표시 -->
+            <div class="affection-display" id="affectionDisplay" style="display: none;">
+                <h3>호감도</h3>
+                <div class="affection-bars" id="affectionBars"></div>
+            </div>
+
+            <!-- 로딩 화면 -->
+            <div class="ingame-loading-screen" id="loadingScreen" style="display: none;">
+                <div class="ingame-loading-overlay">
+                    <div class="ingame-loading-content">
+                        <span class="ingame-spinner"></span>
+                        <span class="ingame-loading-message">불러오는 중...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 엔딩 화면 -->
+        <div class="ending-result-overlay" id="endingScreen" style="display: none;">
+            <div class="ending-result-card">
+                <div class="ending-title-content">
+                    <p class="ending-type-badge" id="endingBadge">TRUE ENDING</p>
+                    <div class="ending-title-box">
+                        <h2 class="ending-title" id="endingTitle">엔딩 제목</h2>
+                        <span class="line-deco left"></span>
+                        <span class="line-deco right"></span>
+                    </div>
+                    <p class="ending-message" id="endingMessage">
+                        <span class="icon-ending-message"></span>
+                        엔딩 메시지
+                    </p>
+                </div>
+                
+                <div class="final-affection" id="finalAffection">
+                    <h3>최종 호감도</h3>
+                    <div class="affection-summary" id="affectionSummary"></div>
+                </div>
+                
+                <div class="ending-buttons">
+                    <button class="restart-button" id="restartButton">
+                        다시 시작
+                        <span class="line-deco left"></span>
+                        <span class="line-deco right"></span>
+                    </button>
+                    <button class="title-button" id="toTitleButton">
+                        타이틀로
+                        <span class="line-deco left"></span>
+                        <span class="line-deco right"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 세이브/로드 모달 -->
+    <div class="save-load-overlay" id="saveLoadModal" style="display: none;">
+        <div class="save-load-modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">저장하기</h2>
+                <button class="close-button" id="closeModal"></button>
+            </div>
+            
+            <div class="global-actions">
+                <button class="global-action-btn" id="exportSaveBtn">
+                    <span class="global-btn-icon export"></span>
+                    <span class="global-action-text">파일로 저장</span>
+                </button>
+                <button class="global-action-btn" id="importSaveBtn">
+                    <span class="global-btn-icon import"></span>
+                    <span class="global-action-text">파일에서 불러오기</span>
+                </button>
+            </div>
+            
+            <div class="slots-container" id="slotsContainer">
+                <!-- 슬롯들이 동적으로 생성됨 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 확인 대화상자 -->
+    <div class="confirm-dialog-overlay" id="confirmDialog" style="display: none;">
+        <div class="confirm-dialog">
+            <h3 class="confirm-title" id="confirmTitle">확인</h3>
+            <p class="confirm-message" id="confirmMessage">확인하시겠습니까?</p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn" id="confirmYes">예</button>
+                <button class="confirm-btn" id="confirmNo">아니오</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 숨겨진 파일 입력 -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;">
+    
+    <!-- 오디오 플레이어 -->
+    <audio id="bgmPlayer" loop></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

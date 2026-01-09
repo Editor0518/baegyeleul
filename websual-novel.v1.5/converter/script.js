@@ -18,6 +18,29 @@ const headerMap = {
     "최저호감도(minAffection)": "minAffection",
     "최고호감도(maxAffection)": "maxAffection",
     "이미지폴더(imageFolder)": "imageFolder",
+    "기본표정이미지(defaultImage)": "기본표정이미지(defaultImage)",
+    // emotion 1-10 매핑
+    "emotion(1)": "emotion(1)",
+    "emotion(2)": "emotion(2)",
+    "emotion(3)": "emotion(3)",
+    "emotion(4)": "emotion(4)",
+    "emotion(5)": "emotion(5)",
+    "emotion(6)": "emotion(6)",
+    "emotion(7)": "emotion(7)",
+    "emotion(8)": "emotion(8)",
+    "emotion(9)": "emotion(9)",
+    "emotion(10)": "emotion(10)",
+    // emotionImage 1-10 매핑
+    "emotionImage(1)": "emotionImage(1)",
+    "emotionImage(2)": "emotionImage(2)",
+    "emotionImage(3)": "emotionImage(3)",
+    "emotionImage(4)": "emotionImage(4)",
+    "emotionImage(5)": "emotionImage(5)",
+    "emotionImage(6)": "emotionImage(6)",
+    "emotionImage(7)": "emotionImage(7)",
+    "emotionImage(8)": "emotionImage(8)",
+    "emotionImage(9)": "emotionImage(9)",
+    "emotionImage(10)": "emotionImage(10)",
   },
   places: {
     "장소ID(id)": "id",
@@ -55,6 +78,28 @@ const headerMap = {
     "표시캐릭터3(reactionChar_right)": "reactionChar_right",
     "표시캐릭터3표정(reactionEmotion_right)": "reactionEmotion_right",
     "다음씬ID(nextSceneId)": "nextSceneId",
+    // affectioncharacter 1-10 매핑
+    "affectioncharacter(1)": "affectioncharacter(1)",
+    "affectioncharacter(2)": "affectioncharacter(2)",
+    "affectioncharacter(3)": "affectioncharacter(3)",
+    "affectioncharacter(4)": "affectioncharacter(4)",
+    "affectioncharacter(5)": "affectioncharacter(5)",
+    "affectioncharacter(6)": "affectioncharacter(6)",
+    "affectioncharacter(7)": "affectioncharacter(7)",
+    "affectioncharacter(8)": "affectioncharacter(8)",
+    "affectioncharacter(9)": "affectioncharacter(9)",
+    "affectioncharacter(10)": "affectioncharacter(10)",
+    // affectionValue 1-10 매핑
+    "affectionValue(1)": "affectionValue(1)",
+    "affectionValue(2)": "affectionValue(2)",
+    "affectionValue(3)": "affectionValue(3)",
+    "affectionValue(4)": "affectionValue(4)",
+    "affectionValue(5)": "affectionValue(5)",
+    "affectionValue(6)": "affectionValue(6)",
+    "affectionValue(7)": "affectionValue(7)",
+    "affectionValue(8)": "affectionValue(8)",
+    "affectionValue(9)": "affectionValue(9)",
+    "affectionValue(10)": "affectionValue(10)",
   },
   scene_characters: {
     "씬ID(sceneId)": "sceneId",
@@ -275,13 +320,25 @@ function buildCharacters(rows) {
 
     const emotions = {};
 
+    // 기본 표정 처리: 기본표정이미지(defaultImage) 또는 emotion 없을 때의 기본값
     const defaultKey = "기본표정이미지(defaultImage)";
-    if (r[defaultKey]) emotions.default = r[defaultKey];
+    if (r[defaultKey]) {
+      emotions.default = r[defaultKey];
+    }
 
+    // emotion1 부터 emotion10까지 처리
     for (let i = 1; i <= 10; i++) {
-      const name = r[`emotion${i}`];
-      const img = r[`emotionImage${i}`];
-      if (name && img) emotions[name.trim()] = img.trim();
+      const name = r[`emotion(${i})`] || r[`emotion${i}`];
+      const img = r[`emotionImage(${i})`] || r[`emotionImage${i}`];
+      
+      // emotion1이 정의되면 default가 없을 때 emotion1을 default로 사용
+      if (i === 1 && !emotions.default && name && img) {
+        emotions.default = img.trim();
+      }
+      
+      if (name && img) {
+        emotions[name.trim()] = img.trim();
+      }
     }
 
     if (!("default" in emotions)) emotions.default = "";
@@ -402,8 +459,8 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
     // affectionChanges
     const aff = {};
     for (let i = 1; i <= 10; i++) {
-      const charKey = c[`affectioncharacter${i}`];
-      const valKey = c[`affectionValue${i}`];
+      const charKey = c[`affectioncharacter(${i})`] || c[`affectioncharacter${i}`];
+      const valKey = c[`affectionValue(${i})`] || c[`affectionValue${i}`];
       const charId = charKey ? String(charKey).trim() : "";
       const val = Number(valKey);
       if (charId && !Number.isNaN(val)) aff[charId] = val;
