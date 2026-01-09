@@ -498,7 +498,12 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
   const storyScenes = [];
 
   Object.values(sceneMap).forEach((scene) => {
-    const base = { id: scene.id, type: scene.type };
+    const hasChoices = (choicesByScene[scene.id] || []).length > 0;
+
+    // scene.type이 비어있거나 잘못 입력된 경우, choices가 존재하면 자동으로 choice로 보정
+    const effectiveType = scene.type || (hasChoices ? "choice" : "normal");
+
+    const base = { id: scene.id, type: hasChoices ? "choice" : effectiveType };
 
     if (scene.place) base.place = scene.place;
     if (scene.cutsceneImage) base.cutsceneImage = scene.cutsceneImage;
@@ -553,8 +558,9 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
 
     base.dialogues = builtDialogues;
 
-    if (scene.type === "choice") {
+    if (hasChoices) {
       base.choices = choicesByScene[scene.id] || [];
+      base.type = "choice";
     }
 
     const rawNext = scene.nextSceneId;
