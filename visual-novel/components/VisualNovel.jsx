@@ -460,9 +460,11 @@ const VisualNovel = () => {
         return;
       }
 
-      if (choice.reaction) {
-        startReaction(choice.reaction, nextSceneId);
+      // reaction이 있고 텍스트가 비어있지 않으면 reaction 표시
+      if (choice.reaction && choice.reaction.text && choice.reaction.text.trim() !== "") {
+        startReaction(choice.reaction, nextSceneId, false);
       } else {
+        // reactionText가 비어있으면 바로 다음 씬으로 이동
         goToScene(nextSceneId);
       }
     },

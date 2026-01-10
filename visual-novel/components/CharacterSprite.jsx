@@ -17,12 +17,15 @@ const CharacterSprite = React.memo(
       if (!charId || !emotion) return null;
 
       const char = characters?.[charId];
-      if (
-        !char ||
-        !char.imageFolder ||
-        !char.emotions ||
-        !char.emotions[emotion]
-      ) {
+      if (!char || !char.imageFolder || !char.emotions) {
+        console.warn(`[CharacterSprite] 캐릭터 정보 없음: ${charId}`);
+        return null;
+      }
+
+      if (!char.emotions[emotion]) {
+        console.warn(
+          `[CharacterSprite] 감정 파일 없음: ${charId}/${emotion} - 스탠딩이 표시되지 않습니다.`
+        );
         return null;
       }
 
@@ -30,7 +33,7 @@ const CharacterSprite = React.memo(
         return `/assets/characters/${char.imageFolder}/${char.emotions[emotion]}`;
       } catch (error) {
         console.error(
-          `Failed to load image for ${charId} with emotion ${emotion}:`,
+          `[CharacterSprite] 이미지 경로 생성 실패 ${charId} (${emotion}):`,
           error
         );
         return null;
@@ -39,16 +42,7 @@ const CharacterSprite = React.memo(
 
     const imageSrc = getCharacterImage(id, emotion);
     if (!imageSrc) return null;
-    console.log("CharacterSprite LOADED - NEW VERSION");
-    console.log(
-      id,
-      "isNew:",
-      isNew,
-      "class:",
-      ["sprite", position, active ? "active" : "", isNew ? "fade-in" : ""].join(
-        " "
-      )
-    );
+
     return (
       <div
         className={`character-sprite character-${
@@ -62,10 +56,10 @@ const CharacterSprite = React.memo(
             "sprite",
             position,
             active ? "active" : "",
-            isNew ? "fade-in" : "", // ✅ 처음 등장만
+            isNew ? "fade-in" : "",
           ].join(" ")}
           onError={(e) => {
-            console.warn(`CharacterSprite: missing image for ${id} (${emotion})`);
+            console.warn(`[CharacterSprite] 이미지 로드 실패: ${id} (${emotion}) - 파일이 존재하지 않습니다.`);
             e.target.style.display = "none";
           }}
         />

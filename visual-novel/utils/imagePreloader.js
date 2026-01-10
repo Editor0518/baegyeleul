@@ -53,7 +53,7 @@ export const preloadImage = (url) => {
 
     img.onerror = (error) => {
       preloadingImages.delete(url);
-      console.warn(`[ImagePreloader] Failed to preload: ${url}`, error);
+      console.warn(`[ImagePreloader] 이미지 로드 실패: ${url} - 파일이 존재하지 않을 수 있습니다.`, error);
       // 에러가 나도 resolve - preload 실패가 렌더링을 차단하면 안 됨
       resolve(null);
     };

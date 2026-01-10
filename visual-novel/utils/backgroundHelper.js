@@ -28,6 +28,7 @@ export const getBackgroundStyle = (placeId) => {
 
   // 장소 정보가 없으면 기본 배경
   if (!place) {
+    console.warn(`[backgroundHelper] 장소 정보 없음: ${placeId} - 기본 배경으로 표시됩니다.`);
     return {
       background: '#f5f5f5'
     };
@@ -45,7 +46,7 @@ export const getBackgroundStyle = (placeId) => {
         backgroundRepeat: 'no-repeat'
       };
     } catch (error) {
-      console.error(`Failed to load background image for ${placeId}:`, error);
+      console.error(`[backgroundHelper] 배경 이미지 처리 실패 ${placeId}:`, error);
       // 이미지 로드 실패 시 색상 배경으로 폴백
       return {
         background: place.color || '#f5f5f5'
@@ -54,6 +55,7 @@ export const getBackgroundStyle = (placeId) => {
   }
 
   // 이미지가 없으면 색상 배경
+  console.warn(`[backgroundHelper] 배경 이미지 없음: ${placeId} - 색상으로 표시됩니다.`);
   return {
     background: place.color || '#f5f5f5'
   };
