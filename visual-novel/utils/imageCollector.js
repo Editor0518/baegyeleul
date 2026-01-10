@@ -34,7 +34,32 @@ const getCharacterImageUrl = (charId, emotion) => {
   if (!charId || !emotion) return null;
 
   const char = characters[charId];
-  if (!char || !char.imageFolder || !char.emotions || !char.emotions[emotion]) {
+  
+  if (!char) {
+    console.warn(
+      `[imageCollector] 캐릭터 정보 없음: ${charId} - 이미지가 표시되지 않습니다.`
+    );
+    return null;
+  }
+  
+  if (!char.imageFolder) {
+    console.warn(
+      `[imageCollector] 캐릭터 폴더 정보 없음: ${charId} - 이미지가 표시되지 않습니다.`
+    );
+    return null;
+  }
+  
+  if (!char.emotions) {
+    console.warn(
+      `[imageCollector] 캐릭터 감정 정보 없음: ${charId} - 이미지가 표시되지 않습니다.`
+    );
+    return null;
+  }
+  
+  if (!char.emotions[emotion]) {
+    console.warn(
+      `[imageCollector] 감정 파일 없음: ${charId}/${emotion} - 이미지가 표시되지 않습니다.`
+    );
     return null;
   }
 
@@ -42,7 +67,7 @@ const getCharacterImageUrl = (charId, emotion) => {
     return `/assets/characters/${char.imageFolder}/${char.emotions[emotion]}`;
   } catch (error) {
     console.error(
-      `Failed to generate URL for ${charId} with emotion ${emotion}:`,
+      `[imageCollector] 이미지 경로 생성 실패 ${charId} (${emotion}):`,
       error
     );
     return null;
@@ -58,12 +83,25 @@ const getPlaceImageUrl = (placeId) => {
   if (!placeId) return null;
 
   const place = places[placeId];
-  if (!place || !place.image) return null;
+  
+  if (!place) {
+    console.warn(
+      `[imageCollector] 장소 정보 없음: ${placeId} - 배경이 표시되지 않습니다.`
+    );
+    return null;
+  }
+  
+  if (!place.image) {
+    console.warn(
+      `[imageCollector] 장소 이미지 없음: ${placeId} - 배경이 표시되지 않습니다.`
+    );
+    return null;
+  }
 
   try {
     return `/assets/places/${place.image}`;
   } catch (error) {
-    console.error(`Failed to generate URL for place ${placeId}:`, error);
+    console.error(`[imageCollector] 배경 경로 생성 실패 ${placeId}:`, error);
     return null;
   }
 };

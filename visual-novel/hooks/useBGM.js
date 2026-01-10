@@ -68,10 +68,21 @@ export const useBGM = ({
     const ensureAndPlay = async () => {
       try {
         const url = `/assets/musics/${newBGM}`;
+        
         // 리소스 존재 여부 확인 (404시 재생 시도 안 함)
-        const head = await fetch(url, { method: "HEAD" });
-        if (!head.ok) {
-          throw new Error(`BGM 파일을 찾을 수 없음 (${head.status})`);
+        try {
+          const head = await fetch(url, { method: "HEAD" });
+          if (!head.ok) {
+            console.warn(`[BGM] 파일을 찾을 수 없음: ${newBGM} (${head.status}) - 스킵합니다.`);
+            currentBGMRef.current = null;
+            pendingBGMRef.current = null;
+            return;
+          }
+        } catch (fetchError) {
+          console.warn(`[BGM] 파일 확인 실패: ${newBGM} - 스킵합니다.`, fetchError?.message);
+          currentBGMRef.current = null;
+          pendingBGMRef.current = null;
+          return;
         }
 
         if (canceled) return;
@@ -91,7 +102,7 @@ export const useBGM = ({
         await audioRef.current.play();
       } catch (error) {
         if (canceled) return;
-        console.warn("[BGM] 재생 건너뜀:", newBGM, error?.message || error);
+        console.warn("[BGM] 재생 중 오류:", newBGM, error?.message || error);
         currentBGMRef.current = null;
         pendingBGMRef.current = null;
       }
