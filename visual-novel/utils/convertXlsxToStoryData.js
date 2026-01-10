@@ -17,6 +17,47 @@ const headerMap = {
     "최고호감도(maxAffection)": "maxAffection",
     "이미지폴더(imageFolder)": "imageFolder",
     "기본표정이미지(defaultImage)": "기본표정이미지(defaultImage)",
+    "emotion1": "emotion1",
+    "emotionImage1": "emotionImage1",
+    "emotion2": "emotion2",
+    "emotionImage2": "emotionImage2",
+    "emotion3": "emotion3",
+    "emotionImage3": "emotionImage3",
+    "emotion4": "emotion4",
+    "emotionImage4": "emotionImage4",
+    "emotion5": "emotion5",
+    "emotionImage5": "emotionImage5",
+    "emotion6": "emotion6",
+    "emotionImage6": "emotionImage6",
+    "emotion7": "emotion7",
+    "emotionImage7": "emotionImage7",
+    "emotion8": "emotion8",
+    "emotionImage8": "emotionImage8",
+    "emotion9": "emotion9",
+    "emotionImage9": "emotionImage9",
+    "emotion10": "emotion10",
+    "emotionImage10": "emotionImage10",
+    "emotion11": "emotion11",
+    "emotionImage11": "emotionImage11",
+    "emotionimage11": "emotionimage11",
+    "emotion12": "emotion12",
+    "emotionImage12": "emotionImage12",
+    "emotion13": "emotion13",
+    "emotionImage13": "emotionImage13",
+    "emotion14": "emotion14",
+    "emotionImage14": "emotionImage14",
+    "emotion15": "emotion15",
+    "emotionImage15": "emotionImage15",
+    "emotion16": "emotion16",
+    "emotionImage16": "emotionImage16",
+    "emotion17": "emotion17",
+    "emotionImage17": "emotionImage17",
+    "emotion18": "emotion18",
+    "emotionImage18": "emotionImage18",
+    "emotion19": "emotion19",
+    "emotionImage19": "emotionImage19",
+    "emotion20": "emotion20",
+    "emotionImage20": "emotionImage20",
   },
   places: {
     "장소ID(id)": "id",
@@ -249,13 +290,18 @@ function buildCharacters(rows) {
     if (r[defaultKey]) emotions.default = r[defaultKey];
 
     // 동적으로 emotionN, emotionImageN 패턴 감지
-    let i = 1;
-    while (true) {
+    // emotion1부터 emotion20까지 확인 (중간에 빠진 번호도 체크)
+    for (let i = 1; i <= 20; i++) {
       const name = r[`emotion${i}`];
       const img = r[`emotionImage${i}`];
-      if (!name && !img) break; // 더 이상 없으면 중단
-      if (name && img) emotions[name.trim()] = img.trim();
-      i++;
+      
+      // 대소문자 구분 없이 emotionimage도 체크 (오타 대응)
+      const imgLower = r[`emotionimage${i}`];
+      const finalImg = img || imgLower;
+      
+      if (name && finalImg) {
+        emotions[name.trim()] = finalImg.trim();
+      }
     }
 
     if (!("default" in emotions)) emotions.default = "";
@@ -386,9 +432,10 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
     if (Object.keys(aff).length > 0) choiceObj.affectionChanges = aff;
 
     const reactionSpeaker = (c.reactionSpeaker || "").toString().trim();
-    const reactionText = (c.reactionText || "").toString();
+    const reactionText = (c.reactionText || "").toString().trim();
 
-    if (reactionSpeaker || reactionText) {
+    // reactionText가 비어있지 않을 때만 reaction 생성
+    if (reactionText) {
       const reaction = {
         speaker: reactionSpeaker || "narrator",
         text: reactionText,

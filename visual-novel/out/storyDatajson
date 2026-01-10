@@ -23,11 +23,9 @@
         "frown": "m_frown.png",
         "gentle": "m_gentle.png",
         "laugh": "m_laugh.png",
-        "reprimaid": "m_reprimand.png",
-        "shy": "m_shy.png",
-        "worry": "m_worry.png"
-      },
-      "nonPlayable": false
+        "reprimaid": "m_reprimaid.png",
+        "shy": "m_shy.png"
+      }
     },
     "liszt": {
       "id": "liszt",
@@ -46,8 +44,7 @@
         "gentle": "l_gentle.png",
         "laugh": "l_laugh.png",
         "smile": "l_smile.png"
-      },
-      "nonPlayable": false
+      }
     },
     "szymanowska": {
       "id": "szymanowska",
@@ -58,27 +55,25 @@
       "maxAffection": 0,
       "imageFolder": "szymanowska",
       "emotions": {
-        "default": "s_ball_default.png",
+        "default": "s_default.png",
         "balldefault": "s_ball_default.png",
         "ballsmile": "s_ball_smile.png",
         "ballsmilingeyes": "s_ball_smilingeyes.png",
         "ballsigh": "s_ball_sigh.png",
         "ballsurprise": "s_ball_surprise.png"
-      },
-      "nonPlayable": false
+      }
     },
     "extracharacter": {
       "id": "extracharacter",
       "name": "그냥아무이름이나씀",
       "color": "#FFFFFFF",
-      "initialAffection": 0,
+      "initialAffection": null,
       "minAffection": 0,
       "maxAffection": 0,
       "imageFolder": "extracharacter",
       "emotions": {
         "default": ""
-      },
-      "nonPlayable": true
+      }
     }
   },
   "places": {
@@ -235,7 +230,11 @@
         {
           "text": "아직요",
           "next": "scene1_choice2",
-          "index": 2
+          "index": 2,
+          "reaction": {
+            "speaker": "szymanowska",
+            "text": ""
+          }
         }
       ],
       "next": "scene1_choice2"
@@ -3004,7 +3003,7 @@
     },
     {
       "id": "scene15_b_a_choice",
-      "type": "choice",
+      "type": "normal",
       "place": "ballroom",
       "backgroundMusic": "SymphonieFantastique.mp3",
       "dialogues": [
@@ -3012,65 +3011,6 @@
           "speaker": "liszt",
           "text": "베시에르 양께서는 예술은 어떤 역할을 수행해야 한다고 생각하시나요?",
           "characters": []
-        }
-      ],
-      "choices": [
-        {
-          "text": "예술에 별다른 역할이 필요한가요? 아름다운 것 그 자체로 예술은 그 기능을 다하고 있다고 생각하는데요.",
-          "next": "scene16_b_a",
-          "index": 1,
-          "reaction": {
-            "speaker": "liszt",
-            "text": "아아, 그런 입장이시군요. 베시에르 양의 주장도 그 근거가 아주 없는 건 아닙니다만 내 생각은 조금 다릅니다.",
-            "characters": [
-              {
-                "id": "liszt",
-                "emotion": "default",
-                "position": "left",
-                "active": true
-              }
-            ]
-          }
-        },
-        {
-          "text": "예술은 인간의 정신을 교화하고 고양시키며, 도덕적인 인격을 함양하는 데 도움을 주죠.",
-          "next": "scene16_b_a",
-          "index": 2,
-          "affectionChanges": {
-            "liszt": 1
-          },
-          "reaction": {
-            "speaker": "liszt",
-            "text": "그것 또한 맞는 말이라고 생각합니다. 거기에 굳이 조금 더 사견을 덧붙여 본다면...",
-            "characters": [
-              {
-                "id": "liszt",
-                "emotion": "default",
-                "position": "left",
-                "active": true
-              }
-            ]
-          }
-        },
-        {
-          "text": "예술은 신과 소통하는 통로이자 우리의 현실과 연결되어 영향을 주고받는다고 생각해요.",
-          "next": "scene16_b_a",
-          "index": 3,
-          "affectionChanges": {
-            "liszt": 2
-          },
-          "reaction": {
-            "speaker": "liszt",
-            "text": "신과 소통하는 통로… 신과 소통하는 통로, 라! 참으로 적절한 말씀입니다. 너무나 정확한 단어로 표현해 주셨네요!",
-            "characters": [
-              {
-                "id": "liszt",
-                "emotion": "default",
-                "position": "left",
-                "active": true
-              }
-            ]
-          }
         }
       ],
       "next": "scene16_b_a"
@@ -3123,7 +3063,7 @@
           "index": 1,
           "reaction": {
             "speaker": "liszt",
-            "text": "당신의 말에 리스트의 얼굴에 금방이라도 부서질 듯 엷은 미소가 떠올랐다.",
+            "text": "당신의 말에 리스트의 얼굴에 금방이라도 부서질 듯 엷은 미소가 떠올랐다. ",
             "characters": [
               {
                 "id": "liszt",
@@ -3143,7 +3083,7 @@
           },
           "reaction": {
             "speaker": "liszt",
-            "text": "리스트는 애써 미소를 지으며 고개를 끄덕였다.",
+            "text": "리스트는 애써 미소를 지으며 고개를 끄덕였다. ",
             "characters": [
               {
                 "id": "liszt",
@@ -4239,7 +4179,7 @@
           "index": 1,
           "reaction": {
             "speaker": "liszt",
-            "text": "당신의 말에 리스트의 얼굴에 금방이라도 부서질 듯 엷은 미소가 떠올랐다.",
+            "text": "당신의 말에 리스트의 얼굴에 금방이라도 부서질 듯 엷은 미소가 떠올랐다. ",
             "characters": [
               {
                 "id": "liszt",
@@ -4259,7 +4199,7 @@
           },
           "reaction": {
             "speaker": "liszt",
-            "text": "리스트는 애써 미소를 지으며 고개를 끄덕였다.",
+            "text": "리스트는 애써 미소를 지으며 고개를 끄덕였다. ",
             "characters": [
               {
                 "id": "liszt",
@@ -5025,7 +4965,7 @@
           },
           "reaction": {
             "speaker": "mendelssohn",
-            "text": "1부를 읽어보셨군요. 인간의 자유 의지와 구원에 관한 흥미로운 소설이죠.",
+            "text": "1부를 읽어보셨군요. 인간의 자유 의지와 구원에 관한 흥미로운 소설이죠. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -5042,7 +4982,7 @@
           "index": 2,
           "reaction": {
             "speaker": "mendelssohn",
-            "text": "공전의 히트였죠. 한때 책 속 푸른색 코트와 노란 조끼가 저희 동네에서도 유행했던 기억이 나네요.",
+            "text": "공전의 히트였죠. 한때 책 속 푸른색 코트와 노란 조끼가 저희 동네에서도 유행했던 기억이 나네요. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -5062,7 +5002,7 @@
           },
           "reaction": {
             "speaker": "mendelssohn",
-            "text": "그럴 수 있죠. 저도 모든 프랑스 작가들의 책을 다 읽는 건 아니니까요.",
+            "text": "그럴 수 있죠. 저도 모든 프랑스 작가들의 책을 다 읽는 건 아니니까요. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -5299,7 +5239,7 @@
           "index": 2,
           "reaction": {
             "speaker": "mendelssohn",
-            "text": "계몽시대의 고전을 제게 추천해 주시는군요. 저도 루소의 저작이라면 몇 권 정도 읽어 보았는데, 베시에르 양의 의견이 궁금하네요.",
+            "text": "계몽시대의 고전을 제게 추천해 주시는군요. 저도 루소의 저작이라면 몇 권 정도 읽어 보았는데, 베시에르 양의 의견이 궁금하네요. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -5554,7 +5494,7 @@
           },
           "reaction": {
             "speaker": "mendelssohn",
-            "text": "당연한 일입니다. 인간이라면 모름지기 언제나 노력해야 하는 법이죠.",
+            "text": "당연한 일입니다. 인간이라면 모름지기 언제나 노력해야 하는 법이죠. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -5714,7 +5654,7 @@
           "index": 1,
           "reaction": {
             "speaker": "mendelssohn",
-            "text": "별말씀을요. 칭찬은 감사히 받겠습니다.",
+            "text": "별말씀을요. 칭찬은 감사히 받겠습니다. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -5960,7 +5900,7 @@
           },
           "reaction": {
             "speaker": "narrator",
-            "text": "당신은 미소를 지으며 고개를 끄덕인다. 멘델스존은 춤을 잘 추기도 했지만 말도 잘 통하는 상대였다.",
+            "text": "당신은 미소를 지으며 고개를 끄덕인다. 멘델스존은 춤을 잘 추기도 했지만 말도 잘 통하는 상대였다. ",
             "characters": [
               {
                 "id": "szymanowska",
@@ -7203,7 +7143,7 @@
           },
           "reaction": {
             "speaker": "narrator",
-            "text": "멘델스존의 눈이 조금 놀란 듯 커진다. 전혀 에상치 못했던 건지 그의 답이 반 박자 늦었다.",
+            "text": "멘델스존의 눈이 조금 놀란 듯 커진다. 전혀 에상치 못했던 건지 그의 답이 반 박자 늦었다. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -7223,7 +7163,7 @@
           },
           "reaction": {
             "speaker": "mendelssohn",
-            "text": "마음에도 없는 소리를 하는 건 현명하지 않습니다, 베시에르 양.",
+            "text": "마음에도 없는 소리를 하는 건 현명하지 않습니다, 베시에르 양. ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -7382,7 +7322,7 @@
           },
           "reaction": {
             "speaker": "me",
-            "text": "그런데, '크게 손해를 볼 정도로 잘 만든 오페라는 아니' 라니, 그 말은 무슨 의미인가요?",
+            "text": "그런데, '크게 손해를 볼 정도로 잘 만든 오페라는 아니' 라니, 그 말은 무슨 의미인가요? ",
             "characters": [
               {
                 "id": "mendelssohn",
@@ -9101,7 +9041,7 @@
           "index": 3,
           "reaction": {
             "speaker": "liszt",
-            "text": "하하하!",
+            "text": "하하하! ",
             "characters": [
               {
                 "id": "liszt",

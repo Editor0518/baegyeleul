@@ -1,9 +1,9 @@
 import { GameContextProvider } from '@/contexts/GameContext';
 import './globals.css';
-import storyData from '../public/storyData.json';
 
+// Next.js에서 public 폴더의 파일은 런타임에 fetch로 로드
 export const metadata = {
-  title: storyData.gameInfo.title,
+  title: '한여름밤 사랑의 꿈',
   description: 'Interactive Visual Novel Game',
 };
 
