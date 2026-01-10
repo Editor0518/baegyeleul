@@ -1,16 +1,15 @@
-# React + Vite
+# Visual Novel (Next.js static export)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a static-exported Next.js visual novel. The build produces a folder of static files that can be hosted anywhere or zipped and shared.
 
-Currently, two official plugins are available:
+## Quick start
+- Requirements: Node.js 18.18+ (20 LTS recommended) and npm.
+- Install dependencies: `npm install`
+- Run dev server: `npm run dev`
+- Build static export: `npm run build`
+- Build and zip in one step: `npm run build:package` (creates `visual-novel-out.zip`)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Running the built output
+Serve the `out/` directory with any static file server (e.g., `npx serve out -l 3000` or `python -m http.server 3000` inside `out`).
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Detailed build and distribution steps are in [visual-novel/BUILD_AND_RUN.md](visual-novel/BUILD_AND_RUN.md).

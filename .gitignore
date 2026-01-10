@@ -28,3 +28,5 @@ dist-ssr
 *.sln
 *.sw?
 /visual-novel/.next
+/visual-novel/out
+/visual-novel/visual-novel-out.zip
