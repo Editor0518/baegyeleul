@@ -67,7 +67,7 @@ export const useBGM = ({
 
     const ensureAndPlay = async () => {
       try {
-        const url = `/assets/musics/${newBGM}`;
+        const url = `assets/musics/${newBGM}`;
         
         // 리소스 존재 여부 확인 (404시 재생 시도 안 함)
         try {

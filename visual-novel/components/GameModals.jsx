@@ -3,12 +3,13 @@
 /**
  * GameModals.jsx - 게임 모달 통합 관리 컴포넌트
  *
- * 모든 모달(SaveLoad, Confirm, StoryError)을 한 곳에서 렌더링
+ * 모든 모달(SaveLoad, Confirm, StoryError, GameLog)을 한 곳에서 렌더링
  */
 
 import React from "react";
 import SaveLoadModal from "./SaveLoadModal";
 import ConfirmModal from "./ConfirmModal";
+import GameLogModal from "./GameLogModal";
 import { MODAL_TYPES } from "@/hooks/useModal";
 
 const GameModals = ({
@@ -17,6 +18,7 @@ const GameModals = ({
   onCloseModal,
   onLoad,
   currentGameState,
+  logEntries,
 }) => {
   return (
     <>
@@ -45,6 +47,14 @@ const GameModals = ({
           message={modalData?.message}
           onConfirm={modalData?.onConfirm}
           onCancel={modalData?.onConfirm} // 에러 모달은 취소도 확인과 동일
+        />
+      )}
+
+      {/* 게임 로그 모달 */}
+      {activeModal === MODAL_TYPES.GAME_LOG && (
+        <GameLogModal
+          logEntries={logEntries || []}
+          onClose={onCloseModal}
         />
       )}
     </>

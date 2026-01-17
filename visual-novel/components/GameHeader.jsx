@@ -3,7 +3,7 @@
 /**
  * GameHeader.jsx - 게임 헤더 컴포넌트
  *
- * 장소 표시 바와 게임 컨트롤 버튼(저장/불러오기/처음으로)을 담당
+ * 장소 표시 바와 게임 컨트롤 버튼(저장/불러오기/로그/처음으로)을 담당
  */
 
 import React from "react";
@@ -13,6 +13,7 @@ const GameHeader = ({
   currentPlaceId,
   onSaveClick,
   onLoadClick,
+  onLogClick,
   onResetClick,
   isMuted,
   onToggleMute,
@@ -34,6 +35,10 @@ const GameHeader = ({
         <button className="game-button" onClick={onLoadClick}>
           <span className="game-button-icon load"></span>
           <span className="game-button-text">불러오기</span>
+        </button>
+        <button className="game-button" onClick={onLogClick}>
+          <span className="game-button-icon log"></span>
+          <span className="game-button-text">로그</span>
         </button>
         <button className="game-button" onClick={onResetClick}>
           <span className="game-button-icon exit"></span>

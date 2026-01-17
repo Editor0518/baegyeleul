@@ -27,9 +27,12 @@ import { useModal, MODAL_TYPES } from "@/hooks/useModal";
 import { useGameContext } from "@/contexts/GameContext";
 import { useBGM } from "@/hooks/useBGM";
 import { useImagePreloader, useTitleScreenPreloader, useSceneBackgroundPreloader } from "@/hooks/useImagePreloader";
+import { useVariables } from "@/hooks/useVariables";
+import { useGameLog } from "@/hooks/useGameLog";
 import { getBackgroundStyle } from "@/utils/backgroundHelper";
 import { validateSceneFlow, validateEndingInfo } from "@/utils/storyValidator";
 import { clampAffection } from "@/utils/affectionHelper";
+import { parseCommand, executeCommand, evaluateShowIf } from "@/utils/variableHelper";
 import {
   ENDING_ERROR_MESSAGES,
   STORY_ERROR_MESSAGES,
@@ -60,6 +63,22 @@ const VisualNovel = () => {
     useGameState();
   const { affection, updateAffection, resetAffection, setAffection } =
     useAffection();
+  const {
+    variables,
+    setVariable,
+    getVariable,
+    deleteVariable,
+    addToVariable,
+    resetVariables,
+    setAllVariables
+  } = useVariables();
+  const {
+    logEntries,
+    addDialogueLog,
+    addChoiceLog,
+    clearLog,
+    setAllLogs
+  } = useGameLog();
   const { activeModal, modalData, openModal, closeModal } = useModal();
   const {
     isMuted,
@@ -73,6 +92,7 @@ const VisualNovel = () => {
     characters,
     places,
     gameInfo,
+    storyScenes,
   } = useGameContext();
 
   const [showTitleScreen, setShowTitleScreen] = useState(true);
@@ -158,6 +178,17 @@ const VisualNovel = () => {
       displayCharacters,
     ]
   );
+
+  // 선택지 필터링 (show_if 조건 평가)
+  const filteredChoices = useMemo(() => {
+    if (!currentScene?.choices) return [];
+
+    return currentScene.choices.filter(choice => {
+      if (!choice.show_if) return true;
+
+      return evaluateShowIf(choice.show_if, variables, affection);
+    });
+  }, [currentScene, variables, affection]);
 
   // 캐릭터 표시 업데이트
   React.useEffect(() => {
@@ -269,6 +300,8 @@ const VisualNovel = () => {
       resetEndingState();
       resetDialogueState();
       resetCharacterDisplay();
+      resetVariables();
+      clearLog();
       clearImageCache(); // 이미지 preload 캐시 초기화
     },
     [
@@ -278,6 +311,8 @@ const VisualNovel = () => {
       resetEndingState,
       resetDialogueState,
       resetCharacterDisplay,
+      resetVariables,
+      clearLog,
       setHasInteracted,
       audioRef,
       currentBGMRef,
@@ -394,6 +429,55 @@ const VisualNovel = () => {
     }
   }, [currentScene, lines.length, showEndingResult, endingInfo, showEnding, handleStoryError]);
 
+  // 마지막으로 로그에 추가한 대사 추적 (중복 방지)
+  const lastLoggedDialogueRef = React.useRef(null);
+
+  // 대사 로그 추가 및 명령어 실행
+  React.useEffect(() => {
+    if (!currentLine || showReaction) return;
+
+    // 대사 로그 추가 (중복 방지)
+    if (currentLine.speaker && currentLine.text) {
+      const logKey = `${currentSceneId}-${dialogueIndex}-${currentLine.speaker}-${currentLine.text}`;
+
+      // 씬 전환 직후 dialogueIndex가 리셋되기 전에 잘못된 대사가 로그되는 것을 방지
+      // prevKey가 null이면 새로운 씬 시작이므로 dialogueIndex가 0이어야 함
+      if (lastLoggedDialogueRef.current === null && dialogueIndex !== 0) {
+        return;
+      }
+
+      // 이미 기록한 대사가 아닐 때만 추가
+      if (lastLoggedDialogueRef.current !== logKey) {
+        addDialogueLog(currentLine.speaker, currentLine.text, currentSceneId);
+        lastLoggedDialogueRef.current = logKey;
+      }
+    }
+
+    // 명령어 실행
+    if (currentLine.command) {
+      const parsedCommand = parseCommand(currentLine.command);
+      if (parsedCommand) {
+        const context = {
+          variables,
+          affection,
+          setVariable,
+          getVariable,
+          deleteVariable,
+          addToVariable,
+        };
+
+        const result = executeCommand(parsedCommand, context);
+
+        // 명령어 실행 결과에 따라 씬 분기
+        if (result.nextScene && !result.shouldContinue) {
+          queueMicrotask(() => {
+            goToScene(result.nextScene);
+          });
+        }
+      }
+    }
+  }, [currentLine, currentSceneId, dialogueIndex, showReaction, variables, affection, addDialogueLog, setVariable, getVariable, deleteVariable, addToVariable, goToScene]);
+
   // 이벤트 핸들러
   const handleNext = useCallback(() => {
     // 엔딩 결과가 표시 중이면 아무 동작도 하지 않음 (강제 종료)
@@ -449,11 +533,37 @@ const VisualNovel = () => {
 
   const handleChoice = useCallback(
     (choice) => {
+      // 선택지 로그 추가
+      addChoiceLog(choice.text, currentSceneId);
+
       if (choice.affectionChanges) {
         updateAffection(choice.affectionChanges);
       }
 
-      const nextSceneId = choice.next || currentScene?.next;
+      // 명령어 실행
+      let commandNextScene = null;
+      if (choice.command) {
+        const parsedCommand = parseCommand(choice.command);
+        if (parsedCommand) {
+          const context = {
+            variables,
+            affection,
+            setVariable,
+            getVariable,
+            deleteVariable,
+            addToVariable,
+          };
+
+          const result = executeCommand(parsedCommand, context);
+
+          // 명령어 실행 결과로 씬 분기가 있으면 우선 적용
+          if (result.nextScene && !result.shouldContinue) {
+            commandNextScene = result.nextScene;
+          }
+        }
+      }
+
+      const nextSceneId = commandNextScene || choice.next || currentScene?.next;
 
       if (!nextSceneId) {
         handleStoryError(STORY_ERROR_MESSAGES.CHOICE_ERROR(choice.text));
@@ -462,18 +572,29 @@ const VisualNovel = () => {
 
       // reaction이 있고 텍스트가 비어있지 않으면 reaction 표시
       if (choice.reaction && choice.reaction.text && choice.reaction.text.trim() !== "") {
+        // reaction 대사도 로그에 추가
+        addDialogueLog(choice.reaction.speaker || 'narrator', choice.reaction.text, currentSceneId);
+
+        // reaction 대사를 기록했으므로 ref 업데이트 (중복 방지)
+        // reaction은 별도 표시이므로 특별한 키 형식 사용
+        const reactionLogKey = `reaction-${currentSceneId}-${choice.reaction.speaker}-${choice.reaction.text}`;
+        lastLoggedDialogueRef.current = reactionLogKey;
+
         startReaction(choice.reaction, nextSceneId, false);
       } else {
         // reactionText가 비어있으면 바로 다음 씬으로 이동
         goToScene(nextSceneId);
       }
     },
-    [updateAffection, goToScene, handleStoryError, currentScene, startReaction]
+    [updateAffection, goToScene, handleStoryError, currentScene, currentSceneId, startReaction, addChoiceLog, addDialogueLog, variables, affection, setVariable, getVariable, deleteVariable, addToVariable]
   );
 
   const handleReactionNext = useCallback(() => {
     const nextScene = endReaction();
     if (nextScene) {
+      // reaction 후 다음 씬으로 이동할 때 ref 리셋
+      // 이렇게 하면 다음 씬의 첫 대사가 정상적으로 로그에 추가됨
+      lastLoggedDialogueRef.current = null;
       goToScene(nextScene);
     }
   }, [endReaction, goToScene]);
@@ -513,6 +634,10 @@ const VisualNovel = () => {
     openModal(MODAL_TYPES.SAVE_LOAD, { mode: "load" });
   }, [openModal]);
 
+  const handleOpenLog = useCallback(() => {
+    openModal(MODAL_TYPES.GAME_LOG);
+  }, [openModal]);
+
   const getCurrentGameState = useCallback(() => {
     return {
       currentSceneId,
@@ -526,6 +651,8 @@ const VisualNovel = () => {
       pendingNextScene,
       displayCharacters,
       displayedCharacters,
+      variables,
+      logEntries,
     };
   }, [
     currentSceneId,
@@ -539,6 +666,8 @@ const VisualNovel = () => {
     pendingNextScene,
     displayCharacters,
     displayedCharacters,
+    variables,
+    logEntries,
   ]);
 
   const handleLoadGameState = useCallback(
@@ -557,8 +686,8 @@ const VisualNovel = () => {
       const characterList = Array.isArray(characters)
         ? characters
         : characters
-        ? Object.values(characters)
-        : [];
+          ? Object.values(characters)
+          : [];
 
       characterList.forEach((char) => {
         const raw = loadedAffection[char.id] ?? char.initialAffection ?? 0;
@@ -575,6 +704,36 @@ const VisualNovel = () => {
           : "default";
       setLoadedPlace(placeId);
 
+      // 변수 로드
+      if (saveData.variables) {
+        setAllVariables(saveData.variables);
+      } else {
+        resetVariables();
+      }
+
+      // 로그 로드
+      if (saveData.logEntries) {
+        setAllLogs(saveData.logEntries);
+
+        // 로그를 불러온 후 ref 업데이트하여 중복 기록 방지
+        // 현재 로드된 씬과 대사 인덱스를 기반으로 마지막 로그 키 설정
+        const loadedScene = storyScenes.find(s => s.id === saveData.sceneId);
+        if (loadedScene && loadedScene.dialogues && loadedScene.dialogues.length > 0) {
+          const loadedDialogueIndex = saveData.dialogueIndex ?? 0;
+          // 선택지가 표시된 상태에서 저장했을 경우 dialogueIndex가 배열 길이를 초과할 수 있음
+          // 이 경우 마지막 대사를 사용
+          const actualIndex = Math.min(loadedDialogueIndex, loadedScene.dialogues.length - 1);
+          const loadedDialogue = loadedScene.dialogues[actualIndex];
+          if (loadedDialogue) {
+            const logKey = `${saveData.sceneId}-${actualIndex}-${loadedDialogue.speaker}-${loadedDialogue.text}`;
+            lastLoggedDialogueRef.current = logKey;
+          }
+        }
+      } else {
+        clearLog();
+        lastLoggedDialogueRef.current = null;
+      }
+
       closeModal();
     },
     [
@@ -585,6 +744,11 @@ const VisualNovel = () => {
       setLoadedPlace,
       closeModal,
       setHasInteracted,
+      setAllVariables,
+      resetVariables,
+      setAllLogs,
+      clearLog,
+      storyScenes,
     ]
   );
 
@@ -625,6 +789,7 @@ const VisualNovel = () => {
           onCloseModal={closeModal}
           onLoad={handleLoadGameState}
           currentGameState={getCurrentGameState()}
+          logEntries={logEntries}
         />
       </>
     );
@@ -634,58 +799,61 @@ const VisualNovel = () => {
     <>
       <div className="visual-novel" style={currentBackgroundStyle}>
         <div className="game-container">
-        {currentScene && (
-          <>
-            {/* <AffectionDisplay affection={affection} /> */}
+          {currentScene && (
+            <>
+              {/* <AffectionDisplay affection={affection} /> */}
 
-            <GameHeader
-              currentPlaceId={currentPlaceId}
-              onSaveClick={handleOpenSave}
-              onLoadClick={handleOpenLoad}
-              onResetClick={handleConfirmResetToTitle}
-              isMuted={isMuted}
-              onToggleMute={toggleMute}
-            />
-
-            <SceneContent
-              displayedCharacters={displayedCharacters}
-              shouldShowCutscene={shouldShowCutscene}
-              currentScene={currentScene}
-              showReaction={showReaction}
-              currentReaction={currentReaction}
-              handleReactionNext={handleReactionNext}
-              shouldShowChoices={shouldShowChoices}
-              dialogueForChoice={dialogueForChoice}
-              currentLine={currentLine}
-              handleNext={handleNext}
-              onChoice={handleChoice}
-            />
-
-            {showEndingResult && endingInfo && (
-              <EndingResult
-                endingInfo={endingInfo}
-                affection={affection}
-                onRestart={handleRestartGame}
-                onBackToTitle={() => resetGameState("title")}
+              <GameHeader
+                currentPlaceId={currentPlaceId}
+                onSaveClick={handleOpenSave}
+                onLoadClick={handleOpenLoad}
+                onLogClick={handleOpenLog}
+                onResetClick={handleConfirmResetToTitle}
+                isMuted={isMuted}
+                onToggleMute={toggleMute}
               />
-            )}
 
-            <GameModals
-              activeModal={activeModal}
-              modalData={modalData}
-              onCloseModal={closeModal}
-              onLoad={handleLoadGameState}
-              currentGameState={getCurrentGameState()}
+              <SceneContent
+                displayedCharacters={displayedCharacters}
+                shouldShowCutscene={shouldShowCutscene}
+                currentScene={currentScene}
+                showReaction={showReaction}
+                currentReaction={currentReaction}
+                handleReactionNext={handleReactionNext}
+                shouldShowChoices={shouldShowChoices}
+                dialogueForChoice={dialogueForChoice}
+                currentLine={currentLine}
+                handleNext={handleNext}
+                onChoice={handleChoice}
+                filteredChoices={filteredChoices}
+              />
+
+              {showEndingResult && endingInfo && (
+                <EndingResult
+                  endingInfo={endingInfo}
+                  affection={affection}
+                  onRestart={handleRestartGame}
+                  onBackToTitle={() => resetGameState("title")}
+                />
+              )}
+
+              <GameModals
+                activeModal={activeModal}
+                modalData={modalData}
+                onCloseModal={closeModal}
+                onLoad={handleLoadGameState}
+                currentGameState={getCurrentGameState()}
+                logEntries={logEntries}
+              />
+            </>
+          )}
+
+          {/* 게임 진행 중 로딩 화면 - 오버레이로 표시 */}
+          {(isPreloadingEnding || !currentScene) && (
+            <InGameLoadingScreen
+              message={!currentScene ? "씬을 불러오는 중..." : "엔딩을 준비하는 중..."}
             />
-          </>
-        )}
-
-        {/* 게임 진행 중 로딩 화면 - 오버레이로 표시 */}
-        {(isPreloadingEnding || !currentScene) && (
-          <InGameLoadingScreen
-            message={!currentScene ? "씬을 불러오는 중..." : "엔딩을 준비하는 중..."}
-          />
-        )}
+          )}
         </div>
       </div>
     </>

@@ -94,7 +94,7 @@ export const GameContextProvider = ({ children }) => {
 
   const loadStoryDataFromJson = useCallback(async () => {
     const timestamp = Date.now();
-    const response = await fetch(`/storyData.json?v=${timestamp}`, {
+    const response = await fetch(`storyData.json?v=${timestamp}`, {
       cache: "no-cache",
     });
     if (!response.ok) {

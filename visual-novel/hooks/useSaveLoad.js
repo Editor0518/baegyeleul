@@ -68,6 +68,8 @@ export const useSaveLoad = () => {
       showEndingResult,
       dialogueIndex,
       currentPlace,
+      variables,
+      logEntries,
     } = gameState;
 
     // 현재 씬 정보 가져오기
@@ -86,6 +88,8 @@ export const useSaveLoad = () => {
       showEndingResult,
       dialogueIndex,
       currentPlace,
+      variables,
+      logEntries,
       version: "1.0", // 나중에 호환성을 위해
     };
 

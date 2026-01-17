@@ -37,7 +37,7 @@ export const getBackgroundStyle = (placeId) => {
   // 이미지가 있으면 이미지를 배경으로
   if (place.image) {
     try {
-      const imageUrl = `/assets/places/${place.image}`;
+      const imageUrl = `assets/places/${place.image}`;
 
       return {
         backgroundImage: `url(${imageUrl})`,

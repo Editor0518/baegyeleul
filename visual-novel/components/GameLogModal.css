@@ -1,0 +1,334 @@
+.game-log-modal-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.game-log-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  position: relative;
+  background: #1a1a1a;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 80%;
+  width: 50rem;
+  max-height: 80%;
+  height: 44rem;
+  border: 1px solid transparent;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.5s ease-out;
+  overflow: hidden;
+}
+
+.game-log-modal::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  border: 0.0625rem solid transparent;
+  background: linear-gradient(90deg,
+      rgba(255, 245, 218, 0.1) 0%,
+      rgba(255, 245, 218, 0.2) 20%,
+      rgba(255, 245, 218, 0.2) 80%,
+      rgba(255, 245, 218, 0.1) 100%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.game-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid transparent;
+  border-image: var(--primary-line-grad2) 1;
+}
+
+.game-log-header h2 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--primary-light);
+}
+
+.game-log-close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1) url(/assets/icon/x.svg) center/80% 80% no-repeat;
+  transition: all 0.1s;
+}
+
+.game-log-close-button:hover {
+  background: rgba(255, 255, 255, 0.3) url(/assets/icon/x.svg) center/80% 80% no-repeat;
+}
+
+.game-log-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scroll-behavior: smooth;
+}
+
+.game-log-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.game-log-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.game-log-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 245, 218, 0.25), rgba(255, 245, 218, 0.05));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.game-log-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(255, 245, 218, 0.4), rgba(255, 245, 218, 0.15));
+}
+
+.game-log-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 245, 218, 0.25) transparent;
+}
+
+.game-log-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1rem;
+  color: rgba(255, 245, 218, 0.6);
+}
+
+.game-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.game-log-entry {
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.game-log-entry::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  border: 0.0625rem solid transparent;
+  background: var(--primary-line-grad2);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.game-log-entry:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.log-dialogue .log-speaker {
+  font-weight: 500;
+  color: var(--primary-light);
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+}
+
+.log-dialogue .log-text {
+  color: rgba(255, 245, 218, 0.9);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.log-narrator .log-text {
+  color: rgba(255, 245, 218, 0.7);
+  font-style: italic;
+}
+
+.log-choice {
+  background-color: rgba(139, 105, 20, 0.15);
+}
+
+.log-choice::before {
+  opacity: 0.5;
+}
+
+.log-choice:hover {
+  background-color: rgba(139, 105, 20, 0.25);
+}
+
+.log-choice-text {
+  color: var(--primary-light);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.game-log-footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-top: 1.25rem;
+  border-top: 1px solid transparent;
+  border-image: var(--primary-line-grad2) 1;
+}
+
+.game-log-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 20rem;
+  height: 2.75rem;
+  padding: 0.625rem 1rem;
+  background: var(--black-btn-grad);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--primary-light);
+}
+
+.game-log-button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  border: 0.0625rem solid transparent;
+  background: var(--primary-line-grad2);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.game-log-button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-line-grad2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.game-log-button:hover::after {
+  opacity: 1;
+}
+
+.game-log-button:active {
+  filter: brightness(1.2);
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .game-log-modal {
+    max-width: initial;
+    max-height: initial;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    gap: 1rem;
+  }
+
+  .game-log-header {
+    padding-bottom: 1rem;
+  }
+
+  .game-log-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .game-log-close-button {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: landscape) {
+  .game-log-modal {
+    max-width: initial;
+    max-height: initial;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    gap: 1rem;
+  }
+
+  .game-log-header {
+    padding-bottom: 1rem;
+  }
+
+  .game-log-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .game-log-close-button {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}

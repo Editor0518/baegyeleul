@@ -18,12 +18,10 @@ export const useDialogueState = (currentSceneId, currentScene) => {
   // 씬 변경 시 대사 인덱스와 reaction 상태 리셋
   useEffect(() => {
     if (currentScene && prevSceneId !== currentSceneId) {
-      queueMicrotask(() => {
-        setDialogueIndex(0);
-        setShowReaction(false);
-        setCurrentReaction(null);
-        setPendingNextScene(null);
-      });
+      setDialogueIndex(0);
+      setShowReaction(false);
+      setCurrentReaction(null);
+      setPendingNextScene(null);
     }
   }, [currentScene, currentSceneId, prevSceneId]);
 

@@ -30,12 +30,10 @@
   max-width: 50%;
   gap: 0.5rem;
   padding: 1.25rem 15rem 5rem 1.25rem;
-  background: radial-gradient(
-    at left top,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background: radial-gradient(at left top,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 0) 100%);
   z-index: 1;
 }
 
@@ -138,6 +136,10 @@
   background: url(/assets/icon/load.svg) center/contain no-repeat;
 }
 
+.game-button-icon.log {
+  background: url(/assets/icon/story.svg) center/contain no-repeat;
+}
+
 .game-button-icon.exit {
   background: url(/assets/icon/exit.svg) center/contain no-repeat;
 }
@@ -164,13 +166,16 @@
     width: 200vw;
     max-width: initial;
   }
+
   .icon-place-bar {
     width: 2.125rem;
     height: 2.125rem;
   }
+
   .place-name {
     font-size: 1.5rem;
   }
+
   .game-buttons {
     flex-direction: column;
     position: fixed;
@@ -178,6 +183,7 @@
     right: 0;
     padding-top: 1.25rem;
   }
+
   .game-button-text {
     display: none;
   }
@@ -187,13 +193,16 @@
   .header-content {
     max-width: 100%;
   }
+
   .icon-place-bar {
     width: 2.125rem;
     height: 2.125rem;
   }
+
   .place-name {
     font-size: 1.5rem;
   }
+
   .game-buttons {
     flex-direction: column;
     position: fixed;
@@ -201,6 +210,7 @@
     right: 0;
     padding-top: 1.25rem;
   }
+
   .game-button-text {
     display: none;
   }

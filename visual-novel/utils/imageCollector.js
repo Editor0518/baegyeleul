@@ -64,7 +64,7 @@ const getCharacterImageUrl = (charId, emotion) => {
   }
 
   try {
-    return `/assets/characters/${char.imageFolder}/${char.emotions[emotion]}`;
+    return `assets/characters/${char.imageFolder}/${char.emotions[emotion]}`;
   } catch (error) {
     console.error(
       `[imageCollector] 이미지 경로 생성 실패 ${charId} (${emotion}):`,
@@ -99,7 +99,7 @@ const getPlaceImageUrl = (placeId) => {
   }
 
   try {
-    return `/assets/places/${place.image}`;
+    return `assets/places/${place.image}`;
   } catch (error) {
     console.error(`[imageCollector] 배경 경로 생성 실패 ${placeId}:`, error);
     return null;
@@ -115,7 +115,7 @@ const getCutsceneImageUrl = (cutsceneImage) => {
   if (!cutsceneImage) return null;
 
   try {
-    return `/assets/cutscenes/${cutsceneImage}`;
+    return `assets/cutscenes/${cutsceneImage}`;
   } catch (error) {
     console.error(`Failed to generate URL for cutscene ${cutsceneImage}:`, error);
     return null;
@@ -412,14 +412,14 @@ export const collectTitleScreenImages = () => {
 
   try {
     // 타이틀 배경 이미지
-    const titleBg = "/assets/title.png";
+    const titleBg = "assets/title.png";
     images.push(titleBg);
 
     // 타이틀 화면 아이콘들
     const icons = ["story.svg", "musicon.svg", "musicoff.svg"];
     icons.forEach((icon) => {
       try {
-        const iconUrl = `/assets/icon/${icon}`;
+        const iconUrl = `assets/icon/${icon}`;
         images.push(iconUrl);
       } catch (error) {
         console.warn(`Failed to generate URL for icon ${icon}:`, error);

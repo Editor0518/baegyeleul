@@ -30,7 +30,7 @@ const CharacterSprite = React.memo(
       }
 
       try {
-        return `/assets/characters/${char.imageFolder}/${char.emotions[emotion]}`;
+        return `assets/characters/${char.imageFolder}/${char.emotions[emotion]}`;
       } catch (error) {
         console.error(
           `[CharacterSprite] 이미지 경로 생성 실패 ${charId} (${emotion}):`,

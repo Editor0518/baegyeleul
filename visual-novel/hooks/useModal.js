@@ -16,6 +16,7 @@ export const MODAL_TYPES = {
   SAVE_LOAD: "saveLoad",
   CONFIRM: "confirm",
   STORY_ERROR: "storyError",
+  GAME_LOG: "gameLog",
 };
 
 /**

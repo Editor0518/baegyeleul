@@ -23,6 +23,7 @@ const SceneContent = ({
   currentLine,
   handleNext,
   onChoice,
+  filteredChoices,
 }) => {
   return (
     <>
@@ -64,7 +65,7 @@ const SceneContent = ({
         {shouldShowChoices && !showReaction && (
           <ChoiceBox
             question={currentScene.question}
-            choices={currentScene.choices}
+            choices={filteredChoices || []}
             onChoice={onChoice}
           />
         )}

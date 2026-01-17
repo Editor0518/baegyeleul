@@ -80,6 +80,7 @@ const headerMap = {
     "강조캐릭터(activeCharacters)": "activeCharacters",
     "말하는캐릭터(speaker)": "speaker",
     "대사텍스트(text)": "text",
+    "명령어(command)": "command",
   },
   choices: {
     "씬ID(sceneId)": "sceneId",
@@ -115,6 +116,8 @@ const headerMap = {
     "affectionValue9": "affectionValue9",
     "affectioncharacter10": "affectioncharacter10",
     "affectionValue10": "affectionValue10",
+    "표시조건(show_if)": "show_if",
+    "명령어(command)": "command",
   },
   scene_characters: {
     "씬ID(sceneId)": "sceneId",
@@ -294,11 +297,11 @@ function buildCharacters(rows) {
     for (let i = 1; i <= 20; i++) {
       const name = r[`emotion${i}`];
       const img = r[`emotionImage${i}`];
-      
+
       // 대소문자 구분 없이 emotionimage도 체크 (오타 대응)
       const imgLower = r[`emotionimage${i}`];
       const finalImg = img || imgLower;
-      
+
       if (name && finalImg) {
         emotions[name.trim()] = finalImg.trim();
       }
@@ -407,6 +410,7 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
       speaker: d.speaker || "narrator",
       text: d.text || "",
       activeCharacters: d.activeCharacters || "",
+      command: d.command || "",
     });
   });
 
@@ -481,6 +485,16 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
       }
 
       choiceObj.reaction = reaction;
+    }
+
+    // show_if 조건 추가
+    if (c.show_if) {
+      choiceObj.show_if = c.show_if;
+    }
+
+    // command 추가
+    if (c.command) {
+      choiceObj.command = c.command;
     }
 
     choicesByScene[c.sceneId].push(choiceObj);
@@ -598,6 +612,11 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
         dlg.characters = dlg.characters.map((ch) =>
           activeIds.has(ch.id) ? { ...ch, active: true } : ch
         );
+      }
+
+      // command 추가
+      if (d.command) {
+        dlg.command = d.command;
       }
 
       return dlg;
