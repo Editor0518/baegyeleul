@@ -11,7 +11,7 @@ const ChoiceBox = ({ choices, onChoice }) => {
           <button
             key={index}
             className="choice-button"
-            onClick={() => onChoice(choice)}
+            onClick={() => onChoice(choice, index)}
           >
             <div className="icon-choice-button"></div>
             <p className="choice-button-text">{choice.text}</p>

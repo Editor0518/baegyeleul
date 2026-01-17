@@ -59,7 +59,7 @@ import ValidationPanel from "./ValidationPanel";
 import "./VisualNovel.css";
 
 const VisualNovel = () => {
-  const { currentScene, currentSceneId, goToScene, resetGame, resetToTitle } =
+  const { currentScene, currentSceneId, goToScene, resetGame, resetToTitle, history, setHistory, choiceHistory, setChoiceHistory, recordChoice } =
     useGameState();
   const { affection, updateAffection, resetAffection, setAffection } =
     useAffection();
@@ -186,9 +186,9 @@ const VisualNovel = () => {
     return currentScene.choices.filter(choice => {
       if (!choice.show_if) return true;
 
-      return evaluateShowIf(choice.show_if, variables, affection);
+      return evaluateShowIf(choice.show_if, variables, affection, history, choiceHistory);
     });
-  }, [currentScene, variables, affection]);
+  }, [currentScene, variables, affection, history, choiceHistory]);
 
   // 캐릭터 표시 업데이트
   React.useEffect(() => {
@@ -432,6 +432,32 @@ const VisualNovel = () => {
   // 마지막으로 로그에 추가한 대사 추적 (중복 방지)
   const lastLoggedDialogueRef = React.useRef(null);
 
+  const historyRef = useRef(history);
+  useEffect(() => {
+    historyRef.current = history;
+  }, [history]);
+
+  const choiceHistoryRef = useRef(choiceHistory);
+  useEffect(() => {
+    choiceHistoryRef.current = choiceHistory;
+  }, [choiceHistory]);
+
+  // 마지막으로 실행한 명령어 추적 (무한 루프 방지)
+  const lastExecutedCommandRef = useRef(null);
+
+  // 변수/호감도 통합 업데이트 함수
+  const handleAddToVariable = useCallback((name, amount) => {
+    // characters에 존재하고 nonPlayable이 아니면 호감도로 처리
+    const isCharacter = characters && characters[name] && !characters[name].nonPlayable;
+
+    if (isCharacter) {
+      updateAffection({ [name]: amount });
+    } else {
+      // 아니면 일반 변수 업데이트
+      addToVariable(name, amount);
+    }
+  }, [characters, updateAffection, addToVariable]);
+
   // 대사 로그 추가 및 명령어 실행
   React.useEffect(() => {
     if (!currentLine || showReaction) return;
@@ -455,18 +481,30 @@ const VisualNovel = () => {
 
     // 명령어 실행
     if (currentLine.command) {
+      const commandKey = `${currentSceneId}-${dialogueIndex}-${currentLine.command}`;
+
+      // 이미 실행한 명령어면 건너뜀 (상태 변경으로 인한 재실행 방지)
+      if (lastExecutedCommandRef.current === commandKey) {
+        return;
+      }
+
       const parsedCommand = parseCommand(currentLine.command);
       if (parsedCommand) {
         const context = {
           variables,
           affection,
+          history: historyRef.current, // Use ref here
+          choiceHistory: choiceHistoryRef.current, // Use ref here
           setVariable,
           getVariable,
           deleteVariable,
-          addToVariable,
+          addToVariable: handleAddToVariable, // Use wrapper function
         };
 
         const result = executeCommand(parsedCommand, context);
+
+        // 명령어 실행 기록
+        lastExecutedCommandRef.current = commandKey;
 
         // 명령어 실행 결과에 따라 씬 분기
         if (result.nextScene && !result.shouldContinue) {
@@ -476,7 +514,7 @@ const VisualNovel = () => {
         }
       }
     }
-  }, [currentLine, currentSceneId, dialogueIndex, showReaction, variables, affection, addDialogueLog, setVariable, getVariable, deleteVariable, addToVariable, goToScene]);
+  }, [currentLine, currentSceneId, dialogueIndex, showReaction, variables, affection, addDialogueLog, setVariable, getVariable, deleteVariable, addToVariable, goToScene, handleAddToVariable]); // history removed from dependency
 
   // 이벤트 핸들러
   const handleNext = useCallback(() => {
@@ -532,7 +570,7 @@ const VisualNovel = () => {
   ]);
 
   const handleChoice = useCallback(
-    (choice) => {
+    (choice, index) => {
       // 선택지 로그 추가
       addChoiceLog(choice.text, currentSceneId);
 
@@ -569,6 +607,9 @@ const VisualNovel = () => {
         handleStoryError(STORY_ERROR_MESSAGES.CHOICE_ERROR(choice.text));
         return;
       }
+
+      // 선택지 기록 (1-based index)
+      recordChoice(currentSceneId, index + 1);
 
       // reaction이 있고 텍스트가 비어있지 않으면 reaction 표시
       if (choice.reaction && choice.reaction.text && choice.reaction.text.trim() !== "") {
@@ -653,6 +694,8 @@ const VisualNovel = () => {
       displayedCharacters,
       variables,
       logEntries,
+      history, // Added history to save state
+      choiceHistory, // Added choiceHistory to save state
     };
   }, [
     currentSceneId,
@@ -668,6 +711,8 @@ const VisualNovel = () => {
     displayedCharacters,
     variables,
     logEntries,
+    history, // Added history to dependency array
+    choiceHistory, // Added choiceHistory to dependency array
   ]);
 
   const handleLoadGameState = useCallback(
@@ -709,6 +754,21 @@ const VisualNovel = () => {
         setAllVariables(saveData.variables);
       } else {
         resetVariables();
+      }
+
+      // 방문 기록 로드
+      if (saveData.history) {
+        setHistory(saveData.history);
+      } else {
+        // 하위 호환성: 없으면 현재 씬만 포함
+        setHistory([saveData.sceneId]);
+      }
+
+      // 선택지 기록 로드
+      if (saveData.choiceHistory) {
+        setChoiceHistory(saveData.choiceHistory);
+      } else {
+        setChoiceHistory({});
       }
 
       // 로그 로드

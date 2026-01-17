@@ -8,6 +8,8 @@ export const useGameState = () => {
   const [currentSceneId, setCurrentSceneId] = useState('scene1');
   const [history, setHistory] = useState(['scene1']);
 
+  const [choiceHistory, setChoiceHistory] = useState({});
+
   const getCurrentScene = useCallback(() => {
     if (!storyScenes) return null;
     return storyScenes.find(scene => scene.id === currentSceneId);
@@ -15,19 +17,33 @@ export const useGameState = () => {
 
   const goToScene = useCallback((sceneId) => {
     setCurrentSceneId(sceneId);
-    setHistory(prev => [...prev, sceneId]);
+    setHistory(prev => {
+      // 이미 방문한 씬이면 중복 추가하지 않음
+      if (prev.includes(sceneId)) return prev;
+      return [...prev, sceneId];
+    });
+  }, []);
+
+  // 선택지 기록
+  const recordChoice = useCallback((sceneId, choiceIndex) => {
+    setChoiceHistory(prev => ({
+      ...prev,
+      [sceneId]: choiceIndex
+    }));
   }, []);
 
   // 타이틀 화면으로 돌아가기 (완전 초기화)
   const resetToTitle = useCallback(() => {
     setCurrentSceneId('scene1');
     setHistory(['scene1']);
+    setChoiceHistory({});
   }, []);
 
   // 게임을 처음부터 다시 시작 (첫 씬부터)
   const resetGame = useCallback(() => {
     setCurrentSceneId('scene1');
     setHistory(['scene1']);
+    setChoiceHistory({});
   }, []);
 
   return {
@@ -36,6 +52,10 @@ export const useGameState = () => {
     goToScene,
     resetGame,
     resetToTitle,
-    history
+    history,
+    setHistory,
+    choiceHistory,
+    setChoiceHistory,
+    recordChoice
   };
 };
