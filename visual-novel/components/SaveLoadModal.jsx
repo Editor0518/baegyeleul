@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSaveLoad } from "@/hooks/useSaveLoad";
 import "./SaveLoadModal.css";
+import "./ConfirmModal.css";
 
 const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
   const {
@@ -21,14 +22,19 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [pendingImportFile, setPendingImportFile] = useState(null);
 
+  // 확인 다이얼로그 상태 통합 관리
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    type: null, // 'import' | 'delete'
+    data: null, // slotId or file
+  });
+
   // 메시지 자동 숨기기 (3초 후)
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => {
         setMessage(null);
       }, 3000);
-
-      // cleanup: 컴포넌트 언마운트 시 또는 message 변경 시 타이머 제거
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -68,18 +74,27 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
 
   const handleDelete = (slotId, e) => {
     e.stopPropagation();
-    if (typeof window !== 'undefined' && window.confirm(`슬롯 ${slotId}의 데이터를 삭제하시겠습니까?`)) {
-      const result = deleteSlot(slotId);
-      if (result.success) {
-        setMessage({
-          type: "success",
-          text: `슬롯 ${slotId}이 삭제되었습니다.`,
-        });
-        refreshSlots();
-      } else {
-        setMessage({ type: "error", text: `삭제 실패: ${result.error}` });
-      }
+    // 커스텀 확인 다이얼로그 표시
+    setConfirmDialog({
+      isOpen: true,
+      type: 'delete',
+      data: slotId
+    });
+  };
+
+  const confirmDelete = () => {
+    const slotId = confirmDialog.data;
+    const result = deleteSlot(slotId);
+    if (result.success) {
+      setMessage({
+        type: "success",
+        text: `슬롯 ${slotId}이 삭제되었습니다.`,
+      });
+      refreshSlots();
+    } else {
+      setMessage({ type: "error", text: `삭제 실패: ${result.error}` });
     }
+    closeConfirmDialog();
   };
 
   // 전체 내보내기
@@ -105,8 +120,11 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setPendingImportFile(file);
-    setShowConfirmDialog(true);
+    setConfirmDialog({
+      isOpen: true,
+      type: 'import',
+      data: file
+    });
 
     // 파일 입력 초기화
     e.target.value = "";
@@ -114,9 +132,10 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
 
   // 불러오기 확인
   const handleConfirmImport = async () => {
-    if (!pendingImportFile) return;
+    const file = confirmDialog.data;
+    if (!file) return;
 
-    const result = await importAllSaves(pendingImportFile);
+    const result = await importAllSaves(file);
     if (result.success) {
       setMessage({
         type: "success",
@@ -127,15 +146,22 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
       setMessage({ type: "error", text: `불러오기 실패: ${result.error}` });
     }
 
-    setShowConfirmDialog(false);
-    setPendingImportFile(null);
+    closeConfirmDialog();
   };
 
-  // 불러오기 취소
-  const handleCancelImport = () => {
-    setShowConfirmDialog(false);
-    setPendingImportFile(null);
-    setMessage({ type: "success", text: "불러오기가 취소되었습니다." });
+  const closeConfirmDialog = () => {
+    setConfirmDialog({
+      isOpen: false,
+      type: null,
+      data: null
+    });
+  };
+
+  const handleCancel = () => {
+    if (confirmDialog.type === 'import') {
+      setMessage({ type: "success", text: "불러오기가 취소되었습니다." });
+    }
+    closeConfirmDialog();
   };
 
   const formatTimestamp = (timestamp) => {
@@ -235,26 +261,38 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
           onChange={handleFileSelect}
         />
 
-        {/* 불러오기 확인 다이얼로그 */}
-        {showConfirmDialog && (
-          <div className="confirm-dialog-overlay">
-            <div className="confirm-dialog">
-              <h3 className="confirm-title">경고</h3>
+        {/* 통합 확인 다이얼로그 */}
+        {confirmDialog.isOpen && (
+          <div className="confirm-dialog-overlay" onClick={handleCancel}>
+            <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+              <h3 className="confirm-title">
+                {confirmDialog.type === 'delete' ? '삭제 확인' : '경고'}
+              </h3>
               <p className="confirm-message">
-                불러오기를 진행하면 현재 저장된 세이브 데이터는 모두 삭제되거나
-                덮어씌워집니다.
-                <strong>계속하시겠습니까?</strong>
+                {confirmDialog.type === 'delete' ? (
+                  <>
+                    슬롯 {confirmDialog.data}의 데이터를 삭제하시겠습니까?
+                    <br />
+                    <span style={{ fontSize: '0.9em', opacity: 0.8 }}>삭제된 데이터는 복구할 수 없습니다.</span>
+                  </>
+                ) : (
+                  <>
+                    불러오기를 진행하면 현재 저장된 세이브 데이터는 모두 삭제되거나
+                    덮어씌워집니다.
+                    <strong>계속하시겠습니까?</strong>
+                  </>
+                )}
               </p>
               <div className="confirm-buttons">
                 <button
                   className="confirm-btn cancel"
-                  onClick={handleCancelImport}
+                  onClick={handleCancel}
                 >
                   취소
                 </button>
                 <button
                   className="confirm-btn confirm"
-                  onClick={handleConfirmImport}
+                  onClick={confirmDialog.type === 'delete' ? confirmDelete : handleConfirmImport}
                 >
                   확인
                 </button>
