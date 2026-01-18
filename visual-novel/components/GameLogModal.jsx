@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useGameContext } from '@/contexts/GameContext';
 import { formatLogForDisplay } from '@/utils/gameLogHelper';
 import './GameLogModal.css';
 
 const GameLogModal = ({ logEntries, onClose }) => {
     const { characters } = useGameContext();
+    const logContentRef = useRef(null);
 
     const formattedLogs = formatLogForDisplay(logEntries, characters);
+
+    // 모달이 열릴 때 스크롤을 맨 아래로 이동
+    useEffect(() => {
+        if (logContentRef.current) {
+            logContentRef.current.scrollTop = logContentRef.current.scrollHeight;
+        }
+    }, []); // 빈 배열로 마운트 시에만 실행
 
     return (
         <div className="game-log-modal-overlay" onClick={onClose}>
@@ -18,7 +26,7 @@ const GameLogModal = ({ logEntries, onClose }) => {
                     </button>
                 </div>
 
-                <div className="game-log-content">
+                <div className="game-log-content" ref={logContentRef}>
                     {formattedLogs.length === 0 ? (
                         <div className="game-log-empty">
                             아직 기록된 로그가 없습니다.

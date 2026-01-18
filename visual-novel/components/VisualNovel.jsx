@@ -466,8 +466,7 @@ const VisualNovel = () => {
     }
   }, [currentScene, lines.length, showEndingResult, endingInfo, showEnding, handleStoryError]);
 
-  // 마지막으로 로그에 추가한 대사 추적 (중복 방지)
-  const lastLoggedDialogueRef = React.useRef(null);
+
 
   const historyRef = useRef(history);
   useEffect(() => {
@@ -497,23 +496,14 @@ const VisualNovel = () => {
 
   // 대사 로그 추가 및 명령어 실행
   React.useEffect(() => {
-    if (!currentLine || showReaction) return;
+    // lines 범위를 벗어난 인덱스(선택지 표시 상태 등)일 경우 로그 추가 방지
+    if (!currentLine || showReaction || dialogueIndex >= lines.length) return;
 
     // 대사 로그 추가 (중복 방지)
     if (currentLine.speaker && currentLine.text) {
-      const logKey = `${currentSceneId}-${dialogueIndex}-${currentLine.speaker}-${currentLine.text}`;
-
-      // 씬 전환 직후 dialogueIndex가 리셋되기 전에 잘못된 대사가 로그되는 것을 방지
-      // prevKey가 null이면 새로운 씬 시작이므로 dialogueIndex가 0이어야 함
-      if (lastLoggedDialogueRef.current === null && dialogueIndex !== 0) {
-        return;
-      }
-
-      // 이미 기록한 대사가 아닐 때만 추가
-      if (lastLoggedDialogueRef.current !== logKey) {
-        addDialogueLog(currentLine.speaker, currentLine.text, currentSceneId);
-        lastLoggedDialogueRef.current = logKey;
-      }
+      // useGameLog 훅 내부에서 sceneId와 dialogueIndex로 중복 체크를 하므로
+      // 여기서는 단순히 호출만 하면 됨
+      addDialogueLog(currentLine.speaker, currentLine.text, currentSceneId, dialogueIndex);
     }
 
     // 명령어 실행
@@ -547,7 +537,7 @@ const VisualNovel = () => {
         // if/ifs 명령어의 씬 전환은 handleNext에서 처리되므로 여기서는 무시
       }
     }
-  }, [currentLine, currentSceneId, dialogueIndex, showReaction, variables, affection, addDialogueLog, setVariable, getVariable, deleteVariable, addToVariable, goToScene, handleAddToVariable]); // history removed from dependency
+  }, [currentLine, currentSceneId, dialogueIndex, showReaction, variables, affection, addDialogueLog, setVariable, getVariable, deleteVariable, addToVariable, goToScene, handleAddToVariable, lines]); // history removed from dependency
 
   // 이벤트 핸들러
   const handleNext = useCallback(() => {
@@ -713,13 +703,9 @@ const VisualNovel = () => {
 
       // reaction이 있고 텍스트가 비어있지 않으면 reaction 표시
       if (choice.reaction && choice.reaction.text && choice.reaction.text.trim() !== "") {
-        // reaction 대사도 로그에 추가
-        addDialogueLog(choice.reaction.speaker || 'narrator', choice.reaction.text, currentSceneId);
-
-        // reaction 대사를 기록했으므로 ref 업데이트 (중복 방지)
-        // reaction은 별도 표시이므로 특별한 키 형식 사용
-        const reactionLogKey = `reaction-${currentSceneId}-${choice.reaction.speaker}-${choice.reaction.text}`;
-        lastLoggedDialogueRef.current = reactionLogKey;
+        // reaction 대사도 로그에 추가 (reaction은 별도 인덱스 처리 필요 - 여기서는 'reaction' 문자열 사용)
+        // sceneId-reaction-speaker-text 조합으로 고유 키 생성됨
+        addDialogueLog(choice.reaction.speaker || 'narrator', choice.reaction.text, currentSceneId, `reaction-${Date.now()}`);
 
         startReaction(choice.reaction, nextSceneId, false);
       } else {
@@ -738,9 +724,6 @@ const VisualNovel = () => {
   const handleReactionNext = useCallback(() => {
     const nextScene = endReaction();
     if (nextScene) {
-      // reaction 후 다음 씬으로 이동할 때 ref 리셋
-      // 이렇게 하면 다음 씬의 첫 대사가 정상적으로 로그에 추가됨
-      lastLoggedDialogueRef.current = null;
       goToScene(nextScene);
     }
   }, [endReaction, goToScene]);
@@ -879,24 +862,8 @@ const VisualNovel = () => {
       // 로그 로드
       if (saveData.logEntries) {
         setAllLogs(saveData.logEntries);
-
-        // 로그를 불러온 후 ref 업데이트하여 중복 기록 방지
-        // 현재 로드된 씬과 대사 인덱스를 기반으로 마지막 로그 키 설정
-        const loadedScene = storyScenes.find(s => s.id === saveData.sceneId);
-        if (loadedScene && loadedScene.dialogues && loadedScene.dialogues.length > 0) {
-          const loadedDialogueIndex = saveData.dialogueIndex ?? 0;
-          // 선택지가 표시된 상태에서 저장했을 경우 dialogueIndex가 배열 길이를 초과할 수 있음
-          // 이 경우 마지막 대사를 사용
-          const actualIndex = Math.min(loadedDialogueIndex, loadedScene.dialogues.length - 1);
-          const loadedDialogue = loadedScene.dialogues[actualIndex];
-          if (loadedDialogue) {
-            const logKey = `${saveData.sceneId}-${actualIndex}-${loadedDialogue.speaker}-${loadedDialogue.text}`;
-            lastLoggedDialogueRef.current = logKey;
-          }
-        }
       } else {
         clearLog();
-        lastLoggedDialogueRef.current = null;
       }
 
       closeModal();
