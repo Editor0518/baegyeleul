@@ -9,8 +9,7 @@
   align-items: flex-end;
   pointer-events: none;
   gap: 2%;
-  /*간격 수정*/
-  z-index: 2;
+  z-index: 1;
 }
 
 .character-sprite {
