@@ -16,6 +16,7 @@ export const useGameState = () => {
   }, [currentSceneId, storyScenes]);
 
   const goToScene = useCallback((sceneId) => {
+    console.log('[goToScene] Transitioning to:', sceneId, new Error().stack);
     setCurrentSceneId(sceneId);
     setHistory(prev => {
       // 이미 방문한 씬이면 중복 추가하지 않음

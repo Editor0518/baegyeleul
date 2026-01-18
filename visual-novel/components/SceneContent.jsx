@@ -24,6 +24,7 @@ const SceneContent = ({
   handleNext,
   onChoice,
   filteredChoices,
+  isRefreshing,
 }) => {
   return (
     <>
@@ -51,6 +52,17 @@ const SceneContent = ({
           const lineToDisplay = shouldShowChoices
             ? dialogueForChoice
             : currentLine;
+
+          // 디버깅: 대사가 표시되지 않는 문제 추적
+          if (!lineToDisplay) {
+            console.log('[SceneContent] lineToDisplay is null/undefined:', {
+              shouldShowChoices,
+              dialogueForChoice,
+              currentLine,
+              sceneId: currentScene?.id,
+            });
+          }
+
           return (
             lineToDisplay && (
               <DialogueBox
@@ -62,13 +74,12 @@ const SceneContent = ({
           );
         })()}
 
-        {shouldShowChoices && !showReaction && (
-          <ChoiceBox
-            question={currentScene.question}
-            choices={filteredChoices || []}
-            onChoice={onChoice}
-          />
-        )}
+        <ChoiceBox
+          question={currentScene.question}
+          choices={filteredChoices || []}
+          onChoice={onChoice}
+          isVisible={shouldShowChoices && !showReaction && !isRefreshing}
+        />
       </div>
     </>
   );

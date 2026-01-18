@@ -29,6 +29,7 @@ import { useBGM } from "@/hooks/useBGM";
 import { useImagePreloader, useTitleScreenPreloader, useSceneBackgroundPreloader } from "@/hooks/useImagePreloader";
 import { useVariables } from "@/hooks/useVariables";
 import { useGameLog } from "@/hooks/useGameLog";
+import { useChoicePagination } from "@/hooks/useChoicePagination";
 import { getBackgroundStyle } from "@/utils/backgroundHelper";
 import { validateSceneFlow, validateEndingInfo } from "@/utils/storyValidator";
 import { clampAffection } from "@/utils/affectionHelper";
@@ -139,7 +140,22 @@ const VisualNovel = () => {
   );
 
   // 캐릭터 디스플레이 관련 상태 (커스텀 훅)
-  const currentLine = lines[dialogueIndex] || null;
+  // 씬 전환 시 dialogueIndex가 아직 리셋되지 않았을 수 있으므로 안전하게 처리
+  const safeDialogueIndex = Math.min(dialogueIndex, Math.max(0, lines.length - 1));
+  const currentLine = lines.length > 0 ? (lines[safeDialogueIndex] || null) : null;
+
+  // 디버그: currentLine이 null인 경우 추적
+  if (lines.length > 0 && !currentLine) {
+    console.log('[VisualNovel] currentLine is null!', {
+      sceneId: currentSceneId,
+      linesLength: lines.length,
+      dialogueIndex,
+      safeDialogueIndex,
+      lines: lines,
+      lineAtSafeIndex: lines[safeDialogueIndex]
+    });
+  }
+
   const isChoiceScene = currentScene?.type === "choice";
   const shouldShowChoices = useMemo(
     () => computeShouldShowChoices(isChoiceScene, lines.length, dialogueIndex),
@@ -149,6 +165,20 @@ const VisualNovel = () => {
     if (!shouldShowChoices || lines.length === 0) return null;
     return lines[lines.length - 1];
   }, [shouldShowChoices, lines]);
+
+  // 디버깅: 씬 전환 시 대사 상태 추적
+  React.useEffect(() => {
+    console.log('[VisualNovel] Scene/Dialogue State:', {
+      sceneId: currentSceneId,
+      sceneType: currentScene?.type,
+      linesLength: lines.length,
+      dialogueIndex,
+      safeDialogueIndex,
+      currentLine: currentLine ? { speaker: currentLine.speaker, text: currentLine.text?.substring(0, 30) } : null,
+      shouldShowChoices,
+      dialogueForChoice: dialogueForChoice ? { speaker: dialogueForChoice.speaker, text: dialogueForChoice.text?.substring(0, 30) } : null,
+    });
+  }, [currentSceneId, currentScene?.type, lines.length, dialogueIndex, safeDialogueIndex, currentLine, shouldShowChoices, dialogueForChoice]);
 
   const {
     displayCharacters,
@@ -189,6 +219,13 @@ const VisualNovel = () => {
       return evaluateShowIf(choice.show_if, variables, affection, history, choiceHistory);
     });
   }, [currentScene, variables, affection, history, choiceHistory]);
+
+  // 선택지 페이지네이션 (5개 이상일 때 3+1 구조)
+  const {
+    paginatedChoices,
+    handleChoiceClick: handlePaginatedChoice,
+    isRefreshing,
+  } = useChoicePagination(filteredChoices, currentSceneId);
 
   // 캐릭터 표시 업데이트
   React.useEffect(() => {
@@ -506,24 +543,62 @@ const VisualNovel = () => {
         // 명령어 실행 기록
         lastExecutedCommandRef.current = commandKey;
 
-        // 명령어 실행 결과에 따라 씬 분기
-        if (result.nextScene && !result.shouldContinue) {
-          queueMicrotask(() => {
-            goToScene(result.nextScene);
-          });
-        }
+        // 명령어 실행 (변수 설정 등은 즉시 실행, 씬 전환은 handleNext에서 처리)
+        // if/ifs 명령어의 씬 전환은 handleNext에서 처리되므로 여기서는 무시
       }
     }
   }, [currentLine, currentSceneId, dialogueIndex, showReaction, variables, affection, addDialogueLog, setVariable, getVariable, deleteVariable, addToVariable, goToScene, handleAddToVariable]); // history removed from dependency
 
   // 이벤트 핸들러
   const handleNext = useCallback(() => {
+    console.log('[handleNext] Called', { sceneId: currentSceneId, dialogueIndex, linesLength: lines.length });
+
     // 엔딩 결과가 표시 중이면 아무 동작도 하지 않음 (강제 종료)
     if (showEndingResult) {
+      console.log('[handleNext] Blocked: showEndingResult is true');
       return;
     }
 
+    // 현재 대사의 명령어 먼저 실행 (if/ifs 등)
+    let commandNextScene = null;
+    if (currentLine?.command) {
+      console.log('[handleNext] Executing command:', currentLine.command);
+      const parsedCommand = parseCommand(currentLine.command);
+      if (parsedCommand) {
+        const context = {
+          variables,
+          affection,
+          history,
+          choiceHistory,
+          setVariable,
+          getVariable,
+          deleteVariable,
+          addToVariable,
+        };
+
+        const result = executeCommand(parsedCommand, context);
+        console.log('[handleNext] Command result:', result);
+
+        // 명령어 실행 결과로 씬 분기가 있으면 우선 적용
+        if (result.nextScene && !result.shouldContinue) {
+          commandNextScene = result.nextScene;
+          console.log('[handleNext] Command triggered scene change to:', commandNextScene);
+        }
+      } else {
+        console.log('[handleNext] Failed to parse command');
+      }
+    }
+
+    // 명령어로 씬 전환이 결정되었으면 즉시 이동
+    if (commandNextScene) {
+      console.log('[handleNext] Going to next scene:', commandNextScene, '(from command)');
+      goToScene(commandNextScene);
+      return;
+    }
+
+    // 명령어가 없거나 씬 전환이 없으면 대사 진행
     if (lines.length > 0 && dialogueIndex < lines.length - 1) {
+      console.log('[handleNext] Incrementing dialogueIndex');
       incrementDialogueIndex();
       return;
     }
@@ -545,12 +620,18 @@ const VisualNovel = () => {
     }
 
     if (currentScene?.checkAffection) {
+      console.log('[handleNext] Blocked: checkAffection is true');
       return;
     }
 
-    if (currentScene?.next) {
-      goToScene(currentScene.next);
+    // 기본 next로 씬 전환 (명령어로 씬 전환이 결정되지 않은 경우)
+    const nextSceneId = currentScene?.next;
+
+    if (nextSceneId) {
+      console.log('[handleNext] Going to next scene:', nextSceneId, '(from scene.next)');
+      goToScene(nextSceneId);
     } else {
+      console.log('[handleNext] No next scene found');
       const validation = validateSceneFlow(currentScene);
       if (!validation.isValid) {
         handleStoryError(STORY_ERROR_MESSAGES.FLOW_ERROR(validation.error));
@@ -561,12 +642,21 @@ const VisualNovel = () => {
     lines.length,
     dialogueIndex,
     currentScene,
+    currentLine,
     endingInfo,
     handleStoryError,
     goToScene,
     incrementDialogueIndex,
     showEnding,
     showEndingResult,
+    variables,
+    affection,
+    history,
+    choiceHistory,
+    setVariable,
+    getVariable,
+    deleteVariable,
+    addToVariable,
   ]);
 
   const handleChoice = useCallback(
@@ -603,6 +693,16 @@ const VisualNovel = () => {
 
       const nextSceneId = commandNextScene || choice.next || currentScene?.next;
 
+      // 디버그 로그
+      console.log('[handleChoice] Choice info:', {
+        choiceText: choice.text,
+        command: choice.command,
+        commandNextScene,
+        choiceNext: choice.next,
+        currentSceneNext: currentScene?.next,
+        finalNextSceneId: nextSceneId
+      });
+
       if (!nextSceneId) {
         handleStoryError(STORY_ERROR_MESSAGES.CHOICE_ERROR(choice.text));
         return;
@@ -629,6 +729,11 @@ const VisualNovel = () => {
     },
     [updateAffection, goToScene, handleStoryError, currentScene, currentSceneId, startReaction, addChoiceLog, addDialogueLog, variables, affection, setVariable, getVariable, deleteVariable, addToVariable]
   );
+
+  // 페이지네이션을 포함한 선택지 핸들러
+  const handleChoiceWithPagination = useCallback((choice, index) => {
+    handlePaginatedChoice(choice, index, handleChoice);
+  }, [handlePaginatedChoice, handleChoice]);
 
   const handleReactionNext = useCallback(() => {
     const nextScene = endReaction();
@@ -884,8 +989,9 @@ const VisualNovel = () => {
                 dialogueForChoice={dialogueForChoice}
                 currentLine={currentLine}
                 handleNext={handleNext}
-                onChoice={handleChoice}
-                filteredChoices={filteredChoices}
+                onChoice={handleChoiceWithPagination}
+                filteredChoices={paginatedChoices}
+                isRefreshing={isRefreshing}
               />
 
               {showEndingResult && endingInfo && (
