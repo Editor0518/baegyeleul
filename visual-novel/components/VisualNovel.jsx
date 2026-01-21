@@ -57,6 +57,7 @@ import SceneContent from "./SceneContent";
 import InitialLoadingScreen from "./InitialLoadingScreen";
 import InGameLoadingScreen from "./InGameLoadingScreen";
 import ValidationPanel from "./ValidationPanel";
+import TutorialOverlay from "./TutorialOverlay";
 import "./VisualNovel.css";
 
 const VisualNovel = () => {
@@ -97,6 +98,7 @@ const VisualNovel = () => {
   } = useGameContext();
 
   const [showTitleScreen, setShowTitleScreen] = useState(true);
+  const [isTutorialActive, setIsTutorialActive] = useState(false);
 
   // 대사 관련 상태 (커스텀 훅)
   const {
@@ -767,6 +769,10 @@ const VisualNovel = () => {
     openModal(MODAL_TYPES.GAME_LOG);
   }, [openModal]);
 
+  const handleOpenTutorial = useCallback(() => {
+    setIsTutorialActive(true);
+  }, []);
+
   const getCurrentGameState = useCallback(() => {
     return {
       currentSceneId,
@@ -940,6 +946,7 @@ const VisualNovel = () => {
                 onSaveClick={handleOpenSave}
                 onLoadClick={handleOpenLoad}
                 onLogClick={handleOpenLog}
+                onInfoClick={handleOpenTutorial}
                 onResetClick={handleConfirmResetToTitle}
                 isMuted={isMuted}
                 onToggleMute={toggleMute}
@@ -978,6 +985,15 @@ const VisualNovel = () => {
                 currentGameState={getCurrentGameState()}
                 logEntries={logEntries}
               />
+
+              {isTutorialActive && (
+                <TutorialOverlay
+                  onClose={() => setIsTutorialActive(false)}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  activeModal={activeModal}
+                />
+              )}
             </>
           )}
 

@@ -15,11 +15,11 @@ const DialogueBox = ({ speaker, text, onNext }) => {
   const formattedText = useMemo(() => (
     text
       ? text.split("\n").map((line, i, arr) => (
-          <React.Fragment key={i}>
-            {line}
-            {i < arr.length - 1 && <br />}
-          </React.Fragment>
-        ))
+        <React.Fragment key={i}>
+          {line}
+          {i < arr.length - 1 && <br />}
+        </React.Fragment>
+      ))
       : null
   ), [text]);
 
@@ -44,7 +44,7 @@ const DialogueBox = ({ speaker, text, onNext }) => {
   };
 
   return (
-    <div className="dialogue-box" onClick={handleClick}>
+    <div id="game-dialogue-box" className="dialogue-box" onClick={handleClick}>
       <div className="dialogue-content">
         {displayName && (
           <div className="speaker-name" style={{ color: speakerColor }}>

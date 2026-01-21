@@ -178,7 +178,7 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
 
   return (
     <div className="save-load-overlay">
-      <div className="save-load-modal" onClick={(e) => e.stopPropagation()}>
+      <div id="game-save-load-modal" className="save-load-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{mode === "save" ? "저장하기" : "불러오기"}</h2>
           <button className="close-button" onClick={onClose}></button>
@@ -190,14 +190,14 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
             className="global-action-btn export"
             onClick={handleExportAll}
           >
-            <span className="global-btn-icon export"></span>
+            <span id="save-export-btn" className="global-btn-icon export"></span>
             <span className="global-action-text">전체 내보내기</span>
           </button>
           <button
             className="global-action-btn import"
             onClick={handleImportAllClick}
           >
-            <span className="global-btn-icon import"></span>
+            <span id="save-import-btn" className="global-btn-icon import"></span>
             <span className="global-action-text">전체 불러오기</span>
           </button>
         </div>
@@ -206,7 +206,7 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
           <div className={`save-message ${message.type}`}>{message.text}</div>
         )}
 
-        <div className="slots-container">
+        <div id="save-slots-container" className="slots-container">
           {slots.map((slot) => (
             <div
               key={slot.slotId}

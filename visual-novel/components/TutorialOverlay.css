@@ -1,0 +1,156 @@
+.tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Container itself has highest z-index to manage children above modals */
+    z-index: 20000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    pointer-events: none;
+    /* Allow clicking through unless caught by children */
+}
+
+/* The dark dimmed background */
+.tutorial-dimmed-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    /* Below modals (11000) */
+    pointer-events: auto;
+    /* Catch clicks for the tutorial advancement */
+    animation: fadeIn 0.3s ease-out;
+}
+
+.tutorial-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.tutorial-box {
+    position: relative;
+    background: #1a1a1a;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.6);
+    z-index: 13000;
+    /* Above modals (11000) */
+    pointer-events: auto;
+    /* Catch clicks to advance */
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Premium gradient border like ConfirmModal */
+.tutorial-box::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+    border: 0.0625rem solid transparent;
+    background: linear-gradient(90deg,
+            rgba(255, 245, 218, 0.1) 0%,
+            rgba(255, 245, 218, 0.2) 20%,
+            rgba(255, 245, 218, 0.2) 80%,
+            rgba(255, 245, 218, 0.1) 100%);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Optional deco line like confirm-title */
+.tutorial-box-header {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0 0 1rem 0;
+    color: var(--primary);
+    text-align: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid transparent;
+    border-image: var(--primary-line-grad2) 1;
+}
+
+.tutorial-text {
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--primary-light);
+    white-space: pre-wrap;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 300;
+}
+
+.tutorial-click-hint {
+    font-size: 0.85rem;
+    color: var(--primary);
+    opacity: 0.7;
+    text-align: center;
+    animation: blink 1.5s infinite;
+    font-weight: 500;
+}
+
+/* Highlight Circle - Dynamic Positioning */
+.tutorial-highlight {
+    position: fixed;
+    /* Using fixed because getBoundingClientRect is relative to viewport */
+    border: 3px solid var(--primary);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(223, 203, 147, 0.4), inset 0 0 10px rgba(223, 203, 147, 0.2);
+    z-index: 12000;
+    /* Above modals (11000) */
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}

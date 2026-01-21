@@ -35,7 +35,7 @@ const ChoiceBox = ({ choices, onChoice, isVisible = true }) => {
   };
 
   return (
-    <div className={`choice-box ${!isLocallyVisible ? 'hidden' : ''}`}>
+    <div id="game-choice-box" className={`choice-box ${!isLocallyVisible ? 'hidden' : ''}`}>
       <div className="choices-container">
         {displayedChoices.map((choice, index) => (
           <button

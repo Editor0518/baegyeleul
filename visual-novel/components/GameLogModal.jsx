@@ -18,7 +18,7 @@ const GameLogModal = ({ logEntries, onClose }) => {
 
     return (
         <div className="game-log-modal-overlay" onClick={onClose}>
-            <div className="game-log-modal" onClick={(e) => e.stopPropagation()}>
+            <div id="game-log-modal" className="game-log-modal" onClick={(e) => e.stopPropagation()}>
                 <div className="game-log-header">
                     <h2>게임 로그</h2>
                     <button className="game-log-close-button" onClick={onClose}>
