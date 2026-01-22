@@ -11,11 +11,11 @@ const TUTORIAL_STEPS = [
         targetId: null,
     },
     {
-        text: "대사창을 클릭하여 게임을 진행할 수 있습니다.\n대사가 다 나온 뒤, 클릭하시면 다음 내용으로 넘어갑니다.",
+        text: "대사창을 클릭하여 게임을 진행할 수 있습니다.\n대사가 다 나온 뒤, 클릭하시면 다음 내용으로 넘어갑니다.\n대사창이 아닌 곳은 눌러도 넘어가지 않습니다.",
         targetId: "game-dialogue-box",
     },
     {
-        text: "우측 상단에는 현재 주인공이 위치한 '장소'가 표시됩니다.\n이야기의 흐름에 따라 장소가 변하게 됩니다.",
+        text: "좌측 상단에는 현재 주인공이 위치한 '장소'가 표시됩니다.\n이야기의 흐름에 따라 장소가 변하게 됩니다.",
         targetId: "place-bar",
     },
     {
@@ -83,8 +83,8 @@ const TutorialOverlay = ({ onClose, openModal, closeModal, activeModal }) => {
         if (element) {
             const rect = element.getBoundingClientRect();
 
-            // 장소 표시(place-bar)의 경우 1.2배 크기 적용
             let { top, left, width, height } = rect;
+            // 장소 표시(place-bar)의 경우 1.2배 크기 적용
             if (stepData.targetId === "place-bar") {
                 const scale = 1.2;
                 const newWidth = width * scale;
@@ -94,6 +94,13 @@ const TutorialOverlay = ({ onClose, openModal, closeModal, activeModal }) => {
                 top = top - (newHeight - height) / 2;
                 width = newWidth;
                 height = newHeight;
+            } else if (stepData.targetId.includes("modal")) {
+                // 모달창의 경우 테두리를 넉넉하게 감싸도록 약간의 여유(outset) 추가
+                const offset = 8;
+                top -= offset;
+                left -= offset;
+                width += offset * 2;
+                height += offset * 2;
             }
 
             setHighlightStyle({
@@ -120,7 +127,8 @@ const TutorialOverlay = ({ onClose, openModal, closeModal, activeModal }) => {
     }, [currentStep, openModal, closeModal]);
 
     useEffect(() => {
-        const timer = setTimeout(updateHighlightPosition, 150);
+        // 모달 애니메이션(0.5s)이 완료된 후 정확한 위치를 잡기 위해 지연 시간 증가
+        const timer = setTimeout(updateHighlightPosition, 100);
 
         window.addEventListener('resize', updateHighlightPosition);
         return () => {

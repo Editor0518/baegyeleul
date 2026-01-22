@@ -36,8 +36,8 @@ export const getEnding = (affection) => {
     return {
       type: "bad",
       character: null,
-      title: common.bad.title,
-      message: common.bad.message,
+      title: common?.bad?.title || "Bad Ending",
+      message: common?.bad?.message || "배드 엔딩",
     };
   }
 
@@ -65,8 +65,8 @@ export const getEnding = (affection) => {
       return {
         type: "best",
         character: topCharacter,
-        title: common.best.title || `${getCharacterName(topCharacter)} - Best 엔딩`,
-        message: common.best.message || `${getCharacterName(topCharacter)}와 최고의 관계를 맺었다.`,
+        title: common?.best?.title || `${getCharacterName(topCharacter)} - Best 엔딩`,
+        message: common?.best?.message || `${getCharacterName(topCharacter)}와 최고의 관계를 맺었다.`,
         cutsceneImage: common.best.cutsceneImage,
       };
     }
@@ -130,8 +130,8 @@ export const getEnding = (affection) => {
       return {
         type: "good",
         character: topCharacter,
-        title: common.good.title || `${getCharacterName(topCharacter)} - Good 엔딩`,
-        message: common.good.message || `${getCharacterName(topCharacter)}와 좋은 관계를 맺었다.`,
+        title: common?.good?.title || `${getCharacterName(topCharacter)} - Good 엔딩`,
+        message: common?.good?.message || `${getCharacterName(topCharacter)}와 좋은 관계를 맺었다.`,
         cutsceneImage: common.good.cutsceneImage,
       };
     } else {
@@ -149,8 +149,8 @@ export const getEnding = (affection) => {
       return {
         type: "normal",
         character: null,
-        title: common.normal.title,
-        message: common.normal.message,
+        title: common?.normal?.title || "Normal Ending",
+        message: common?.normal?.message || "노말 엔딩",
         cutsceneImage: common.normal.cutsceneImage,
       };
     } else {

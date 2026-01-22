@@ -63,6 +63,14 @@ export const validateSceneFlow = (scene) => {
     return { isValid: true };
   }
 
+  // 경고 모달 씬은 next가 있어야 함
+  if (scene.type === "warning") {
+    if (!scene.next || !sceneExists(scene.next)) {
+      return { isValid: false, error: "경고창의 다음 씬이 없습니다." };
+    }
+    return { isValid: true };
+  }
+
   // 일반 대화 씬은 next가 있거나 checkAffection이 있어야 함
   if (!scene.next && !scene.checkAffection) {
     return { isValid: false, error: "다음 씬이나 엔딩 분기가 없습니다." };
@@ -87,7 +95,7 @@ export const validateSceneFlow = (scene) => {
 export const endingSceneExists = (endingSceneId) => {
   if (!endingSceneId) return false;
   const scene = storyScenes.find((s) => s.id === endingSceneId);
-  return scene && scene.type === "ending";
+  return !!scene;
 };
 
 /**

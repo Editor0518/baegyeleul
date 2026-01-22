@@ -10,6 +10,7 @@ import React from "react";
 import SaveLoadModal from "./SaveLoadModal";
 import ConfirmModal from "./ConfirmModal";
 import GameLogModal from "./GameLogModal";
+import WarningModal from "./WarningModal";
 import { MODAL_TYPES } from "@/hooks/useModal";
 
 const GameModals = ({
@@ -55,6 +56,15 @@ const GameModals = ({
         <GameLogModal
           logEntries={logEntries || []}
           onClose={onCloseModal}
+        />
+      )}
+
+      {/* 경고 모달 */}
+      {activeModal === MODAL_TYPES.WARNING && (
+        <WarningModal
+          message={modalData?.message}
+          onConfirm={modalData?.onConfirm}
+          onCancel={modalData?.onCancel}
         />
       )}
     </>

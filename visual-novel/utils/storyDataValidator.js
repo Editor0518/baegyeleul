@@ -14,8 +14,8 @@ export const SEVERITY = {
   WARNING: 'warning' // 대체 처리 가능
 };
 
-// Scene 타입
-const SCENE_TYPES = ['normal', 'choice', 'ending', 'title'];
+// Scene 타입 (v2: warning added)
+const SCENE_TYPES = ['normal', 'choice', 'ending', 'title', 'warning'];
 
 /**
  * 검증 결과 객체 생성
@@ -82,7 +82,7 @@ const validateEnum = (value, allowedValues, path, fieldName) => {
     return createValidationError(
       path,
       'invalid_enum',
-      `'${fieldName}'의 값이 유효하지 않습니다. 허용된 값: ${allowedValues.join(', ')}`,
+      `'${fieldName}'의 값이 유효하지 않습니다. (입력값: "${value}") 허용된 값: ${allowedValues.join(', ')}`,
       SEVERITY.ERROR
     );
   }

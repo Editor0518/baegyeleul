@@ -274,7 +274,7 @@ const VisualNovel = () => {
 
   // 타이틀 화면 이미지 preload (차단형)
   const titleImages = useMemo(() => {
-    return [...collectTitleScreenImages(), ...collectSceneImages("scene1")];
+    return [...collectTitleScreenImages(), ...collectSceneImages("warning_scene")];
   }, []);
 
   const { isLoading: isTitleLoading, isReady: isTitleReady, progress: titleProgress } =
@@ -378,8 +378,10 @@ const VisualNovel = () => {
       return;
     }
     if (computedEndingSceneId === "SCENE_NOT_FOUND") {
+      // 엔딩 씬 스크립트가 없으면 바로 엔딩 결과창 표시
+      console.warn("[VisualNovel] Ending scene not found, showing result directly.");
       queueMicrotask(() => {
-        handleStoryError(ENDING_ERROR_MESSAGES.SCENE_NOT_FOUND);
+        showEnding();
       });
       return;
     }
@@ -468,6 +470,29 @@ const VisualNovel = () => {
     }
   }, [currentScene, lines.length, showEndingResult, endingInfo, showEnding, handleStoryError]);
 
+  // 경고(Warning) 씬 처리
+  React.useEffect(() => {
+    if (currentScene?.type !== 'warning' || showTitleScreen) return;
+
+    // 첫 번째 대사 가져오기
+    if (lines.length > 0) {
+      const warningText = lines[0].text;
+      const nextSceneId = currentScene.next || 'scene1';
+
+      openModal(MODAL_TYPES.WARNING, {
+        message: warningText,
+        onConfirm: () => {
+          closeModal();
+          goToScene(nextSceneId);
+        },
+        onCancel: () => {
+          closeModal();
+          resetGameState("title");
+        }
+      });
+    }
+  }, [currentScene, lines, showTitleScreen, openModal, closeModal, goToScene, resetGameState]);
+
 
 
   const historyRef = useRef(history);
@@ -499,7 +524,8 @@ const VisualNovel = () => {
   // 대사 로그 추가 및 명령어 실행
   React.useEffect(() => {
     // lines 범위를 벗어난 인덱스(선택지 표시 상태 등)일 경우 로그 추가 방지
-    if (!currentLine || showReaction || dialogueIndex >= lines.length) return;
+    // 경고(Warning) 씬은 로그에 기록하지 않음
+    if (!currentLine || showReaction || dialogueIndex >= lines.length || currentScene?.type === 'warning') return;
 
     // 대사 로그 추가 (중복 방지)
     if (currentLine.speaker && currentLine.text) {
@@ -747,7 +773,7 @@ const VisualNovel = () => {
   const handleStartGame = useCallback(() => {
     setShowTitleScreen(false);
     setHasInteracted(true);
-    goToScene("scene1");
+    goToScene("warning_scene");
   }, [goToScene, setHasInteracted]);
 
   const handleToggleMuteOnTitle = useCallback(() => {

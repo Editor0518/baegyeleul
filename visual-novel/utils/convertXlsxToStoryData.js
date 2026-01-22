@@ -146,8 +146,26 @@ const headerMap = {
 
 function sheetToJson(workbook, sheetName, map, xlsxUtils) {
   const sheet = workbook.Sheets[sheetName];
-  if (!sheet) return [];
+  if (!sheet) {
+    console.warn(`[XLSX Debug] Sheet not found: ${sheetName}`);
+    return [];
+  }
   const json = xlsxUtils.sheet_to_json(sheet, { defval: "" });
+  console.log(`[XLSX Debug] Sheet '${sheetName}' loaded. Rows: ${json.length}`);
+  
+  if (json.length > 0) {
+    console.log(`[XLSX Debug] Sheet '${sheetName}' first row keys:`, Object.keys(json[0]));
+    // 매핑된 첫 행 샘플 출력
+    const mappedFirst = {};
+    const row = json[0];
+    for (const k in row) {
+      const key = String(k).trim();
+      const internalKey = map?.[key] || map?.[k] || key;
+      mappedFirst[internalKey] = row[k];
+    }
+    console.log(`[XLSX Debug] Sheet '${sheetName}' mapped first row:`, mappedFirst);
+  }
+
   return json.map((row, idx) => {
     const obj = { _rowNumber: idx + 2 };
     for (const k in row) {
@@ -370,6 +388,7 @@ function expandLineOrder(value) {
 }
 
 function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
+  console.log(`[XLSX Debug] buildScenes input - scenes: ${sceneRows.length}, dialogues: ${dialogueRows.length}, choices: ${choiceRows.length}`);
   const sceneMap = {};
   let lastPlace = "";
 
@@ -383,7 +402,11 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
 
     sceneMap[s.id] = {
       id: s.id,
-      type: s.type || "normal",
+      type: (() => {
+        const t = (s.type || "normal").toString().trim().toLowerCase();
+        if (t === "주의" || t === "warning") return "warning";
+        return t;
+      })(),
       place,
       nextSceneId: s.nextSceneId || "",
       cutsceneImage: s.cutsceneImage || "",
@@ -637,6 +660,7 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
     storyScenes.push(base);
   });
 
+  console.log(`[XLSX Debug] buildScenes output - final storyScenes length: ${storyScenes.length}`);
   return storyScenes;
 }
 

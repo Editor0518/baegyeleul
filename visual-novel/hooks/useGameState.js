@@ -5,8 +5,8 @@ import { useGameContext } from '../contexts/GameContext';
 
 export const useGameState = () => {
   const { storyScenes } = useGameContext();
-  const [currentSceneId, setCurrentSceneId] = useState('scene1');
-  const [history, setHistory] = useState(['scene1']);
+  const [currentSceneId, setCurrentSceneId] = useState('warning_scene');
+  const [history, setHistory] = useState(['warning_scene']);
 
   const [choiceHistory, setChoiceHistory] = useState({});
 
@@ -35,15 +35,15 @@ export const useGameState = () => {
 
   // 타이틀 화면으로 돌아가기 (완전 초기화)
   const resetToTitle = useCallback(() => {
-    setCurrentSceneId('scene1');
-    setHistory(['scene1']);
+    setCurrentSceneId('warning_scene');
+    setHistory(['warning_scene']);
     setChoiceHistory({});
   }, []);
 
   // 게임을 처음부터 다시 시작 (첫 씬부터)
   const resetGame = useCallback(() => {
-    setCurrentSceneId('scene1');
-    setHistory(['scene1']);
+    setCurrentSceneId('warning_scene');
+    setHistory(['warning_scene']);
     setChoiceHistory({});
   }, []);
 

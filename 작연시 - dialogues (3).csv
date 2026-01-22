@@ -1,8 +1,9 @@
 씬ID(sceneId),대사순서(order),강조캐릭터(activeCharacters),말하는캐릭터(speaker),대사텍스트(text),명령어(command)
+warning_scene,1,,narrator,음주/성희롱/흡연/폭력/성차별적 요소/인종차별 등등,
 scene1,1,,narrator,"1831년 12월 11일, 파리. ",
 scene1,2,,narrator,"하루에도 900명의 생을 앗아갔다는 끔찍한 질병, 콜레라가 잦아든 지도 세 달이 지났다.",
 scene1,3,,narrator,"가십에 굶주린 맹수와도 같은 대도시, 파리의 거주민들은 새로운 자극을 찾아 고개를 치켜들고 있었다.",
-scene1,4,,narrator,"3월부터 9월까지, 가장 화려해야 했을 사교 시즌을 박탈당한 사람들은 금방이라도 넘쳐흐를 듯한 가마솥처럼 들끓고 있었다.",if scene1 == 1 then scenejan2_41
+scene1,4,,narrator,"3월부터 9월까지, 가장 화려해야 했을 사교 시즌을 박탈당한 사람들은 금방이라도 넘쳐흐를 듯한 가마솥처럼 들끓고 있었다.",
 scene1,5,,narrator,"새로이 시작되는 1832년의 사교시즌은 그들의 목을 축여줄 단비와도 같은, 먹음직스러운 식사였다.",
 scene1,6,,narrator,당신 또한 마찬가지였다.,
 scene1,7,,narrator,만개해 절정에 이르른 꽃과도 같이 화려하게 피어난 당신은 얼굴을 내비칠 자리를 찾고 있었다.,
@@ -1067,8 +1068,8 @@ scenejan2_17,2,mendelssohn,mendelssohn,이제 슬슬 들어가죠. 마부가 길
 scenejan2_17,3,,,당신은 고개를 끄덕이고 자리에서 일어난다.,
 scenejan2_17,4,mendelssohn,mendelssohn,"무도회는 잊고 저 밤하늘만 기억해요, 베시에르 양.",
 scenejan2_17_choice,1,,,멘델스존은 싱긋 미소지으며 당신이 마차에 오르는 것을 도왔다.,
-scenejan2_18,1,,,멘델스존은 웃으며 마차에 올라 문을 닿는다. 그의 뺨이 추위 때문인지 새빨개져 있었다.,
-scenejan2_18,2,,,집으로 돌아가는 마차는 조용했다. 어색한 공기는 아니었다.,
+scenejan2_18,1,,,멘델스존은 웃으며 마차에 올라 문을 닿는다. 그의 뺨이 추위 때문인지 새빨개져 있었다.,set febevent as 2
+scenejan2_18,2,,,집으로 돌아가는 마차는 조용했다. 어색한 공기는 아니었다.,set grounded as 0
 scenejan2_18,3,,,"다만, 80만 명이 사는 이 도시에서도, 그토록 고요하고 그토록 수많은 별들이 수놓인 하늘이 보인다는 것이, 그리고 당신이 이 일상에서 여유를 내 이 하늘을 보았다는 것이, 이상하게 마음에 어떤 잔잔한 파도를 일으켰기 때문이었다.",
 scenejan2_20,1,,,옷을 바꿔입으니 유리창에 비친 당신은 당신도 몰라볼 정도로 달라져 있었다.,
 scenejan2_20,2,,,당신은 경쾌한 발걸음으로 생토노레 가를 따라 쭉 걸어간다. 곳곳에서 술에 취한 사람들이 왁자지껄하게 떠들며 다음 번 만남을 기약하고 있었다.,
@@ -1186,8 +1187,8 @@ scenejan2_36,6,liszt,liszt,"정말이네, 당신. 사람 속을 잘 읽어.",
 scenejan2_36,7,,me,말했잖아. 거짓말 하는 사람 아니야.,
 scenejan2_36,8,liszt,,리스트는 손가락으로 눈가에 맺힌 눈물을 훔친 뒤 다시 당신을 내려다본다.,
 scenejan2_36_choice,1,liszt,liszt,"그러면 당신 말마따나, 그 ‘대체품’ 이 되어서 내가 몇 게임 하는 동안 같이 있어줄래?",
-scenejan2_37,1,liszt,,당시의 매정한 거절에 리스트는 무안하게 어깨를 으쓱한다.,
-scenejan2_37,2,liszt,liszt,"알았어. 흥미 없는 사람 붙들고 있을 수는 없지. 그럼 나는 몇 게임 더 하러 가 봐야겠어… 이만. 즐거웠어, 이름 없는 레이디.",
+scenejan2_37,1,liszt,,당시의 매정한 거절에 리스트는 무안하게 어깨를 으쓱한다.,set febevent as 3
+scenejan2_37,2,liszt,liszt,"알았어. 흥미 없는 사람 붙들고 있을 수는 없지. 그럼 나는 몇 게임 더 하러 가 봐야겠어… 이만. 즐거웠어, 이름 없는 레이디.",set grounded as 0
 scenejan2_37,3,,,당신은 그렇게 리스트와 헤어져 조용히 집으로 돌아갔다.,
 scenejan2_38,1,,,당신은 리스트를 따라 도박장으로 들어간다. 직원들이 당신의 손등에 입장 도장을 찍어준다.,
 scenejan2_38,2,,,"값비싸고 휘황찬란한 샹들리에, 룰렛의 쇠구슬이 차르르르 하면서 빨려들어가는 소리, 잔이 쨍, 하고 부딪히는 소리가 들려왔다.",
@@ -1317,7 +1318,7 @@ scenejan2_52,12,liszt,liszt,"안 보여. 젠장, 안경을 갖고 왔어야 했�
 scenejan2_52,13,,,당신은 리스트의 손에서 시계를 빼앗아 시각을 확인한다. 새벽 네 시가 되기 1분 전이었다.,
 scenejan2_52,14,,,곧바로 저 멀리서 노트르담과 생트 샤펠의 종소리가 뒤섞이며 울려퍼졌다.,
 scenejan2_52_choice,1,,,"새벽 네 시면 으레 그래야 하듯, 리스트가 가면을 벗었다.",
-scenejan2_53,1,,,"당신은 가면을 들어올렸다. 드러난 당신의 얼굴을 보던 리스트가 긴가민가하다는 듯이 얼굴을 살짝 찌푸렸다가, 놀람으로 눈이 커진다.",
+scenejan2_53,1,,,"당신은 가면을 들어올렸다. 드러난 당신의 얼굴을 보던 리스트가 긴가민가하다는 듯이 얼굴을 살짝 찌푸렸다가, 놀람으로 눈이 커진다.",set febevent as 4
 scenejan2_53,2,,me,짜잔. 놀랐어요?,
 scenejan2_53,3,liszt,liszt,...,
 scenejan2_53,4,,,이렇게까지 당황하는 리스트의 모습은 처음인 것 같았다. 빨개진 얼굴을 보니 어지간히 당황한 모양이었다.,
@@ -1336,18 +1337,18 @@ scenejan2_53,16,liszt,liszt,그런 게 아녜요. 하… 진짜 오늘은 그냥
 scenejan2_53,17,,me,난 즐거웠는데요.,
 scenejan2_53,18,,,리스트는 마른세수를 하면서 머리를 몇 번 벽에 박았다.,
 scenejan2_53,19,,,"수치스러워 하는 리스트와, 이제 막 숙취에서 깨어나는 주정뱅이들, 전날의 격렬한 정사에서 추레한 꼴로 헤어나오는 난봉꾼들 사이로 당신의 웃음소리가 울려퍼졌다.",
-scenejan2_54,1,liszt,liszt,"뭐야, 끝까지 누구인지 안 알려줄 생각이야?",
+scenejan2_54,1,liszt,liszt,"뭐야, 끝까지 누구인지 안 알려줄 생각이야?",set febevent as 5
 scenejan2_54,2,,me,당신의 미모를 보니까 가면을 벗으면 내가 초라해질 것 같아서.,
 scenejan2_54,3,liszt,liszt,"하하하! 정말 재밌네, 당신.",
 scenejan2_54,4,,,"그래도 굳이 당신이 누군지 캐물을 생각은 없었는지, 리스트는 잠시 여전히 가면을 쓴 당신을 바라보다가 손을 내민다.",
 scenejan2_54,5,liszt,liszt,만나서 즐거웠어. 이름 모를 레이디.,
 scenejan2_54,6,,me,"마찬가지로, 프란츠 리스트 씨.",
 scenejan2_54,7,,,"리스트는 당신의 손을 들어올려 손등에 입을 맞춘다. 당신은 그런 리스트를 향해 고개를 까딱, 해보인 뒤 마차를 타고 집으로 돌아갔다.",
-scenejan2_55_2,1,,,"물론, 집에 돌아간 당신은 시마노프스카의 진노라는 엄청난 불이익을 감수해야 했고…",
+scenejan2_55_2,1,,,"물론, 집에 돌아간 당신은 시마노프스카의 진노라는 엄청난 불이익을 감수해야 했고…",set grounded as 1
 scenejan2_55_2,2,,,이 모험의 결과로 시마노프스카를 동행하지 않은 일체의 출입이 금지되었다. 그것도 이 즐거운 카니발 기간에!,
 scenejan2_55,1,,,"물론, 집에 돌아간 당신은 시마노프스카의 진노라는 엄청난 불이익을 감수해야 했고…",
 scenejan2_57_1,1,mendelssohn,,당신의 말에 멘델스존은 한숨을 쉬며 미간을 짚는다.,
-scenejan2_57_1,2,,,은근히 인상을 자주 쓰는 편인 그 미간에 주름이라도 질까 살짝 걱정이 됐다.,"ifs scenejan2_5,scenejan2_6,scenejan2_7 == 1,1,1 then scenejan2_57_refused,scenejan2_57_suggested,scenejan2_57_runaway"
+scenejan2_57_1,2,,,은근히 인상을 자주 쓰는 편인 그 미간에 주름이라도 질까 살짝 걱정이 됐다.,"ifs palaisroyaleentry == ""refused"",""suggested"",""runaway"" then scenejan2_57_refused,scenejan2_57_suggested,scenejan2_57_runaway"
 scenejan2_57_refused,1,mendelssohn,mendelssohn,"하아…도와드릴 거예요. 도와는 그릴 건데, 정말 이게 무슨 꼴이에요… 이러실까봐 같이 무도회를 가자고 했던 건데. 이러려고 제 초대를 거절하신 거예요?",
 scenejan2_57,1,,me,나예요. 에투아르 베시에르.,
 scenejan2_57,2,mendelssohn,,당신의 말에 멘델스존의 눈이 동그래진다.,
@@ -1445,10 +1446,10 @@ scenejan2_72,7,,me,"알았어요, 알았어. 각자 약점 하나씩 잡은 셈 
 scenejan2_72,8,,,그렇게 수다를 떨고 있으니 금방 당신의 집 앞에 도착했다.,
 scenejan2_72_choice,1,mendelssohn,mendelssohn,아무튼 다음번에는 정말 조심하세요. 혼자 절대로 다니지 마시고요. 제가 언제나 당신이 사고치고 있는 곳 10분 안에 대기를 하고 있지는 않을 거예요.,
 scenejan2_73,1,mendelssohn,mendelssohn,하기사 남의 집 아가씨께 이런 잔소리 하고 있는 것도 웃긴 일이네요…,
-scenejan2_73,2,mendelssohn,,"멘델스존은 끄응, 하는 소리를 내며 미간을 주무른다.",
+scenejan2_73,2,mendelssohn,,"멘델스존은 끄응, 하는 소리를 내며 미간을 주무른다.","ifs palaisroyaleentry == ""refused"",""suggested"",""runaway"" then scenejan2_75_choice,scenejan2_76_choice,scenejan2_75_choice"
 scenejan2_74,1,mendelssohn,mendelssohn,혼자서 잘 하고 말 하고의 문제가 아니라고요… 혼자서 할 수 없는 일에 대한 문제예요.,
 scenejan2_74,2,,me,뭐 내가 온실 속 화초인 줄 아나요. 나도 알 거 다 알아요.,
-scenejan2_74,3,mendelssohn,,"멘델스존은 끄응, 하는 소리를 내며 미간을 주무른다.",
+scenejan2_74,3,mendelssohn,,"멘델스존은 끄응, 하는 소리를 내며 미간을 주무른다.","ifs palaisroyaleentry == ""refused"",""suggested"",""runaway"" then scenejan2_75_choice,scenejan2_76_choice,scenejan2_75_choice"
 scenejan2_75,1,mendelssohn,mendelssohn,"그러니까, 언제나 그럴 수 있는 게 아니잖아요.",
 scenejan2_75,2,,me,언제나 그래 주면 되죠?,
 scenejan2_75,3,mendelssohn,,멘델스존의 얼굴이 버찌처럼 새빨갛게 달아오른다. 취기가 한꺼번에 뺨으로 올라온 듯한 색감이었다.,
@@ -1457,11 +1458,12 @@ scenejan2_75,5,,,당신은 어깨를 으쓱한다.,
 scenejan2_75,6,mendelssohn,,멘델스존은 한숨을 쉬면서 관자놀이를 문지른다.,"ifs palaisroyaleentry == ""refused"",""suggested"",""runaway"" then scenejan2_75_choice,scenejan2_76_choice,scenejan2_75_choice"
 scenejan2_75_choice,1,mendelssohn,mendelssohn,저로서는 베시에르 양의 위험한 행동을 변호해 드릴 수가 없네요. 시마노프스카 부인께도 말씀드리지 않을 수가 없습니다.,
 scenejan2_76_choice,1,mendelssohn,mendelssohn,시마노프스카 부인께는 쭉 저랑 계셨다고 이야기해 드리겠습니다. 다음에는 정말 이렇게 거짓말 해드리는 일 없을 거예요.,
-scenejan2_77_2,1,,,"충분히 납득은 가는 이야기였지만, 그래도 후폭풍이 두려워지는 순간이었다.",
-scenejan2_77_2,2,,,"당신은 시무룩하게 고개를 끄덕이고, 힘없이 귀가했다.",
+scenejan2_77_2,1,,,"충분히 납득은 가는 이야기였지만, 그래도 후폭풍이 두려워지는 순간이었다.",set febevent as 7
+scenejan2_77_2,2,,,"당신은 시무룩하게 고개를 끄덕이고, 힘없이 귀가했다.",set grounded as 2
 scenejan2_77_2,3,,,"당연히 멘델스존은 본인의 말대로, 시마노프스카에게 있던 일을 전부 고했고...",
-scenejan2_77,1,,,당신은 한쪽 눈을 찡긋하며 문을 열고 슬쩍 집 안으로 들어간다.,
-scenejan2_77,2,,,"다음 날, 시마노프스카는 멘델스존으로부터 당신이 어젯밤 처음부터 끝까지 자신과 함께 있었고, 우려할 만한 사건은 없었으며 당신은 안전하게 집에 들어왔다는 이야기를 전해들었다.",
+scenejan2_77_2,4,,,너무나 당연하게도 당신은 외출금지를 당했다...,
+scenejan2_77,1,,,당신은 한쪽 눈을 찡긋하며 문을 열고 슬쩍 집 안으로 들어간다.,set febevent as 8
+scenejan2_77,2,,,"다음 날, 시마노프스카는 멘델스존으로부터 당신이 어젯밤 처음부터 끝까지 자신과 함께 있었고, 우려할 만한 사건은 없었으며 당신은 안전하게 집에 들어왔다는 이야기를 전해들었다.",set grounded as 3
 scenejan2_77,3,,,그리고 시마노프스카는 그 말을 신뢰했다!,
 scenejan2_78,1,,me,그게 중요한 게 아니죠. 숙녀가 곤경에 처했는데 가만히 두고 보실 건가요?,
 scenejan2_78,2,,,"‘매춘부를 숙녀라 부를 수 있는가?’ 하는 고민을 할 만도 한데, 멘델스존은 선뜻 고개를 끄덕이며 당신을 자신의 뒤로 숨긴다.",
@@ -1548,7 +1550,7 @@ scenejan2_85,10,,,"보통 이러면 사교계의 큰 스캔들이 되겠지만, 
 scenejan2_85,11,mendelssohn,,멘델스존의 한쪽 눈썹이 살짝 올라갔다가 원래 자리로 돌아온다.,
 scenejan2_85,12,mendelssohn,mendelssohn,감사합니다. 나중에 돌려드리겠습니다.,"ifs gun,handkerchief,handkerchief == 1,1,0 then scenejan2_92,scenejan2_93,scenejan2_89"
 scenejan2_86,1,,,"멘델스존은 크게 대수롭지 않게 가슴주머니에서 손수건을 꺼내 피를 닦고, 그 위로 또 늘 갖고다녔던 듯한 여분의 장갑을 바꾸어 낀다.","ifs gun,handkerchief,handkerchief == 1,1,0 then scenejan2_92,scenejan2_93,scenejan2_89"
-scenejan2_89,1,mendelssohn,,멘델스존은 신사적인 미소를 지으며 당신을 바라본다.,
+scenejan2_89,1,mendelssohn,,멘델스존은 신사적인 미소를 지으며 당신을 바라본다.,set febevent as 6
 scenejan2_89,2,mendelssohn,mendelssohn,아까 같은 일이 일어나지 않기를 바랍니다. 부디 조심해서 들어가세요.,
 scenejan2_89,3,,me,"네, 도와주셔서 감사합니다.",
 scenejan2_89,4,,,멘델스존은 당신의 정체를 알아차리지 못한 것 같았다.,
@@ -1636,7 +1638,7 @@ scenejan2_400,7,mendelssohn,mendelssohn,"아뇨, 아뇨. 아니, 약간은 그�
 scenejan2_400,8,,narrator,멘델스존이 길게 한숨을 내쉰다.,
 scenejan2_400,9,mendelssohn,mendelssohn,...제가 오늘 점심밥을 좀 일찍 먹었더니 슬슬 배가 좀 고프네요.,
 scenejan2_400,10,,narrator,시계를 보니 열한 시가 넘어가고 있었다. 정찬이 시작되기 전 간식이 준비되어야 할 시각이었다.,
-scenejan2_skip,1,,,당신은 카니발 날에 뭔가 재밌는 걸 즐길 생각은 그냥 포기하고 집에서 쉬기로 했다.,
+scenejan2_skip,1,,,당신은 카니발 날에 뭔가 재밌는 걸 즐길 생각은 그냥 포기하고 집에서 쉬기로 했다.,set febevent as 1
 ,,,,,
 ,,,,,
 ,,,,,

@@ -28,6 +28,7 @@ export const useSaveLoad = () => {
 
       if (scene.type === "title") return "타이틀 화면";
       if (scene.type === "ending") return "엔딩";
+      if (scene.type === "warning") return "주의 사항";
 
       const getPlaceName = (placeId) => {
         if (!placeId) return "스토리 진행 중";

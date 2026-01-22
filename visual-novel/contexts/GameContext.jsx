@@ -114,6 +114,16 @@ export const GameContextProvider = ({ children }) => {
         const data = await loadStoryDataFromXlsx((loaded, total = LOAD_PROGRESS_TOTAL) => {
           setLoadProgress({ loaded, total });
         });
+
+        // 데이터 유효성 검사 (XLSX)
+        const errors = validateStoryData(data);
+        const hasCriticalErrors = errors.some(e => e.severity === 'error');
+
+        if (hasCriticalErrors) {
+          console.warn("[GameContext] XLSX 데이터에 치명적인 오류가 있어 storyData.json으로 폴백합니다.", errors);
+          throw new Error("XLSX validation failed");
+        }
+
         console.log("[GameContext] ✓ XLSX 로드 성공");
         setLoadSource("xlsx");
         applyStoryData(data);

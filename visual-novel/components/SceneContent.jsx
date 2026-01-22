@@ -66,8 +66,8 @@ const SceneContent = ({
           return (
             lineToDisplay && (
               <DialogueBox
-                speaker={lineToDisplay.speaker}
-                text={lineToDisplay.text}
+                speaker={currentScene?.type === 'warning' ? null : lineToDisplay.speaker}
+                text={currentScene?.type === 'warning' ? "" : lineToDisplay.text}
                 onNext={shouldShowChoices ? undefined : handleNext}
               />
             )

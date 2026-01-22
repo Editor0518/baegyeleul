@@ -17,6 +17,7 @@ export const MODAL_TYPES = {
   CONFIRM: "confirm",
   STORY_ERROR: "storyError",
   GAME_LOG: "gameLog",
+  WARNING: "warning",
 };
 
 /**
