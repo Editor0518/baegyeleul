@@ -115,6 +115,68 @@
   filter: brightness(1.2);
 }
 
+/* 잠긴 선택지 스타일 */
+.choice-button-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.choice-button-locked:hover::after {
+  opacity: 0;
+}
+
+.choice-button-locked:active {
+  filter: none;
+}
+
+.icon-choice-button.icon-locked {
+  background-image: url(/assets/icon/lock.svg);
+}
+
+/* 토스트 알림 */
+.choice-toast {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 245, 218, 0.3);
+  border-radius: 0.5rem;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: toast-slide-up 0.3s ease forwards, toast-fade-out 0.3s ease 1.7s forwards;
+}
+
+.choice-toast-text {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--primary-light);
+  text-align: center;
+  margin: 0;
+}
+
+@keyframes toast-slide-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes toast-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 768px) and (orientation: portrait) {
   .choice-box {
     align-items: center;
@@ -140,6 +202,12 @@
         rgba(255, 245, 218, 0.4) 20%,
         rgba(255, 245, 218, 0.4) 80%,
         rgba(255, 245, 218, 0.2) 100%);
+  }
+
+  .choice-toast {
+    bottom: 1.5rem;
+    white-space: normal;
+    max-width: 80%;
   }
 }
 
@@ -168,5 +236,11 @@
         rgba(255, 245, 218, 0.4) 20%,
         rgba(255, 245, 218, 0.4) 80%,
         rgba(255, 245, 218, 0.2) 100%);
+  }
+
+  .choice-toast {
+    bottom: 1.5rem;
+    white-space: normal;
+    max-width: 80%;
   }
 }

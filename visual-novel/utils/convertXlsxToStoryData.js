@@ -117,6 +117,7 @@ const headerMap = {
     "affectioncharacter10": "affectioncharacter10",
     "affectionValue10": "affectionValue10",
     "표시조건(show_if)": "show_if",
+    "해금조건(unlock_if)": "unlock_if",
     "명령어(command)": "command",
   },
   scene_characters: {
@@ -513,6 +514,11 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
     // show_if 조건 추가
     if (c.show_if) {
       choiceObj.show_if = c.show_if;
+    }
+
+    // unlock_if 조건 추가
+    if (c.unlock_if) {
+      choiceObj.unlock_if = c.unlock_if;
     }
 
     // command 추가

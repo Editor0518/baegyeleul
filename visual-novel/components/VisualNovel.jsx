@@ -34,7 +34,7 @@ import { useCGAlbum } from "@/hooks/useCGAlbum";
 import { getBackgroundStyle } from "@/utils/backgroundHelper";
 import { validateSceneFlow, validateEndingInfo } from "@/utils/storyValidator";
 import { clampAffection } from "@/utils/affectionHelper";
-import { parseCommand, executeCommand, evaluateShowIf } from "@/utils/variableHelper";
+import { parseCommand, executeCommand, evaluateShowIf, evaluateUnlockIf } from "@/utils/variableHelper";
 import {
   ENDING_ERROR_MESSAGES,
   STORY_ERROR_MESSAGES,
@@ -214,15 +214,22 @@ const VisualNovel = () => {
     ]
   );
 
-  // 선택지 필터링 (show_if 조건 평가)
+  // 선택지 필터링 (show_if 조건 평가) + 잠금 상태 계산 (unlock_if)
   const filteredChoices = useMemo(() => {
     if (!currentScene?.choices) return [];
 
-    return currentScene.choices.filter(choice => {
-      if (!choice.show_if) return true;
-
-      return evaluateShowIf(choice.show_if, variables, affection, history, choiceHistory);
-    });
+    return currentScene.choices
+      .filter(choice => {
+        // show_if: 조건 미충족 시 아예 숨김
+        if (!choice.show_if) return true;
+        return evaluateShowIf(choice.show_if, variables, affection, history, choiceHistory);
+      })
+      .map(choice => {
+        // unlock_if: 조건 미충족 시 잠금 상태로 표시
+        if (!choice.unlock_if) return choice;
+        const isUnlocked = evaluateUnlockIf(choice.unlock_if, variables, affection, history, choiceHistory);
+        return { ...choice, isLocked: !isUnlocked };
+      });
   }, [currentScene, variables, affection, history, choiceHistory]);
 
   // 선택지 페이지네이션 (5개 이상일 때 3+1 구조)
@@ -751,6 +758,9 @@ const VisualNovel = () => {
 
   const handleChoice = useCallback(
     (choice, index) => {
+      // 잠긴 선택지는 처리하지 않음 (토스트는 ChoiceBox에서 처리)
+      if (choice.isLocked) return;
+
       setIsSkipping(false);
 
       // 선택지 로그 추가

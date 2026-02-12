@@ -527,26 +527,19 @@ export function evaluateCondition(leftValue, operator, rightValue) {
 }
 
 /**
- * showif 조건 평가
- * @param {string} showIfString - showif 문자열
+ * 조건 문자열 평가 (showif/unlockif 공통)
+ * @param {string} conditionsStr - 키워드 제거 후 조건 문자열
  * @param {Object} variables - 사용자 변수
  * @param {Object} affection - 호감도
  * @param {Array} history - 씬 방문 기록 (선택적)
  * @param {Object} choiceHistory - 선택지 기록 (선택적)
  * @returns {boolean} 조건 만족 여부
  */
-export function evaluateShowIf(showIfString, variables, affection, history, choiceHistory) {
-  if (!showIfString || typeof showIfString !== 'string') return true;
-
-  const cmd = showIfString.trim();
-  if (!cmd) return true;
-
-  // showif를 제거하고 조건 부분만 추출
-  if (!cmd.startsWith('showif ')) return true;
-  const conditionsStr = cmd.substring(7).trim(); // 'showif ' 제거
+function evaluateConditionString(conditionsStr, variables, affection, history, choiceHistory) {
+  if (!conditionsStr || !conditionsStr.trim()) return true;
 
   // 'and'로 조건 분리
-  const conditionParts = conditionsStr.split(/\s+and\s+/);
+  const conditionParts = conditionsStr.trim().split(/\s+and\s+/);
 
   // 각 조건 평가
   const conditionPattern = /^(\S+)\s+(==|!=|<=|>=|<|>)\s+(.+)$/;
@@ -570,4 +563,36 @@ export function evaluateShowIf(showIfString, variables, affection, history, choi
 
   // 모든 조건이 참
   return true;
+}
+
+/**
+ * showif 조건 평가
+ * @param {string} showIfString - showif 문자열
+ * @param {Object} variables - 사용자 변수
+ * @param {Object} affection - 호감도
+ * @param {Array} history - 씬 방문 기록 (선택적)
+ * @param {Object} choiceHistory - 선택지 기록 (선택적)
+ * @returns {boolean} 조건 만족 여부
+ */
+export function evaluateShowIf(showIfString, variables, affection, history, choiceHistory) {
+  if (!showIfString || typeof showIfString !== 'string') return true;
+  const cmd = showIfString.trim();
+  if (!cmd || !cmd.startsWith('showif ')) return true;
+  return evaluateConditionString(cmd.substring(7).trim(), variables, affection, history, choiceHistory);
+}
+
+/**
+ * unlockif 조건 평가
+ * @param {string} unlockIfString - unlockif 문자열
+ * @param {Object} variables - 사용자 변수
+ * @param {Object} affection - 호감도
+ * @param {Array} history - 씬 방문 기록 (선택적)
+ * @param {Object} choiceHistory - 선택지 기록 (선택적)
+ * @returns {boolean} 조건 만족 여부 (true = 잠금 해제, false = 잠김)
+ */
+export function evaluateUnlockIf(unlockIfString, variables, affection, history, choiceHistory) {
+  if (!unlockIfString || typeof unlockIfString !== 'string') return true;
+  const cmd = unlockIfString.trim();
+  if (!cmd || !cmd.startsWith('unlockif ')) return true;
+  return evaluateConditionString(cmd.substring(9).trim(), variables, affection, history, choiceHistory);
 }
