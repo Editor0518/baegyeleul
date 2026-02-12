@@ -144,6 +144,10 @@
   background: url(/assets/icon/exit.svg) center/contain no-repeat;
 }
 
+.game-button-icon.album {
+  background: url(/assets/icon/story.svg) center/contain no-repeat;
+}
+
 .game-button.music-on .game-button-icon {
   background: url(/assets/icon/musicon.svg) center/contain no-repeat;
 }

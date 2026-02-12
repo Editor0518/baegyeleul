@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { getSpeakerInfo } from "@/utils/speakerHelper";
 import "./DialogueBox.css";
 
-const DialogueBox = ({ speaker, text, onNext }) => {
+const DialogueBox = ({ speaker, text, onNext, onSkipClick, isSkipping }) => {
   const FADE_IN_DURATION = 400;  // ms, matches CSS fade-in 0.4s
   const FADE_OUT_DURATION = 100; // ms, matches CSS fade-out 0.1s
   const [fadeState, setFadeState] = useState("fade-in");
@@ -58,6 +58,19 @@ const DialogueBox = ({ speaker, text, onNext }) => {
           <button className="next-button"></button>
         </div>
       </div>
+      {onSkipClick && (
+        <button
+          className={`dialogue-skip-btn ${isSkipping ? "skipping" : ""}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSkipClick();
+          }}
+          title="선택지까지 넘기기"
+        >
+          <span className="dialogue-skip-icon"></span>
+          <span className="dialogue-skip-text">넘기기</span>
+        </button>
+      )}
     </div>
   );
 };

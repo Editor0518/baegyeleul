@@ -18,6 +18,7 @@ export const MODAL_TYPES = {
   STORY_ERROR: "storyError",
   GAME_LOG: "gameLog",
   WARNING: "warning",
+  CG_ALBUM: "cgAlbum",
 };
 
 /**

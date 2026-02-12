@@ -16,6 +16,7 @@ const GameHeader = ({
   onLogClick,
   onResetClick,
   onInfoClick,
+  onAlbumClick,
   isMuted,
   onToggleMute,
 }) => {
@@ -46,6 +47,10 @@ const GameHeader = ({
         <button id="header-reset-btn" className="game-button" onClick={onResetClick}>
           <span className="game-button-icon exit"></span>
           <span className="game-button-text">처음으로</span>
+        </button>
+        <button id="header-album-btn" className="game-button" onClick={onAlbumClick}>
+          <span className="game-button-icon album"></span>
+          <span className="game-button-text">앨범</span>
         </button>
         <button
           id="header-mute-btn"

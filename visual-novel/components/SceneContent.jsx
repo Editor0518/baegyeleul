@@ -25,13 +25,15 @@ const SceneContent = ({
   onChoice,
   filteredChoices,
   isRefreshing,
+  isSkipping,
+  onSkipClick,
 }) => {
   return (
     <>
       <CharacterDisplay characterMap={displayedCharacters} />
 
       <div className="scene-content">
-        {shouldShowCutscene && (
+        {shouldShowCutscene && !isSkipping && (
           <Cutscene
             imagePath={currentScene.cutsceneImage}
             alt="Cutscene"
@@ -45,6 +47,8 @@ const SceneContent = ({
                 speaker={currentReaction.speaker}
                 text={currentReaction.text}
                 onNext={handleReactionNext}
+                onSkipClick={onSkipClick}
+                isSkipping={isSkipping}
               />
             );
           }
@@ -69,6 +73,8 @@ const SceneContent = ({
                 speaker={currentScene?.type === 'warning' ? null : lineToDisplay.speaker}
                 text={currentScene?.type === 'warning' ? "" : lineToDisplay.text}
                 onNext={shouldShowChoices ? undefined : handleNext}
+                onSkipClick={onSkipClick}
+                isSkipping={isSkipping}
               />
             )
           );

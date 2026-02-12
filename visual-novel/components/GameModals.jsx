@@ -11,6 +11,7 @@ import SaveLoadModal from "./SaveLoadModal";
 import ConfirmModal from "./ConfirmModal";
 import GameLogModal from "./GameLogModal";
 import WarningModal from "./WarningModal";
+import CGAlbumModal from "./CGAlbumModal";
 import { MODAL_TYPES } from "@/hooks/useModal";
 
 const GameModals = ({
@@ -66,6 +67,11 @@ const GameModals = ({
           onConfirm={modalData?.onConfirm}
           onCancel={modalData?.onCancel}
         />
+      )}
+
+      {/* CG 앨범 모달 */}
+      {activeModal === MODAL_TYPES.CG_ALBUM && (
+        <CGAlbumModal onClose={onCloseModal} />
       )}
     </>
   );

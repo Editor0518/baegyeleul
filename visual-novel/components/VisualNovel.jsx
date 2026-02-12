@@ -30,6 +30,7 @@ import { useImagePreloader, useTitleScreenPreloader, useSceneBackgroundPreloader
 import { useVariables } from "@/hooks/useVariables";
 import { useGameLog } from "@/hooks/useGameLog";
 import { useChoicePagination } from "@/hooks/useChoicePagination";
+import { useCGAlbum } from "@/hooks/useCGAlbum";
 import { getBackgroundStyle } from "@/utils/backgroundHelper";
 import { validateSceneFlow, validateEndingInfo } from "@/utils/storyValidator";
 import { clampAffection } from "@/utils/affectionHelper";
@@ -82,6 +83,7 @@ const VisualNovel = () => {
     setAllLogs
   } = useGameLog();
   const { activeModal, modalData, openModal, closeModal } = useModal();
+  const { markCGAsViewed } = useCGAlbum();
   const {
     isMuted,
     toggleMute,
@@ -99,6 +101,7 @@ const VisualNovel = () => {
 
   const [showTitleScreen, setShowTitleScreen] = useState(true);
   const [isTutorialActive, setIsTutorialActive] = useState(false);
+  const [isSkipping, setIsSkipping] = useState(false);
 
   // 대사 관련 상태 (커스텀 훅)
   const {
@@ -321,6 +324,13 @@ const VisualNovel = () => {
     [currentScene, currentLine]
   );
 
+  // CG 열람 추적 - 컷씬이 표시될 때 앨범에 기록
+  useEffect(() => {
+    if (shouldShowCutscene && currentScene?.cutsceneImage) {
+      markCGAsViewed(currentScene.cutsceneImage);
+    }
+  }, [shouldShowCutscene, currentScene?.cutsceneImage, markCGAsViewed]);
+
   // 게임 상태 리셋 통합 함수
   const resetGameState = useCallback(
     (resetType) => {
@@ -335,6 +345,7 @@ const VisualNovel = () => {
           currentBGMRef.current = null;
         }
       }
+      setIsSkipping(false);
       resetAffection();
       resetEndingState();
       resetDialogueState();
@@ -622,6 +633,7 @@ const VisualNovel = () => {
     }
 
     if (isChoiceScene && dialogueIndex >= lines.length - 1) {
+      console.log('[handleNext] Choice scene last dialogue:', { dialogueIndex, linesLength: lines.length, willIncrement: dialogueIndex === lines.length - 1 });
       if (dialogueIndex === lines.length - 1) {
         incrementDialogueIndex();
       }
@@ -677,8 +689,70 @@ const VisualNovel = () => {
     addToVariable,
   ]);
 
+  // 선택지까지 스킵 엔진
+  const handleNextRef = React.useRef(handleNext);
+  handleNextRef.current = handleNext;
+
+  React.useEffect(() => {
+    if (!isSkipping) return;
+
+    console.log('[Skip] === useEffect fired ===', {
+      currentSceneId,
+      sceneType: currentScene?.type,
+      dialogueIndex,
+      linesLength: lines.length,
+      shouldShowChoices,
+      showEndingResult,
+      checkAffection: currentScene?.checkAffection,
+      isChoiceScene: currentScene?.type === 'choice',
+      currentLineText: currentLine?.text?.substring(0, 30),
+    });
+
+    const shouldStop =
+      showEndingResult ||
+      shouldShowChoices ||
+      currentScene?.checkAffection ||
+      currentScene?.type === 'ending' ||
+      currentScene?.type === 'warning' ||
+      !currentScene;
+
+    if (shouldStop) {
+      console.log('[Skip] STOPPED. Reason:', {
+        showEndingResult,
+        shouldShowChoices,
+        checkAffection: currentScene?.checkAffection,
+        isEnding: currentScene?.type === 'ending',
+        isWarning: currentScene?.type === 'warning',
+        noScene: !currentScene,
+      });
+      setIsSkipping(false);
+      return;
+    }
+
+    console.log('[Skip] Calling handleNext...');
+    handleNextRef.current();
+    console.log('[Skip] handleNext returned. dialogueIndex is now (may be stale):', dialogueIndex);
+  }, [isSkipping, currentSceneId, dialogueIndex, shouldShowChoices, showEndingResult, currentScene]);
+
+  // 선택지까지 스킵 버튼 핸들러
+  const handleSkipToChoice = useCallback(() => {
+    if (
+      showEndingResult ||
+      shouldShowChoices ||
+      currentScene?.checkAffection ||
+      currentScene?.type === 'ending' ||
+      currentScene?.type === 'warning' ||
+      showTitleScreen
+    ) {
+      return;
+    }
+    setIsSkipping(true);
+  }, [showEndingResult, shouldShowChoices, currentScene, showTitleScreen]);
+
   const handleChoice = useCallback(
     (choice, index) => {
+      setIsSkipping(false);
+
       // 선택지 로그 추가
       addChoiceLog(choice.text, currentSceneId);
 
@@ -799,6 +873,10 @@ const VisualNovel = () => {
     setIsTutorialActive(true);
   }, []);
 
+  const handleOpenAlbum = useCallback(() => {
+    openModal(MODAL_TYPES.CG_ALBUM);
+  }, [openModal]);
+
   const getCurrentGameState = useCallback(() => {
     return {
       currentSceneId,
@@ -842,6 +920,7 @@ const VisualNovel = () => {
         return;
       }
 
+      setIsSkipping(false);
       setShowTitleScreen(false);
       setHasInteracted(true);
       goToScene(saveData.sceneId);
@@ -944,6 +1023,7 @@ const VisualNovel = () => {
         <TitleScreen
           onStart={handleStartGame}
           onLoad={handleOpenLoad}
+          onAlbumClick={handleOpenAlbum}
           isMuted={isMuted}
           onToggleMute={handleToggleMuteOnTitle}
         />
@@ -973,6 +1053,7 @@ const VisualNovel = () => {
                 onLoadClick={handleOpenLoad}
                 onLogClick={handleOpenLog}
                 onInfoClick={handleOpenTutorial}
+                onAlbumClick={handleOpenAlbum}
                 onResetClick={handleConfirmResetToTitle}
                 isMuted={isMuted}
                 onToggleMute={toggleMute}
@@ -992,6 +1073,8 @@ const VisualNovel = () => {
                 onChoice={handleChoiceWithPagination}
                 filteredChoices={paginatedChoices}
                 isRefreshing={isRefreshing}
+                isSkipping={isSkipping}
+                onSkipClick={handleSkipToChoice}
               />
 
               {showEndingResult && endingInfo && (
