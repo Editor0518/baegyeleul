@@ -214,20 +214,25 @@ const VisualNovel = () => {
     ]
   );
 
-  // 선택지 필터링 (show_if 조건 평가) + 잠금 상태 계산 (unlock_if)
+  // 선택지 필터링 (show_if/unlock_if 조건 평가 — 같은 show_if 필드에서 접두사로 분기)
   const filteredChoices = useMemo(() => {
     if (!currentScene?.choices) return [];
 
     return currentScene.choices
       .filter(choice => {
-        // show_if: 조건 미충족 시 아예 숨김
         if (!choice.show_if) return true;
+        const cmd = choice.show_if.trim();
+        // unlockif는 필터링하지 않음 (항상 보임)
+        if (cmd.startsWith('unlockif ')) return true;
+        // showif는 조건 미충족 시 숨김
         return evaluateShowIf(choice.show_if, variables, affection, history, choiceHistory);
       })
       .map(choice => {
-        // unlock_if: 조건 미충족 시 잠금 상태로 표시
-        if (!choice.unlock_if) return choice;
-        const isUnlocked = evaluateUnlockIf(choice.unlock_if, variables, affection, history, choiceHistory);
+        if (!choice.show_if) return choice;
+        const cmd = choice.show_if.trim();
+        // unlockif: 조건 미충족 시 잠금 상태로 표시
+        if (!cmd.startsWith('unlockif ')) return choice;
+        const isUnlocked = evaluateUnlockIf(choice.show_if, variables, affection, history, choiceHistory);
         return { ...choice, isLocked: !isUnlocked };
       });
   }, [currentScene, variables, affection, history, choiceHistory]);

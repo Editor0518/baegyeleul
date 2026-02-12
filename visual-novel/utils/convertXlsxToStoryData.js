@@ -117,7 +117,6 @@ const headerMap = {
     "affectioncharacter10": "affectioncharacter10",
     "affectionValue10": "affectionValue10",
     "표시조건(show_if)": "show_if",
-    "해금조건(unlock_if)": "unlock_if",
     "명령어(command)": "command",
   },
   scene_characters: {
@@ -511,14 +510,9 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
       choiceObj.reaction = reaction;
     }
 
-    // show_if 조건 추가
+    // show_if 조건 추가 (showif/unlockif 모두 이 필드에 저장)
     if (c.show_if) {
       choiceObj.show_if = c.show_if;
-    }
-
-    // unlock_if 조건 추가
-    if (c.unlock_if) {
-      choiceObj.unlock_if = c.unlock_if;
     }
 
     // command 추가
@@ -716,6 +710,74 @@ function buildEndingConfig(endingSystemRows, endingConfigRows) {
   });
 
   return { thresholds, common, duo, characterEndings };
+}
+
+// Apps Script JSON에서 시트 데이터를 headerMap으로 매핑
+function sheetsJsonToMapped(sheetsJson, sheetName, map) {
+  const rows = sheetsJson[sheetName];
+  if (!rows || !rows.length) {
+    console.warn(`[JSON Debug] Sheet not found: ${sheetName}`);
+    return [];
+  }
+
+  console.log(`[JSON Debug] Sheet '${sheetName}' loaded. Rows: ${rows.length}`);
+
+  return rows.map((row, idx) => {
+    const obj = { _rowNumber: idx + 2 };
+    for (const k in row) {
+      const key = String(k).trim();
+      const internalKey = map?.[key] || key;
+      obj[internalKey] = row[k];
+    }
+    return obj;
+  });
+}
+
+// Apps Script JSON → storyData 변환 (XLSX 라이브러리 불필요)
+export function convertSheetsJsonToStoryData(sheetsJson) {
+  if (!sheetsJson) throw new Error("sheetsJson is required");
+
+  const gameInfoRows = sheetsJsonToMapped(sheetsJson, "game_info", headerMap.game_info);
+  const gi = gameInfoRows[0] || {};
+  const gameInfo = {
+    title: (gi.title || "").toString(),
+    subtitle: (gi.subtitle || "").toString(),
+    me: (gi.me || "").toString(),
+    backgroundMusic: (gi.backgroundMusic || "").toString(),
+  };
+
+  const characters = buildCharacters(
+    sheetsJsonToMapped(sheetsJson, "characters", headerMap.characters)
+  );
+  const places = buildPlaces(
+    sheetsJsonToMapped(sheetsJson, "places", headerMap.places)
+  );
+
+  let scenesRows = sheetsJsonToMapped(sheetsJson, "scenes", headerMap.scenes);
+  let dialoguesRows = sheetsJsonToMapped(sheetsJson, "dialogues", headerMap.dialogues);
+  let choicesRows = sheetsJsonToMapped(sheetsJson, "choices", headerMap.choices);
+  let sceneCharRows = sheetsJsonToMapped(sheetsJson, "scene_characters", headerMap.scene_characters);
+
+  const endingSystemRows = sheetsJsonToMapped(sheetsJson, "ending_system", headerMap.ending_system);
+  const endingConfigRows = sheetsJsonToMapped(sheetsJson, "ending", headerMap.ending);
+
+  const endingSceneIdRemap = buildEndingSceneIdRemap(endingConfigRows);
+
+  applySceneIdRemapToSheets(
+    { scenesRows, dialoguesRows, choicesRows, sceneCharRows },
+    endingSceneIdRemap
+  );
+
+  const storyScenes = buildScenes(
+    scenesRows,
+    dialoguesRows,
+    choicesRows,
+    sceneCharRows
+  );
+
+  const endingConfig = buildEndingConfig(endingSystemRows, endingConfigRows);
+
+  return { gameInfo, characters, places, storyScenes, endingConfig };
 }
 
 export function convertXlsxToStoryData(arrayBuffer, XLSX) {

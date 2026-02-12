@@ -4,8 +4,8 @@
  * GameContext.jsx - 전역 게임 설정 및 스토리 데이터 관리
  *
  * 음소거 상태, 사용자 상호작용, 스토리 데이터를 전역으로 관리
- * 
- * 구글 스프레드 시트 페이지 불러오는 링크는 PUBLISHED_XLSX_URL의 링크를 바꾸시면 됩니다. (20번줄)
+ *
+ * 구글 Apps Script 웹앱 URL은 APPS_SCRIPT_URL의 링크를 바꾸시면 됩니다. (20번줄)
  */
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
@@ -17,9 +17,9 @@ import { setStoryData as setStoryValidatorData } from "@/utils/storyValidator";
 import { setStoryData as setSpeakerHelperData } from "@/utils/speakerHelper";
 import { validateStoryData, logValidationErrors } from "@/utils/storyDataValidator";
 
-const PUBLISHED_XLSX_URL =
-  process.env.NEXT_PUBLIC_PUBLISHED_XLSX_URL ||
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhFIcM9RRt_ysKkbY2fajvFzM0tR7qWaE0iiIND7hqj19F5QlBdsef7esYG2BvBdBMbCMAPsnRwB2s/pub?output=xlsx";
+const APPS_SCRIPT_URL =
+  process.env.NEXT_PUBLIC_APPS_SCRIPT_URL ||
+  "https://script.google.com/macros/s/AKfycbxaJ91fRVP_nm4Kqdyjs4gW0dKMbVfGl_kkJjGob_Bxmt1QhOvZcsRWYfFevrH9BTvC/exec";
 
 const LOAD_PROGRESS_TOTAL = 4;
 
@@ -37,7 +37,7 @@ export const GameContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [loadProgress, setLoadProgress] = useState({ loaded: 0, total: LOAD_PROGRESS_TOTAL });
-  const [loadSource, setLoadSource] = useState(null); // "xlsx" 또는 "json"
+  const [loadSource, setLoadSource] = useState(null); // "appsScript" 또는 "json"
 
   // 검증 결과
   const [validationErrors, setValidationErrors] = useState([]);
@@ -60,37 +60,34 @@ export const GameContextProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const loadStoryDataFromXlsx = useCallback(async (onProgress) => {
+  const loadStoryDataFromAppsScript = useCallback(async (onProgress) => {
     onProgress?.(0, LOAD_PROGRESS_TOTAL);
 
-    // 캐시 버스팅 URL 생성
-    const cacheBust = `cb=${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    const urlWithCacheBust = `${PUBLISHED_XLSX_URL}&${cacheBust}`;
+    const cacheBust = `cb=${Date.now()}`;
+    const url = `${APPS_SCRIPT_URL}?${cacheBust}`;
 
     try {
-      const response = await fetch(urlWithCacheBust, { cache: "no-cache" });
+      const response = await fetch(url, { cache: "no-store" });
       if (!response.ok) {
-        throw new Error(`XLSX 응답 오류: ${response.status} ${response.statusText}`);
+        throw new Error(`Apps Script 응답 오류: ${response.status} ${response.statusText}`);
       }
 
       onProgress?.(1, LOAD_PROGRESS_TOTAL);
 
-      const buffer = await response.arrayBuffer();
+      const sheetsJson = await response.json();
       onProgress?.(2, LOAD_PROGRESS_TOTAL);
 
-      const xlsxModule = await import("xlsx");
-      const XLSX = xlsxModule.default || xlsxModule;
-      const { convertXlsxToStoryData } = await import("@/utils/convertXlsxToStoryData");
-      const storyDataFromSheet = convertXlsxToStoryData(buffer, XLSX);
+      const { convertSheetsJsonToStoryData } = await import("@/utils/convertXlsxToStoryData");
+      const storyData = convertSheetsJsonToStoryData(sheetsJson);
 
       onProgress?.(3, LOAD_PROGRESS_TOTAL);
-      return storyDataFromSheet;
+      return storyData;
     } catch (error) {
-      console.error("[GameContext] XLSX URL:", urlWithCacheBust);
-      console.error("[GameContext] XLSX 로드 실패:", error.message);
+      console.error("[GameContext] Apps Script URL:", url);
+      console.error("[GameContext] Apps Script 로드 실패:", error.message);
       throw error;
     }
-  }, [PUBLISHED_XLSX_URL]);
+  }, []);
 
   const loadStoryDataFromJson = useCallback(async () => {
     const timestamp = Date.now();
@@ -107,29 +104,29 @@ export const GameContextProvider = ({ children }) => {
   useEffect(() => {
     const loadStoryData = async () => {
       console.log("[GameContext] 스토리 데이터 로드 시작");
-      console.log("[GameContext] PUBLISHED_XLSX_URL:", PUBLISHED_XLSX_URL);
+      console.log("[GameContext] APPS_SCRIPT_URL:", APPS_SCRIPT_URL);
       setLoadProgress({ loaded: 0, total: LOAD_PROGRESS_TOTAL });
       try {
-        console.log("[GameContext] XLSX 로드 시도...");
-        const data = await loadStoryDataFromXlsx((loaded, total = LOAD_PROGRESS_TOTAL) => {
+        console.log("[GameContext] Apps Script 로드 시도...");
+        const data = await loadStoryDataFromAppsScript((loaded, total = LOAD_PROGRESS_TOTAL) => {
           setLoadProgress({ loaded, total });
         });
 
-        // 데이터 유효성 검사 (XLSX)
+        // 데이터 유효성 검사
         const errors = validateStoryData(data);
         const hasCriticalErrors = errors.some(e => e.severity === 'error');
 
         if (hasCriticalErrors) {
-          console.warn("[GameContext] XLSX 데이터에 치명적인 오류가 있어 storyData.json으로 폴백합니다.", errors);
-          throw new Error("XLSX validation failed");
+          console.warn("[GameContext] Apps Script 데이터에 치명적인 오류가 있어 storyData.json으로 폴백합니다.", errors);
+          throw new Error("Apps Script validation failed");
         }
 
-        console.log("[GameContext] ✓ XLSX 로드 성공");
-        setLoadSource("xlsx");
+        console.log("[GameContext] ✓ Apps Script 로드 성공");
+        setLoadSource("appsScript");
         applyStoryData(data);
         return;
       } catch (error) {
-        console.warn("[GameContext] XLSX 로드 실패, storyData.json으로 폴백합니다.", error);
+        console.warn("[GameContext] Apps Script 로드 실패, storyData.json으로 폴백합니다.", error);
       }
 
       try {
@@ -147,7 +144,7 @@ export const GameContextProvider = ({ children }) => {
     };
 
     loadStoryData();
-  }, [applyStoryData, loadStoryDataFromJson, loadStoryDataFromXlsx]);
+  }, [applyStoryData, loadStoryDataFromJson, loadStoryDataFromAppsScript]);
 
   // 음소거 토글 함수
   const toggleMute = useCallback(() => {
@@ -165,7 +162,7 @@ export const GameContextProvider = ({ children }) => {
     isLoading,
     loadError,
     loadProgress,
-    loadSource, // 디버그용: "xlsx" 또는 "json"
+    loadSource, // 디버그용: "appsScript" 또는 "json"
     // 검증 결과
     validationErrors,
     // 개별 데이터 접근용 헬퍼
