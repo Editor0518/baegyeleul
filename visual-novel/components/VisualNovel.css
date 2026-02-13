@@ -185,6 +185,11 @@
   height: 100%;
 }
 
+.game-button-icon.achievement {
+  position: relative;
+  top: 4px;
+}
+
 @media (max-width: 768px) and (orientation: portrait) {
   .header-content {
     width: 200vw;
@@ -211,6 +216,10 @@
 
   .game-button-text {
     display: none;
+  }
+
+  .game-button-icon.achievement {
+    top: 1px;
   }
 }
 
@@ -239,5 +248,9 @@
 
   .game-button-text {
     display: none;
+  }
+
+  .game-button-icon.achievement {
+    top: 1px;
   }
 }

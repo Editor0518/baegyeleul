@@ -48,6 +48,26 @@ const TUTORIAL_STEPS = [
         action: { type: "openModal", modalType: MODAL_TYPES.GAME_LOG }
     },
     {
+        text: "'앨범' 버튼을 누르면 게임 중 감상한 CG를\n다시 볼 수 있습니다.",
+        targetId: "header-album-btn",
+        action: { type: "closeModal" }
+    },
+    {
+        text: "앨범 창에서는 지금까지 본 CG 이미지를 모아볼 수 있습니다.\n아직 보지 못한 CG는 잠금 상태로 표시됩니다.",
+        targetId: "cg-album-modal",
+        action: { type: "openModal", modalType: MODAL_TYPES.CG_ALBUM }
+    },
+    {
+        text: "'업적' 버튼을 누르면 달성한 업적과\n아직 달성하지 못한 업적을 확인할 수 있습니다.",
+        targetId: "header-achievement-btn",
+        action: { type: "closeModal" }
+    },
+    {
+        text: "업적 창에서는 각 업적의 이름, 설명, 달성 방법을 확인할 수 있습니다.\n달성한 업적은 밝게, 미달성 업적은 어둡게 표시됩니다.",
+        targetId: "achievement-modal",
+        action: { type: "openModal", modalType: MODAL_TYPES.ACHIEVEMENT }
+    },
+    {
         text: "'처음으로' 버튼을 누르면 타이틀 화면으로 돌아갑니다.\n저장하지 않은 진행 내역은 사라지니 꼭 저장 후 눌러주세요!",
         targetId: "header-reset-btn",
         action: { type: "closeModal" }

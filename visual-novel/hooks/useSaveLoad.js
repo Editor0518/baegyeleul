@@ -71,6 +71,7 @@ export const useSaveLoad = () => {
       currentPlace,
       variables,
       logEntries,
+      unlockedAchievements,
     } = gameState;
 
     // 현재 씬 정보 가져오기
@@ -91,6 +92,7 @@ export const useSaveLoad = () => {
       currentPlace,
       variables,
       logEntries,
+      unlockedAchievements: unlockedAchievements || [],
       version: "1.0", // 나중에 호환성을 위해
     };
 

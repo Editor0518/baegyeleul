@@ -18,7 +18,7 @@ const CGAlbumModal = ({ onClose }) => {
 
   return (
     <div className="cg-album-overlay" onClick={onClose}>
-      <div className="cg-album-modal" onClick={(e) => e.stopPropagation()}>
+      <div id="cg-album-modal" className="cg-album-modal" onClick={(e) => e.stopPropagation()}>
         <div className="cg-album-header">
           <h2>CG 앨범</h2>
           <span className="cg-album-counter">{viewedCount} / {allCGs.length}</span>

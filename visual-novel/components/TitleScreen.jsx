@@ -4,7 +4,7 @@ import React from "react";
 import "./TitleScreen.css";
 import { useGameContext } from "@/contexts/GameContext";
 
-const TitleScreen = ({ onStart, onLoad, onAlbumClick, isMuted, onToggleMute }) => {
+const TitleScreen = ({ onStart, onLoad, onAlbumClick, onAchievementClick, isMuted, onToggleMute }) => {
   const { gameInfo, loadSource } = useGameContext();
 
   // 줄바꿈 문자(\n)를 <br>로 변환
@@ -50,6 +50,10 @@ const TitleScreen = ({ onStart, onLoad, onAlbumClick, isMuted, onToggleMute }) =
           </button>
           <button className="load-button" onClick={onAlbumClick}>
             <span className="line-deco left"></span>앨범 보기
+            <span className="line-deco right"></span>
+          </button>
+          <button className="load-button" onClick={onAchievementClick}>
+            <span className="line-deco left"></span>업적 보기
             <span className="line-deco right"></span>
           </button>
         </div>

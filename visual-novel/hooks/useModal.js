@@ -19,6 +19,7 @@ export const MODAL_TYPES = {
   GAME_LOG: "gameLog",
   WARNING: "warning",
   CG_ALBUM: "cgAlbum",
+  ACHIEVEMENT: "achievement",
 };
 
 /**

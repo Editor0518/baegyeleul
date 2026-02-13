@@ -142,6 +142,15 @@ const headerMap = {
     "엔딩등급(rank)": "rank",
     "최소호감도(threshold)": "threshold",
   },
+  achievements: {
+    "업적ID(id)": "id",
+    "업적이름(name)": "name",
+    "업적설명(desc)": "desc",
+    "달성조건(command)": "command",
+    "달성조건설명(condition_desc)": "condition_desc",
+    "이름공개여부(name_show)": "name_show",
+    "달성조건공개여부(condition_show)": "condition_show",
+  },
 };
 
 function sheetToJson(workbook, sheetName, map, xlsxUtils) {
@@ -712,6 +721,26 @@ function buildEndingConfig(endingSystemRows, endingConfigRows) {
   return { thresholds, common, duo, characterEndings };
 }
 
+function buildAchievements(rows) {
+  return (rows || [])
+    .filter((r) => r.id)
+    .map((r) => {
+      const toBool = (v) => {
+        if (typeof v === "boolean") return v;
+        return String(v).trim().toUpperCase() === "TRUE";
+      };
+      return {
+        id: String(r.id).trim(),
+        name: (r.name || "").toString(),
+        desc: (r.desc || "").toString(),
+        command: (r.command || "").toString(),
+        condition_desc: (r.condition_desc || "").toString(),
+        name_show: toBool(r.name_show),
+        condition_show: toBool(r.condition_show),
+      };
+    });
+}
+
 // Apps Script JSON에서 시트 데이터를 headerMap으로 매핑
 function sheetsJsonToMapped(sheetsJson, sheetName, map) {
   const rows = sheetsJson[sheetName];
@@ -777,7 +806,11 @@ export function convertSheetsJsonToStoryData(sheetsJson) {
 
   const endingConfig = buildEndingConfig(endingSystemRows, endingConfigRows);
 
-  return { gameInfo, characters, places, storyScenes, endingConfig };
+  const achievements = buildAchievements(
+    sheetsJsonToMapped(sheetsJson, "achievements", headerMap.achievements)
+  );
+
+  return { gameInfo, characters, places, storyScenes, endingConfig, achievements };
 }
 
 export function convertXlsxToStoryData(arrayBuffer, XLSX) {
@@ -847,7 +880,11 @@ export function convertXlsxToStoryData(arrayBuffer, XLSX) {
 
   const endingConfig = buildEndingConfig(endingSystemRows, endingConfigRows);
 
-  return { gameInfo, characters, places, storyScenes, endingConfig };
+  const achievements = buildAchievements(
+    sheetToJson(workbook, "achievements", headerMap.achievements, utils)
+  );
+
+  return { gameInfo, characters, places, storyScenes, endingConfig, achievements };
 }
 
 export default convertXlsxToStoryData;

@@ -31,6 +31,7 @@ import { useVariables } from "@/hooks/useVariables";
 import { useGameLog } from "@/hooks/useGameLog";
 import { useChoicePagination } from "@/hooks/useChoicePagination";
 import { useCGAlbum } from "@/hooks/useCGAlbum";
+import { useAchievements } from "@/hooks/useAchievements";
 import { getBackgroundStyle } from "@/utils/backgroundHelper";
 import { validateSceneFlow, validateEndingInfo } from "@/utils/storyValidator";
 import { clampAffection } from "@/utils/affectionHelper";
@@ -59,6 +60,7 @@ import InitialLoadingScreen from "./InitialLoadingScreen";
 import InGameLoadingScreen from "./InGameLoadingScreen";
 import ValidationPanel from "./ValidationPanel";
 import TutorialOverlay from "./TutorialOverlay";
+import AchievementToast from "./AchievementToast";
 import "./VisualNovel.css";
 
 const VisualNovel = () => {
@@ -84,6 +86,13 @@ const VisualNovel = () => {
   } = useGameLog();
   const { activeModal, modalData, openModal, closeModal } = useModal();
   const { markCGAsViewed } = useCGAlbum();
+  const {
+    checkAchievements,
+    toastQueue,
+    dismissToast,
+    mergeUnlockedAchievements,
+    getUnlockedArray,
+  } = useAchievements();
   const {
     isMuted,
     toggleMute,
@@ -342,6 +351,12 @@ const VisualNovel = () => {
       markCGAsViewed(currentScene.cutsceneImage);
     }
   }, [shouldShowCutscene, currentScene?.cutsceneImage, markCGAsViewed]);
+
+  // 업적 체크 - 씬 이동, 호감도 변경, 엔딩 표시 시
+  useEffect(() => {
+    if (showTitleScreen || !currentScene) return;
+    checkAchievements(variables, affection, history, choiceHistory);
+  }, [currentSceneId, affection, showEndingResult, showTitleScreen, currentScene, checkAchievements, variables, history, choiceHistory]);
 
   // 게임 상태 리셋 통합 함수
   const resetGameState = useCallback(
@@ -892,6 +907,10 @@ const VisualNovel = () => {
     openModal(MODAL_TYPES.CG_ALBUM);
   }, [openModal]);
 
+  const handleOpenAchievement = useCallback(() => {
+    openModal(MODAL_TYPES.ACHIEVEMENT);
+  }, [openModal]);
+
   const getCurrentGameState = useCallback(() => {
     return {
       currentSceneId,
@@ -909,6 +928,7 @@ const VisualNovel = () => {
       logEntries,
       history, // Added history to save state
       choiceHistory, // Added choiceHistory to save state
+      unlockedAchievements: getUnlockedArray(),
     };
   }, [
     currentSceneId,
@@ -926,6 +946,7 @@ const VisualNovel = () => {
     logEntries,
     history, // Added history to dependency array
     choiceHistory, // Added choiceHistory to dependency array
+    getUnlockedArray,
   ]);
 
   const handleLoadGameState = useCallback(
@@ -992,6 +1013,11 @@ const VisualNovel = () => {
         clearLog();
       }
 
+      // 업적 로드 (기존 localStorage와 merge)
+      if (saveData.unlockedAchievements) {
+        mergeUnlockedAchievements(saveData.unlockedAchievements);
+      }
+
       closeModal();
     },
     [
@@ -1006,6 +1032,7 @@ const VisualNovel = () => {
       resetVariables,
       setAllLogs,
       clearLog,
+      mergeUnlockedAchievements,
       storyScenes,
     ]
   );
@@ -1039,6 +1066,7 @@ const VisualNovel = () => {
           onStart={handleStartGame}
           onLoad={handleOpenLoad}
           onAlbumClick={handleOpenAlbum}
+          onAchievementClick={handleOpenAchievement}
           isMuted={isMuted}
           onToggleMute={handleToggleMuteOnTitle}
         />
@@ -1069,6 +1097,7 @@ const VisualNovel = () => {
                 onLogClick={handleOpenLog}
                 onInfoClick={handleOpenTutorial}
                 onAlbumClick={handleOpenAlbum}
+                onAchievementClick={handleOpenAchievement}
                 onResetClick={handleConfirmResetToTitle}
                 isMuted={isMuted}
                 onToggleMute={toggleMute}
@@ -1125,6 +1154,14 @@ const VisualNovel = () => {
           {(isPreloadingEnding || !currentScene) && (
             <InGameLoadingScreen
               message={!currentScene ? "씬을 불러오는 중..." : "엔딩을 준비하는 중..."}
+            />
+          )}
+
+          {/* 업적 획득 토스트 */}
+          {toastQueue.length > 0 && (
+            <AchievementToast
+              message={toastQueue[0]}
+              onDismiss={dismissToast}
             />
           )}
         </div>

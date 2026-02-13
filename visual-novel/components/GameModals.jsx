@@ -12,6 +12,7 @@ import ConfirmModal from "./ConfirmModal";
 import GameLogModal from "./GameLogModal";
 import WarningModal from "./WarningModal";
 import CGAlbumModal from "./CGAlbumModal";
+import AchievementModal from "./AchievementModal";
 import { MODAL_TYPES } from "@/hooks/useModal";
 
 const GameModals = ({
@@ -72,6 +73,11 @@ const GameModals = ({
       {/* CG 앨범 모달 */}
       {activeModal === MODAL_TYPES.CG_ALBUM && (
         <CGAlbumModal onClose={onCloseModal} />
+      )}
+
+      {/* 업적 모달 */}
+      {activeModal === MODAL_TYPES.ACHIEVEMENT && (
+        <AchievementModal onClose={onCloseModal} />
       )}
     </>
   );

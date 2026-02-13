@@ -535,7 +535,7 @@ export function evaluateCondition(leftValue, operator, rightValue) {
  * @param {Object} choiceHistory - 선택지 기록 (선택적)
  * @returns {boolean} 조건 만족 여부
  */
-function evaluateConditionString(conditionsStr, variables, affection, history, choiceHistory) {
+export function evaluateConditionString(conditionsStr, variables, affection, history, choiceHistory) {
   if (!conditionsStr || !conditionsStr.trim()) return true;
 
   // 'and'로 조건 분리
