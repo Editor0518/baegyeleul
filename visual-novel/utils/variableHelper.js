@@ -106,6 +106,15 @@ function parseValue(valueStr) {
     return trimmed.slice(1, -1);
   }
 
+  // 콤마로 구분된 OR 값 목록 (예: 1,2,3,4)
+  if (trimmed.includes(',')) {
+    return trimmed.split(',').map(v => {
+      const t = v.trim();
+      const num = parseFloat(t);
+      return !isNaN(num) ? num : t;
+    });
+  }
+
   // 숫자
   const num = parseFloat(trimmed);
   if (!isNaN(num)) {
@@ -507,6 +516,18 @@ function getVariableValue(varName, variables, affection, history, choiceHistory)
 export function evaluateCondition(leftValue, operator, rightValue) {
   // undefined는 조건 평가 실패
   if (leftValue === undefined) return false;
+
+  // OR 값 목록 처리 (콤마로 구분된 값 → 배열)
+  if (Array.isArray(rightValue)) {
+    switch (operator) {
+      case '==':
+        return rightValue.some(v => leftValue == v);   // 하나라도 같으면 참
+      case '!=':
+        return rightValue.every(v => leftValue != v);   // 모두 다르면 참
+      default:
+        return rightValue.some(v => evaluateCondition(leftValue, operator, v));
+    }
+  }
 
   switch (operator) {
     case '==':
