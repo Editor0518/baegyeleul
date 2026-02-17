@@ -61,6 +61,7 @@ import InGameLoadingScreen from "./InGameLoadingScreen";
 import ValidationPanel from "./ValidationPanel";
 import TutorialOverlay from "./TutorialOverlay";
 import AchievementToast from "./AchievementToast";
+import DebugPanel from "./DebugPanel";
 import "./VisualNovel.css";
 
 const VisualNovel = () => {
@@ -85,7 +86,7 @@ const VisualNovel = () => {
     setAllLogs
   } = useGameLog();
   const { activeModal, modalData, openModal, closeModal } = useModal();
-  const { markCGAsViewed } = useCGAlbum();
+  const { markCGAsViewed, viewedCGs } = useCGAlbum();
   const {
     checkAchievements,
     toastQueue,
@@ -1078,6 +1079,27 @@ const VisualNovel = () => {
           currentGameState={getCurrentGameState()}
           logEntries={logEntries}
         />
+        <DebugPanel
+          currentSceneId={currentSceneId}
+          dialogueIndex={dialogueIndex}
+          currentPlace={currentPlaceId}
+          showTitleScreen={showTitleScreen}
+          isSkipping={isSkipping}
+          showReaction={showReaction}
+          currentReaction={currentReaction}
+          pendingNextScene={pendingNextScene}
+          showEndingResult={showEndingResult}
+          affection={affection}
+          variables={variables}
+          endingInfo={endingInfo}
+          history={history}
+          choiceHistory={choiceHistory}
+          logEntries={logEntries}
+          unlockedAchievements={getUnlockedArray()}
+          viewedCGs={viewedCGs}
+          displayedCharacters={displayedCharacters}
+          currentScene={currentScene}
+        />
       </>
     );
   }
@@ -1166,6 +1188,27 @@ const VisualNovel = () => {
           )}
         </div>
       </div>
+      <DebugPanel
+        currentSceneId={currentSceneId}
+        dialogueIndex={dialogueIndex}
+        currentPlace={currentPlaceId}
+        showTitleScreen={showTitleScreen}
+        isSkipping={isSkipping}
+        showReaction={showReaction}
+        currentReaction={currentReaction}
+        pendingNextScene={pendingNextScene}
+        showEndingResult={showEndingResult}
+        affection={affection}
+        variables={variables}
+        endingInfo={endingInfo}
+        history={history}
+        choiceHistory={choiceHistory}
+        logEntries={logEntries}
+        unlockedAchievements={getUnlockedArray()}
+        viewedCGs={viewedCGs}
+        displayedCharacters={displayedCharacters}
+        currentScene={currentScene}
+      />
     </>
   );
 };

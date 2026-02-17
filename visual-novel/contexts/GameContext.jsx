@@ -89,17 +89,6 @@ export const GameContextProvider = ({ children }) => {
     }
   }, []);
 
-  const loadStoryDataFromJson = useCallback(async () => {
-    const timestamp = Date.now();
-    const response = await fetch(`storyData.json?v=${timestamp}`, {
-      cache: "no-cache",
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to load story data: ${response.status}`);
-    }
-    return response.json();
-  }, []);
-
   // 스토리 데이터 로드
   useEffect(() => {
     const loadStoryData = async () => {
@@ -112,39 +101,18 @@ export const GameContextProvider = ({ children }) => {
           setLoadProgress({ loaded, total });
         });
 
-        // 데이터 유효성 검사
-        const errors = validateStoryData(data);
-        const hasCriticalErrors = errors.some(e => e.severity === 'error');
-
-        if (hasCriticalErrors) {
-          console.warn("[GameContext] Apps Script 데이터에 치명적인 오류가 있어 storyData.json으로 폴백합니다.", errors);
-          throw new Error("Apps Script validation failed");
-        }
-
         console.log("[GameContext] ✓ Apps Script 로드 성공");
         setLoadSource("appsScript");
         applyStoryData(data);
-        return;
       } catch (error) {
-        console.warn("[GameContext] Apps Script 로드 실패, storyData.json으로 폴백합니다.", error);
-      }
-
-      try {
-        console.log("[GameContext] JSON 폴백 시작...");
-        setLoadProgress({ loaded: LOAD_PROGRESS_TOTAL - 1, total: LOAD_PROGRESS_TOTAL });
-        const data = await loadStoryDataFromJson();
-        console.log("[GameContext] ✓ JSON 로드 성공 (폴백)");
-        setLoadSource("json");
-        applyStoryData(data);
-      } catch (error) {
-        console.error("[GameContext] 스토리 데이터 로드 실패:", error);
+        console.error("[GameContext] Apps Script 로드 실패:", error);
         setLoadError(error.message);
         setIsLoading(false);
       }
     };
 
     loadStoryData();
-  }, [applyStoryData, loadStoryDataFromJson, loadStoryDataFromAppsScript]);
+  }, [applyStoryData, loadStoryDataFromAppsScript]);
 
   // 음소거 토글 함수
   const toggleMute = useCallback(() => {
