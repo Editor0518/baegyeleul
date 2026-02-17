@@ -129,21 +129,29 @@ function parseValue(valueStr) {
  * if 명령어 파싱
  * if 변수이름 연산자 값 then 씬A [else 씬B]
  * if 변수이름 연산자 값 and 변수이름2 연산자 값2 then 씬A [else 씬B]
+ * if 변수이름 연산자 값 then 명령어 [else 명령어]  (예: add 1 to x)
  */
 function parseIfCommand(cmd) {
-  // then과 else를 기준으로 먼저 분리
-  const thenMatch = cmd.match(/^if\s+(.+?)\s+then\s+(\S+)(?:\s+else\s+(\S+))?$/);
+  // Step 1: then 기준으로 조건부와 나머지를 분리 (나머지는 다중 단어 허용)
+  const mainMatch = cmd.match(/^if\s+(.+?)\s+then\s+(.+)$/);
+  if (!mainMatch) return null;
 
-  if (!thenMatch) return null;
+  const conditionsStr = mainMatch[1];
+  const afterThen = mainMatch[2].trim();
 
-  const conditionsStr = thenMatch[1];
-  const thenScene = thenMatch[2];
-  const elseScene = thenMatch[3] || null;
+  // Step 2: else로 then파트/else파트 분리
+  let thenPart, elsePart;
+  const elseMatch = afterThen.match(/^(.+?)\s+else\s+(.+)$/);
+  if (elseMatch) {
+    thenPart = elseMatch[1].trim();
+    elsePart = elseMatch[2].trim();
+  } else {
+    thenPart = afterThen;
+    elsePart = null;
+  }
 
-  // 'and'로 조건 분리
+  // Step 3: 조건 파싱 ('and'로 분리)
   const conditionParts = conditionsStr.split(/\s+and\s+/);
-
-  // 각 조건 파싱
   const conditions = [];
   const conditionPattern = /^(\S+)\s+(==|!=|<=|>=|<|>)\s+(.+)$/;
 
@@ -158,28 +166,47 @@ function parseIfCommand(cmd) {
     });
   }
 
-  // else가 있는 경우, 세미콜론 문법으로 전처리
+  // Step 4: then/else 파트가 명령어인지 씬 이름인지 판별
+  const isCommandStr = (str) => /^(set|add|delete)\s/.test(str);
+  const thenIsCommand = isCommandStr(thenPart);
+  const elseIsCommand = elsePart ? isCommandStr(elsePart) : false;
+
+  // 명령어가 포함된 경우: 단일 if 구조로 반환 (분리하지 않음)
+  if (thenIsCommand || elseIsCommand) {
+    return {
+      type: 'if',
+      conditions,
+      thenCommand: thenIsCommand ? parseSingleCommand(thenPart) : null,
+      thenScene: thenIsCommand ? null : thenPart,
+      elseCommand: elseIsCommand ? parseSingleCommand(elsePart) : null,
+      elseScene: (elsePart && !elseIsCommand) ? elsePart : null,
+    };
+  }
+
+  // 씬 이름만인 경우: 기존 로직 유지
+  const thenScene = thenPart;
+  const elseScene = elsePart;
+
+  // else가 있는 경우, 드모르간 법칙으로 두 개의 if로 분리
   if (elseScene) {
-    // 반전된 조건들 생성 (드모르간 법칙: NOT(A AND B) = NOT(A) OR NOT(B))
     const invertedConditions = conditions.map(condition => ({
       varName: condition.varName,
       operator: invertOperator(condition.operator),
       value: condition.value
     }));
 
-    // 두 개의 if 명령어로 분리
     const commands = [
       {
         type: 'if',
         conditions: conditions,
-        logicOperator: 'and', // 명시적으로 AND
+        logicOperator: 'and',
         thenScene,
         elseScene: null
       },
       {
         type: 'if',
         conditions: invertedConditions,
-        logicOperator: 'or', // 내부적으로 OR 사용
+        logicOperator: 'or',
         thenScene: elseScene,
         elseScene: null
       }
@@ -190,7 +217,7 @@ function parseIfCommand(cmd) {
 
   return {
     type: 'if',
-    conditions, // 배열로 저장
+    conditions,
     thenScene,
     elseScene
   };
@@ -380,7 +407,7 @@ export function executeConditionalCommand(command, context) {
   const { variables, affection, history, choiceHistory } = context;
 
   if (type === 'if') {
-    const { conditions, varName, operator, value, thenScene, elseScene, logicOperator } = command;
+    const { conditions, varName, operator, value, thenScene, elseScene, thenCommand, elseCommand, logicOperator } = command;
 
     let allConditionsMet = true;
 
@@ -421,9 +448,11 @@ export function executeConditionalCommand(command, context) {
     }
 
     if (allConditionsMet) {
+      if (thenCommand) return executeCommand(thenCommand, context);
       return { nextScene: thenScene, shouldContinue: false };
-    } else if (elseScene) {
-      return { nextScene: elseScene, shouldContinue: false };
+    } else {
+      if (elseCommand) return executeCommand(elseCommand, context);
+      if (elseScene) return { nextScene: elseScene, shouldContinue: false };
     }
 
     return { nextScene: null, shouldContinue: true };
