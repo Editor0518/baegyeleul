@@ -366,6 +366,10 @@ const VisualNovel = () => {
         resetGame();
         setShowTitleScreen(false);
         setHasInteracted(true);
+        // 재시작 시 warning 씬을 건너뛰고 첫 스토리 씬으로 직행
+        const warningScene = storyScenes?.find(s => s.id === 'warning_scene');
+        const firstSceneId = warningScene?.next || 'scene1';
+        goToScene(firstSceneId);
       } else {
         resetToTitle();
         setShowTitleScreen(true);
@@ -395,6 +399,8 @@ const VisualNovel = () => {
       audioRef,
       currentBGMRef,
       clearImageCache,
+      storyScenes,
+      goToScene,
     ]
   );
 
@@ -544,9 +550,6 @@ const VisualNovel = () => {
     choiceHistoryRef.current = choiceHistory;
   }, [choiceHistory]);
 
-  // 마지막으로 실행한 명령어 추적 (무한 루프 방지)
-  const lastExecutedCommandRef = useRef(null);
-
   // 변수/호감도 통합 업데이트 함수
   const handleAddToVariable = useCallback((name, amount) => {
     // characters에 존재하고 nonPlayable이 아니면 호감도로 처리
@@ -560,7 +563,7 @@ const VisualNovel = () => {
     }
   }, [characters, updateAffection, addToVariable]);
 
-  // 대사 로그 추가 및 명령어 실행
+  // 대사 로그 추가
   React.useEffect(() => {
     // lines 범위를 벗어난 인덱스(선택지 표시 상태 등)일 경우 로그 추가 방지
     // 경고(Warning) 씬은 로그에 기록하지 않음
@@ -573,38 +576,8 @@ const VisualNovel = () => {
       addDialogueLog(currentLine.speaker, currentLine.text, currentSceneId, dialogueIndex);
     }
 
-    // 명령어 실행
-    if (currentLine.command) {
-      const commandKey = `${currentSceneId}-${dialogueIndex}-${currentLine.command}`;
-
-      // 이미 실행한 명령어면 건너뜀 (상태 변경으로 인한 재실행 방지)
-      if (lastExecutedCommandRef.current === commandKey) {
-        return;
-      }
-
-      const parsedCommand = parseCommand(currentLine.command);
-      if (parsedCommand) {
-        const context = {
-          variables,
-          affection,
-          history: historyRef.current, // Use ref here
-          choiceHistory: choiceHistoryRef.current, // Use ref here
-          setVariable,
-          getVariable,
-          deleteVariable,
-          addToVariable: handleAddToVariable, // Use wrapper function
-        };
-
-        const result = executeCommand(parsedCommand, context);
-
-        // 명령어 실행 기록
-        lastExecutedCommandRef.current = commandKey;
-
-        // 명령어 실행 (변수 설정 등은 즉시 실행, 씬 전환은 handleNext에서 처리)
-        // if/ifs 명령어의 씬 전환은 handleNext에서 처리되므로 여기서는 무시
-      }
-    }
-  }, [currentLine, currentSceneId, dialogueIndex, showReaction, variables, affection, addDialogueLog, setVariable, getVariable, deleteVariable, addToVariable, goToScene, handleAddToVariable, lines]); // history removed from dependency
+    // 명령어 실행은 handleNext에서만 처리 (이중 실행 방지)
+  }, [currentLine, currentSceneId, dialogueIndex, showReaction, addDialogueLog, lines, currentScene?.type]);
 
   // 이벤트 핸들러
   const handleNext = useCallback(() => {
@@ -630,7 +603,7 @@ const VisualNovel = () => {
           setVariable,
           getVariable,
           deleteVariable,
-          addToVariable,
+          addToVariable: handleAddToVariable,
         };
 
         const result = executeCommand(parsedCommand, context);
@@ -714,7 +687,7 @@ const VisualNovel = () => {
     setVariable,
     getVariable,
     deleteVariable,
-    addToVariable,
+    handleAddToVariable,
   ]);
 
   // 선택지까지 스킵 엔진
@@ -960,6 +933,7 @@ const VisualNovel = () => {
       setIsSkipping(false);
       setShowTitleScreen(false);
       setHasInteracted(true);
+      resetCharacterDisplay();
       goToScene(saveData.sceneId);
 
       const loadedAffection = saveData.affection || {};
@@ -1034,6 +1008,7 @@ const VisualNovel = () => {
       setAllLogs,
       clearLog,
       mergeUnlockedAchievements,
+      resetCharacterDisplay,
       storyScenes,
     ]
   );
