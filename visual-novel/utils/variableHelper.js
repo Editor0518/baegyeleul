@@ -153,14 +153,15 @@ function parseIfCommand(cmd) {
   // Step 3: 조건 파싱 ('and'로 분리)
   const conditionParts = conditionsStr.split(/\s+and\s+/);
   const conditions = [];
-  const conditionPattern = /^(\S+)\s+(==|!=|<=|>=|<|>)\s+(.+)$/;
+  // 산술 표현식 지원: varA - varB >= 50, varA + varB == 100
+  const conditionPattern = /^(.+?)\s+(==|!=|<=|>=|<|>)\s+(.+)$/;
 
   for (const part of conditionParts) {
     const match = part.trim().match(conditionPattern);
     if (!match) return null; // 파싱 실패
 
     conditions.push({
-      varName: match[1],
+      varName: match[1].trim(),
       operator: match[2],
       value: parseValue(match[3])
     });
@@ -417,7 +418,7 @@ export function executeConditionalCommand(command, context) {
       if (logicOperator === 'or') {
         allConditionsMet = false; // OR는 하나라도 참이면 됨
         for (const condition of conditions) {
-          const varValue = getVariableValue(condition.varName, variables, affection, history, choiceHistory);
+          const varValue = resolveLeftValue(condition.varName, variables, affection, history, choiceHistory);
           const conditionMet = evaluateCondition(varValue, condition.operator, condition.value);
 
           if (conditionMet) {
@@ -429,7 +430,7 @@ export function executeConditionalCommand(command, context) {
       // AND 로직 (기본)
       else {
         for (const condition of conditions) {
-          const varValue = getVariableValue(condition.varName, variables, affection, history, choiceHistory);
+          const varValue = resolveLeftValue(condition.varName, variables, affection, history, choiceHistory);
           const conditionMet = evaluateCondition(varValue, condition.operator, condition.value);
 
           if (!conditionMet) {
@@ -441,7 +442,7 @@ export function executeConditionalCommand(command, context) {
     }
     // 기존 형식 (하위 호환성)
     else if (varName && operator !== undefined && value !== undefined) {
-      const varValue = getVariableValue(varName, variables, affection, history, choiceHistory);
+      const varValue = resolveLeftValue(varName, variables, affection, history, choiceHistory);
       allConditionsMet = evaluateCondition(varValue, operator, value);
     } else {
       return { nextScene: null, shouldContinue: true };
@@ -540,6 +541,34 @@ function getVariableValue(varName, variables, affection, history, choiceHistory)
 }
 
 /**
+ * 좌변 값 해석 (단순 변수 또는 산술 표현식 지원)
+ * 예: "mendelssohn" → 변수값 반환
+ * 예: "mendelssohn - liszt" → 두 변수값의 차 반환
+ */
+function resolveLeftValue(leftExpr, variables, affection, history, choiceHistory) {
+  const trimmed = leftExpr.trim();
+
+  // 산술 표현식 감지: varA - varB, varA + varB
+  const arithmeticMatch = trimmed.match(/^(\S+)\s*([\-\+])\s*(\S+)$/);
+  if (arithmeticMatch) {
+    const varA = getVariableValue(arithmeticMatch[1], variables, affection, history, choiceHistory);
+    const op = arithmeticMatch[2];
+    const varB = getVariableValue(arithmeticMatch[3], variables, affection, history, choiceHistory);
+
+    const numA = Number(varA);
+    const numB = Number(varB);
+
+    if (isNaN(numA) || isNaN(numB)) return undefined;
+
+    if (op === '-') return numA - numB;
+    if (op === '+') return numA + numB;
+  }
+
+  // 단순 변수명
+  return getVariableValue(trimmed, variables, affection, history, choiceHistory);
+}
+
+/**
  * 조건 평가
  */
 export function evaluateCondition(leftValue, operator, rightValue) {
@@ -591,18 +620,18 @@ export function evaluateConditionString(conditionsStr, variables, affection, his
   // 'and'로 조건 분리
   const conditionParts = conditionsStr.trim().split(/\s+and\s+/);
 
-  // 각 조건 평가
-  const conditionPattern = /^(\S+)\s+(==|!=|<=|>=|<|>)\s+(.+)$/;
+  // 각 조건 평가 (산술 표현식 지원: varA - varB >= 50)
+  const conditionPattern = /^(.+?)\s+(==|!=|<=|>=|<|>)\s+(.+)$/;
 
   for (const part of conditionParts) {
     const match = part.trim().match(conditionPattern);
     if (!match) return true; // 파싱 실패 시 표시
 
-    const varName = match[1];
+    const leftExpr = match[1].trim();
     const operator = match[2];
     const value = parseValue(match[3]);
 
-    const varValue = getVariableValue(varName, variables, affection, history, choiceHistory);
+    const varValue = resolveLeftValue(leftExpr, variables, affection, history, choiceHistory);
     const conditionMet = evaluateCondition(varValue, operator, value);
 
     // 하나라도 거짓이면 전체 거짓 (AND 로직)
