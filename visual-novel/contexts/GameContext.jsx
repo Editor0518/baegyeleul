@@ -140,6 +140,7 @@ export const GameContextProvider = ({ children }) => {
     storyScenes: storyData?.storyScenes,
     endingConfig: storyData?.endingConfig,
     achievements: storyData?.achievements,
+    cutscenes: storyData?.cutscenes,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

@@ -79,17 +79,25 @@ if ($http) {
       $ctx = $http.GetContext()
       $req = $ctx.Request
       $res = $ctx.Response
-      $path = Resolve-FilePath -Root $RootPath -Relative $req.Url.AbsolutePath -Spa:$SpaFallback
-      if (Test-Path $path -PathType Leaf) {
-        $bytes = [IO.File]::ReadAllBytes($path)
-        $res.ContentType = Get-MimeType -Path $path
-        $res.ContentLength64 = $bytes.Length
-        $res.StatusCode = 200
-        $res.OutputStream.Write($bytes,0,$bytes.Length)
-      } else {
-        $res.StatusCode = 404
+      # 요청 하나가 실패해도(연결 끊김, HEAD 등) 서버 전체가 죽지 않도록 개별 처리
+      try {
+        $path = Resolve-FilePath -Root $RootPath -Relative $req.Url.AbsolutePath -Spa:$SpaFallback
+        if (Test-Path $path -PathType Leaf) {
+          $bytes = [IO.File]::ReadAllBytes($path)
+          $res.ContentType = Get-MimeType -Path $path
+          $res.ContentLength64 = $bytes.Length
+          $res.StatusCode = 200
+          if ($req.HttpMethod -ne 'HEAD') {
+            $res.OutputStream.Write($bytes,0,$bytes.Length)
+          }
+        } else {
+          $res.StatusCode = 404
+        }
+      } catch {
+        Write-Warning "Request failed ($($req.Url.AbsolutePath)): $($_.Exception.Message)"
+      } finally {
+        try { $res.OutputStream.Close() } catch {}
       }
-      $res.OutputStream.Close()
     }
   } finally { $http.Stop() }
   return

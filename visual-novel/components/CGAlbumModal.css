@@ -142,6 +142,26 @@
   width: 100%;
 }
 
+.cg-album-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.cg-album-name {
+  font-size: 0.9375rem;
+  color: var(--primary-light);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cg-album-name.locked {
+  color: rgba(255, 245, 218, 0.3);
+}
+
 .cg-album-item {
   position: relative;
   aspect-ratio: 16 / 9;

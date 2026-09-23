@@ -70,7 +70,8 @@ const headerMap = {
     "씬종류(type)": "type",
     "장소ID(place)": "place",
     "다음씬ID(nextSceneId)": "nextSceneId",
-    "컷씬이미지(cutsceneImage)": "cutsceneImage",
+    "컷씬ID(cutsceneId)": "cutsceneId",
+    "컷씬이미지(cutsceneImage)": "cutsceneId", // 구버전 시트 호환 (파일명을 ID처럼 취급)
     "엔딩호감도체크(checkAffection)": "checkAffection",
     "배경음악(backgroundMusic)": "backgroundMusic",
   },
@@ -141,6 +142,11 @@ const headerMap = {
   ending_system: {
     "엔딩등급(rank)": "rank",
     "최소호감도(threshold)": "threshold",
+  },
+  cutscenes: {
+    "컷씬ID(cutsceneId)": "id",
+    "컷씬이름(cutsceneName)": "name",
+    "컷씬이미지(cutsceneImage)": "image",
   },
   achievements: {
     "업적ID(id)": "id",
@@ -370,6 +376,23 @@ function buildPlaces(rows) {
   return result;
 }
 
+// cutscenes 시트 → [{ id, name, image }] (시트 순서 유지, 중복 ID는 첫 행 우선)
+function buildCutscenes(rows) {
+  const seen = new Set();
+  const result = [];
+  (rows || []).forEach((r) => {
+    const id = (r.id ?? "").toString().trim();
+    if (!id || seen.has(id)) return;
+    seen.add(id);
+    result.push({
+      id,
+      name: (r.name ?? "").toString().trim(),
+      image: (r.image ?? "").toString().trim(),
+    });
+  });
+  return result;
+}
+
 function expandLineOrder(value) {
   if (value === null || value === undefined) return [];
   const str = String(value).trim();
@@ -396,9 +419,21 @@ function expandLineOrder(value) {
   return [];
 }
 
-function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
+function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows, cutscenes = []) {
   console.log(`[XLSX Debug] buildScenes input - scenes: ${sceneRows.length}, dialogues: ${dialogueRows.length}, choices: ${choiceRows.length}`);
   const sceneMap = {};
+
+  const cutsceneById = {};
+  cutscenes.forEach((c) => (cutsceneById[c.id] = c));
+  // 컷씬ID → 이미지 파일명. cutscenes 시트에 없으면 값 자체를 파일명으로 간주 (구버전 호환)
+  const resolveCutscene = (raw) => {
+    const id = (raw ?? "").toString().trim();
+    if (!id) return { cutsceneId: "", cutsceneImage: "" };
+    const found = cutsceneById[id];
+    if (found) return { cutsceneId: id, cutsceneImage: found.image };
+    if (cutscenes.length) console.warn(`[XLSX Debug] cutscenes 시트에 없는 컷씬ID: ${id}`);
+    return { cutsceneId: id, cutsceneImage: id };
+  };
   let lastPlace = "";
 
   const sceneOrder = [];
@@ -418,7 +453,7 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
       })(),
       place,
       nextSceneId: s.nextSceneId || "",
-      cutsceneImage: s.cutsceneImage || "",
+      ...resolveCutscene(s.cutsceneId),
       checkAffection:
         s.checkAffection === true ||
         String(s.checkAffection).trim().toLowerCase() === "true",
@@ -599,6 +634,7 @@ function buildScenes(sceneRows, dialogueRows, choiceRows, sceneCharRows) {
     const base = { id: scene.id, type: hasChoices ? "choice" : effectiveType };
 
     if (scene.place) base.place = scene.place;
+    if (scene.cutsceneId) base.cutsceneId = scene.cutsceneId;
     if (scene.cutsceneImage) base.cutsceneImage = scene.cutsceneImage;
     if (scene.checkAffection) base.checkAffection = true;
     if (scene.backgroundMusic) base.backgroundMusic = scene.backgroundMusic;
@@ -782,6 +818,10 @@ export function convertSheetsJsonToStoryData(sheetsJson) {
     sheetsJsonToMapped(sheetsJson, "places", headerMap.places)
   );
 
+  const cutscenes = buildCutscenes(
+    sheetsJsonToMapped(sheetsJson, "cutscenes", headerMap.cutscenes)
+  );
+
   let scenesRows = sheetsJsonToMapped(sheetsJson, "scenes", headerMap.scenes);
   let dialoguesRows = sheetsJsonToMapped(sheetsJson, "dialogues", headerMap.dialogues);
   let choicesRows = sheetsJsonToMapped(sheetsJson, "choices", headerMap.choices);
@@ -801,7 +841,8 @@ export function convertSheetsJsonToStoryData(sheetsJson) {
     scenesRows,
     dialoguesRows,
     choicesRows,
-    sceneCharRows
+    sceneCharRows,
+    cutscenes
   );
 
   const endingConfig = buildEndingConfig(endingSystemRows, endingConfigRows);
@@ -810,7 +851,7 @@ export function convertSheetsJsonToStoryData(sheetsJson) {
     sheetsJsonToMapped(sheetsJson, "achievements", headerMap.achievements)
   );
 
-  return { gameInfo, characters, places, storyScenes, endingConfig, achievements };
+  return { gameInfo, characters, places, storyScenes, endingConfig, achievements, cutscenes };
 }
 
 export function convertXlsxToStoryData(arrayBuffer, XLSX) {
@@ -834,6 +875,10 @@ export function convertXlsxToStoryData(arrayBuffer, XLSX) {
   );
   const places = buildPlaces(
     sheetToJson(workbook, "places", headerMap.places, utils)
+  );
+
+  const cutscenes = buildCutscenes(
+    sheetToJson(workbook, "cutscenes", headerMap.cutscenes, utils)
   );
 
   let scenesRows = sheetToJson(workbook, "scenes", headerMap.scenes, utils);
@@ -875,7 +920,8 @@ export function convertXlsxToStoryData(arrayBuffer, XLSX) {
     scenesRows,
     dialoguesRows,
     choicesRows,
-    sceneCharRows
+    sceneCharRows,
+    cutscenes
   );
 
   const endingConfig = buildEndingConfig(endingSystemRows, endingConfigRows);
@@ -884,7 +930,7 @@ export function convertXlsxToStoryData(arrayBuffer, XLSX) {
     sheetToJson(workbook, "achievements", headerMap.achievements, utils)
   );
 
-  return { gameInfo, characters, places, storyScenes, endingConfig, achievements };
+  return { gameInfo, characters, places, storyScenes, endingConfig, achievements, cutscenes };
 }
 
 export default convertXlsxToStoryData;

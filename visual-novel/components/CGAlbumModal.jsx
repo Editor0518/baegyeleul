@@ -10,9 +10,9 @@ const CGAlbumModal = ({ onClose }) => {
 
   const viewedCount = allCGs.filter(cg => isViewed(cg)).length;
 
-  const handleThumbnailClick = (filename) => {
-    if (isViewed(filename)) {
-      setSelectedCG(filename);
+  const handleThumbnailClick = (cg) => {
+    if (isViewed(cg)) {
+      setSelectedCG(cg);
     }
   };
 
@@ -32,25 +32,32 @@ const CGAlbumModal = ({ onClose }) => {
             <div className="cg-album-empty">등록된 CG가 없습니다.</div>
           ) : (
             <div className="cg-album-grid">
-              {allCGs.map((filename) => (
-                <div
-                  key={filename}
-                  className={`cg-album-item ${isViewed(filename) ? 'viewed' : 'locked'}`}
-                  onClick={() => handleThumbnailClick(filename)}
-                >
-                  {isViewed(filename) ? (
-                    <img
-                      src={`assets/cutscenes/${filename}`}
-                      alt={filename}
-                      className="cg-thumbnail"
-                    />
-                  ) : (
-                    <div className="cg-locked">
-                      <span className="cg-locked-icon">?</span>
+              {allCGs.map((cg) => {
+                const viewed = isViewed(cg);
+                return (
+                  <div key={cg.id} className="cg-album-entry">
+                    <div
+                      className={`cg-album-item ${viewed ? 'viewed' : 'locked'}`}
+                      onClick={() => handleThumbnailClick(cg)}
+                    >
+                      {viewed ? (
+                        <img
+                          src={`assets/cutscenes/${cg.image}`}
+                          alt={cg.name || cg.id}
+                          className="cg-thumbnail"
+                        />
+                      ) : (
+                        <div className="cg-locked">
+                          <span className="cg-locked-icon">?</span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
+                    <div className={`cg-album-name ${viewed ? '' : 'locked'}`}>
+                      {viewed ? (cg.name || cg.id) : '???'}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -65,8 +72,8 @@ const CGAlbumModal = ({ onClose }) => {
       {selectedCG && (
         <div className="cg-fullscreen-overlay" onClick={(e) => { e.stopPropagation(); setSelectedCG(null); }}>
           <img
-            src={`assets/cutscenes/${selectedCG}`}
-            alt={selectedCG}
+            src={`assets/cutscenes/${selectedCG.image}`}
+            alt={selectedCG.name || selectedCG.id}
             className="cg-fullscreen-image"
           />
         </div>

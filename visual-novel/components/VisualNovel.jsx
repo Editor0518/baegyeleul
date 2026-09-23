@@ -346,12 +346,13 @@ const VisualNovel = () => {
     [currentScene, currentLine]
   );
 
-  // CG 열람 추적 - 컷씬이 표시될 때 앨범에 기록
+  // CG 열람 추적 - 컷씬이 표시될 때 앨범에 기록 (컷씬ID 기준)
+  const currentCutsceneKey = currentScene?.cutsceneId || currentScene?.cutsceneImage;
   useEffect(() => {
-    if (shouldShowCutscene && currentScene?.cutsceneImage) {
-      markCGAsViewed(currentScene.cutsceneImage);
+    if (shouldShowCutscene && currentCutsceneKey) {
+      markCGAsViewed(currentCutsceneKey);
     }
-  }, [shouldShowCutscene, currentScene?.cutsceneImage, markCGAsViewed]);
+  }, [shouldShowCutscene, currentCutsceneKey, markCGAsViewed]);
 
   // 업적 체크 - 씬 이동, 호감도 변경, 엔딩 표시 시
   useEffect(() => {
