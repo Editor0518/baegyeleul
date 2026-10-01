@@ -139,6 +139,35 @@
   align-self: flex-end;
 }
 
+/* 원형/라운드 사각형: 바와 분리된 아이콘 버튼 (높이는 일반 선택지와 동일) */
+.choice-button-nav.nav-circle,
+.choice-button-nav.nav-square {
+  width: auto;
+  padding: 1rem;
+  margin-right: 3rem;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.choice-button-nav.nav-circle {
+  border-radius: 50%;
+}
+
+.choice-button-nav.nav-square {
+  border-radius: 1rem;
+}
+
+.choice-button-nav.nav-circle::before,
+.choice-button-nav.nav-square::before {
+  background: rgba(255, 245, 218, 0.4);
+}
+
+.choice-button-nav.nav-circle::after,
+.choice-button-nav.nav-square::after {
+  background: rgba(255, 245, 218, 0.7);
+}
+
 /* 페이지네이션 선택지(다음으로/처음으로) 아이콘 */
 .icon-choice-button.icon-nav-next {
   background-image: url(/assets/icon/arrow-next.svg);
@@ -219,8 +248,11 @@
         rgba(255, 245, 218, 0.2) 100%);
   }
 
-  .choice-button-nav {
+  .choice-button-nav,
+  .choice-button-nav.nav-circle,
+  .choice-button-nav.nav-square {
     align-self: center;
+    margin-right: 0;
   }
 
   .choice-toast {
@@ -257,8 +289,11 @@
         rgba(255, 245, 218, 0.2) 100%);
   }
 
-  .choice-button-nav {
+  .choice-button-nav,
+  .choice-button-nav.nav-circle,
+  .choice-button-nav.nav-square {
     align-self: center;
+    margin-right: 0;
   }
 
   .choice-toast {

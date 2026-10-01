@@ -4,8 +4,10 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import "./ChoiceBox.css";
 
 const TOAST_DURATION = 2000;
-// 다음으로/처음으로 버튼에 글씨를 표시할지 여부 (false면 화살표만 표시)
-const SHOW_NAV_TEXT = false;
+// 다음으로/처음으로 버튼 모양
+// 'text': 바 + 화살표 + 글씨 / 'bar': 바 + 화살표 / 'circle': 원형 화살표 / 'square': 라운드 사각형 화살표
+const NAV_BUTTON_STYLE = 'circle';
+const SHOW_NAV_TEXT = NAV_BUTTON_STYLE === 'text';
 
 const ChoiceBox = ({ choices, onChoice, isVisible = true }) => {
   // isVisible이 true일 때만 choices를 업데이트
@@ -73,7 +75,7 @@ const ChoiceBox = ({ choices, onChoice, isVisible = true }) => {
         {displayedChoices.map((choice, index) => (
           <button
             key={index}
-            className={`choice-button ${choice.isLocked ? 'choice-button-locked' : ''} ${choice.isNavigation ? 'choice-button-nav' : ''}`}
+            className={`choice-button ${choice.isLocked ? 'choice-button-locked' : ''} ${choice.isNavigation ? `choice-button-nav nav-${NAV_BUTTON_STYLE}` : ''}`}
             onClick={() => handleChoiceClick(choice, index)}
             disabled={!isLocallyVisible}
             aria-label={choice.isNavigation && !SHOW_NAV_TEXT ? choice.text : undefined}
