@@ -564,6 +564,51 @@ const VisualNovel = () => {
     }
   }, [characters, updateAffection, addToVariable]);
 
+  // 명령어 실행 컨텍스트 생성
+  // React state 업데이트는 다음 렌더 이후에 반영되므로, 실행 중 변경된 값을 작업용 사본에도
+  // 즉시 반영해 같은 칸의 뒤쪽 if/ifs가 최신 값으로 판단하도록 함
+  // (예: add 1 to mendelssohn; if mendelssohn >= 35 then A else B)
+  const createCommandContext = useCallback((affectionChanges) => {
+    const workingVariables = { ...variables };
+    const workingAffection = { ...affection };
+
+    const applyAffection = (name, amount) => {
+      if (characters?.[name]?.nonPlayable) return;
+      const current = workingAffection[name] ?? (characters?.[name]?.initialAffection ?? 0);
+      workingAffection[name] = clampAffection(name, current + Number(amount || 0));
+    };
+
+    // 선택지 N/O열 호감도 변화는 명령어보다 먼저 적용됨
+    if (affectionChanges) {
+      Object.entries(affectionChanges).forEach(([name, amount]) => applyAffection(name, amount));
+    }
+
+    return {
+      variables: workingVariables,
+      affection: workingAffection,
+      history,
+      choiceHistory,
+      getVariable,
+      setVariable: (name, value) => {
+        workingVariables[name] = value;
+        setVariable(name, value);
+      },
+      deleteVariable: (name) => {
+        delete workingVariables[name];
+        deleteVariable(name);
+      },
+      addToVariable: (name, amount) => {
+        if (characters && characters[name] && !characters[name].nonPlayable) {
+          applyAffection(name, amount);
+        } else {
+          const current = Number(workingVariables[name] || 0);
+          if (!isNaN(current)) workingVariables[name] = current + amount;
+        }
+        handleAddToVariable(name, amount);
+      },
+    };
+  }, [variables, affection, history, choiceHistory, characters, getVariable, setVariable, deleteVariable, handleAddToVariable]);
+
   // 대사 로그 추가
   React.useEffect(() => {
     // lines 범위를 벗어난 인덱스(선택지 표시 상태 등)일 경우 로그 추가 방지
@@ -596,18 +641,7 @@ const VisualNovel = () => {
       console.log('[handleNext] Executing command:', currentLine.command);
       const parsedCommand = parseCommand(currentLine.command);
       if (parsedCommand) {
-        const context = {
-          variables,
-          affection,
-          history,
-          choiceHistory,
-          setVariable,
-          getVariable,
-          deleteVariable,
-          addToVariable: handleAddToVariable,
-        };
-
-        const result = executeCommand(parsedCommand, context);
+        const result = executeCommand(parsedCommand, createCommandContext());
         console.log('[handleNext] Command result:', result);
 
         // 명령어 실행 결과로 씬 분기가 있으면 우선 적용
@@ -681,14 +715,7 @@ const VisualNovel = () => {
     incrementDialogueIndex,
     showEnding,
     showEndingResult,
-    variables,
-    affection,
-    history,
-    choiceHistory,
-    setVariable,
-    getVariable,
-    deleteVariable,
-    handleAddToVariable,
+    createCommandContext,
   ]);
 
   // 선택지까지 스킵 엔진
@@ -770,18 +797,7 @@ const VisualNovel = () => {
       if (choice.command) {
         const parsedCommand = parseCommand(choice.command);
         if (parsedCommand) {
-          const context = {
-            variables,
-            affection,
-            history,
-            choiceHistory,
-            setVariable,
-            getVariable,
-            deleteVariable,
-            addToVariable: handleAddToVariable,
-          };
-
-          const result = executeCommand(parsedCommand, context);
+          const result = executeCommand(parsedCommand, createCommandContext(choice.affectionChanges));
 
           // 명령어 실행 결과로 씬 분기가 있으면 우선 적용
           if (result.nextScene && !result.shouldContinue) {
@@ -822,7 +838,7 @@ const VisualNovel = () => {
         goToScene(nextSceneId);
       }
     },
-    [updateAffection, goToScene, handleStoryError, currentScene, currentSceneId, startReaction, addChoiceLog, addDialogueLog, variables, affection, history, choiceHistory, setVariable, getVariable, deleteVariable, handleAddToVariable]
+    [updateAffection, goToScene, handleStoryError, currentScene, currentSceneId, startReaction, addChoiceLog, addDialogueLog, createCommandContext]
   );
 
   // 페이지네이션을 포함한 선택지 핸들러
