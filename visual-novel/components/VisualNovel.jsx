@@ -773,10 +773,12 @@ const VisualNovel = () => {
           const context = {
             variables,
             affection,
+            history,
+            choiceHistory,
             setVariable,
             getVariable,
             deleteVariable,
-            addToVariable,
+            addToVariable: handleAddToVariable,
           };
 
           const result = executeCommand(parsedCommand, context);
@@ -820,7 +822,7 @@ const VisualNovel = () => {
         goToScene(nextSceneId);
       }
     },
-    [updateAffection, goToScene, handleStoryError, currentScene, currentSceneId, startReaction, addChoiceLog, addDialogueLog, variables, affection, setVariable, getVariable, deleteVariable, addToVariable]
+    [updateAffection, goToScene, handleStoryError, currentScene, currentSceneId, startReaction, addChoiceLog, addDialogueLog, variables, affection, history, choiceHistory, setVariable, getVariable, deleteVariable, handleAddToVariable]
   );
 
   // 페이지네이션을 포함한 선택지 핸들러
