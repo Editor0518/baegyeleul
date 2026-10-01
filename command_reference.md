@@ -249,6 +249,44 @@ showif scene1_choice1 == 1 and mendelssohn >= 30
 
 ---
 
+## 9️⃣ 인물도감
+
+### 도감 정보 해금
+```
+unlock 정보이름
+```
+- `set 정보이름 as 1`과 같음 (세이브별로 저장됨)
+- 예시: 대사 A 행의 F열(command)에 `unlock 리스트_파리출신`
+- if와 함께 사용 가능: `if liszt >= 3 then unlock 리스트_비밀`
+
+### profiles 시트 (인물 기본 정보, 행 순서 = 도감 순서)
+| 캐릭터ID(characterId) | 도감이름(name) | 성별(gender) | 국적(nationality) | 나이(age) | 설명(desc) |
+|---|---|---|---|---|---|
+| liszt | 프란츠 리스트 | 남 | 헝가리 | 25 | 당대 최고의 피아니스트. |
+
+- 캐릭터ID는 characters 시트와 같아야 함
+- 도감이름이 비어 있으면 characters 시트의 이름 사용
+- 스탠딩은 characters 시트의 기본표정 이미지 사용
+- 스탠딩이 게임 화면에 한 번이라도 나오면 공개 (세이브와 무관), 그 전에는 검은 실루엣 + `???`
+
+### profile_entries 시트 (플레이로 열리는 정보 / 한줄평)
+| 캐릭터ID(characterId) | 종류(type) | 표시조건(condition) | 내용(text) |
+|---|---|---|---|
+| liszt | info | 리스트_파리출신 | 파리에서 왔다고 했다. |
+| liszt | info | scene12 == 1 | 12씬에서 드러난 사실. |
+| liszt | comment | liszt >= 5 | 꽤 믿을 만한 사람이야. |
+| liszt | comment | liszt >= 2 | 아직은 잘 모르겠어. |
+| liszt | comment | | 말이 많은 사람. |
+
+- **info**: 조건을 만족하는 행이 모두 위에서부터 차례로 표시
+- **comment** (에투아르의 한줄평): 위에서부터 조건을 만족하는 **첫 행 하나만** 표시 → 높은 호감도부터 적기
+- 표시조건 문법은 showif와 동일 (`and`, 호감도, 씬 방문, 선택지 기록 모두 사용 가능)
+- 표시조건에 이름만 쓰면 `이름 == 1`로 처리 (unlock과 짝으로 사용)
+- 표시조건이 비어 있으면 항상 표시
+- 조건은 현재 플레이(세이브) 기준. 타이틀에서 열면 마지막으로 플레이하던 상태 기준
+
+---
+
 ## 📋 명령어 요약표
 
 | 분류 | 명령어 | 예시 |
@@ -265,6 +303,7 @@ showif scene1_choice1 == 1 and mendelssohn >= 30
 | **랜덤** | `random 1~10 go 1~5:씬A,6~10:씬B` | `random 1~2 go 1:sceneA,2:sceneB` |
 | **연결** | `명령1; 명령2; 명령3` | `add 10 to score; if score >= 100 then win` |
 | **표시조건** | `showif 변수 == 값` | `showif liszt >= 50` |
+| **인물도감** | `unlock 정보이름` | `unlock 리스트_파리출신` |
 
 ---
 

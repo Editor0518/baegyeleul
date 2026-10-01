@@ -32,6 +32,7 @@ import { useGameLog } from "@/hooks/useGameLog";
 import { useChoicePagination } from "@/hooks/useChoicePagination";
 import { useCGAlbum } from "@/hooks/useCGAlbum";
 import { useAchievements } from "@/hooks/useAchievements";
+import { useCharacterProfile } from "@/hooks/useCharacterProfile";
 import { getBackgroundStyle } from "@/utils/backgroundHelper";
 import { validateSceneFlow, validateEndingInfo } from "@/utils/storyValidator";
 import { clampAffection } from "@/utils/affectionHelper";
@@ -87,6 +88,7 @@ const VisualNovel = () => {
   } = useGameLog();
   const { activeModal, modalData, openModal, closeModal } = useModal();
   const { markCGAsViewed, viewedCGs } = useCGAlbum();
+  const { markCharactersAsSeen, savedPlayState, savePlayState } = useCharacterProfile();
   const {
     checkAchievements,
     toastQueue,
@@ -353,6 +355,23 @@ const VisualNovel = () => {
       markCGAsViewed(currentCutsceneKey);
     }
   }, [shouldShowCutscene, currentCutsceneKey, markCGAsViewed]);
+
+  // 인물도감 - 스탠딩이 화면에 처음 나온 캐릭터 기록 (세이브와 무관한 전체 기준)
+  useEffect(() => {
+    if (showTitleScreen) return;
+    markCharactersAsSeen(Object.keys(displayedCharacters || {}));
+  }, [showTitleScreen, displayedCharacters, markCharactersAsSeen]);
+
+  // 인물도감 - 게임 중 진행 상태를 보관해 두었다가 타이틀에서 도감을 열 때 사용
+  const livePlayState = useMemo(
+    () => ({ variables, affection, history, choiceHistory }),
+    [variables, affection, history, choiceHistory]
+  );
+  useEffect(() => {
+    if (showTitleScreen) return;
+    savePlayState(livePlayState);
+  }, [showTitleScreen, livePlayState, savePlayState]);
+  const profilePlayState = showTitleScreen ? savedPlayState : livePlayState;
 
   // 업적 체크 - 씬 이동, 호감도 변경, 엔딩 표시 시
   useEffect(() => {
@@ -904,6 +923,10 @@ const VisualNovel = () => {
     openModal(MODAL_TYPES.ACHIEVEMENT);
   }, [openModal]);
 
+  const handleOpenProfile = useCallback(() => {
+    openModal(MODAL_TYPES.CHARACTER_PROFILE);
+  }, [openModal]);
+
   const getCurrentGameState = useCallback(() => {
     return {
       currentSceneId,
@@ -1062,6 +1085,7 @@ const VisualNovel = () => {
           onLoad={handleOpenLoad}
           onAlbumClick={handleOpenAlbum}
           onAchievementClick={handleOpenAchievement}
+          onProfileClick={handleOpenProfile}
           isMuted={isMuted}
           onToggleMute={handleToggleMuteOnTitle}
         />
@@ -1072,6 +1096,7 @@ const VisualNovel = () => {
           onLoad={handleLoadGameState}
           currentGameState={getCurrentGameState()}
           logEntries={logEntries}
+          profilePlayState={profilePlayState}
         />
         <DebugPanel
           currentSceneId={currentSceneId}
@@ -1114,6 +1139,7 @@ const VisualNovel = () => {
                 onInfoClick={handleOpenTutorial}
                 onAlbumClick={handleOpenAlbum}
                 onAchievementClick={handleOpenAchievement}
+                onProfileClick={handleOpenProfile}
                 onResetClick={handleConfirmResetToTitle}
                 isMuted={isMuted}
                 onToggleMute={toggleMute}
@@ -1153,6 +1179,7 @@ const VisualNovel = () => {
                 onLoad={handleLoadGameState}
                 currentGameState={getCurrentGameState()}
                 logEntries={logEntries}
+                profilePlayState={profilePlayState}
               />
 
               {isTutorialActive && (

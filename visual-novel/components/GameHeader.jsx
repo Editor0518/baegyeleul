@@ -18,6 +18,7 @@ const GameHeader = ({
   onInfoClick,
   onAlbumClick,
   onAchievementClick,
+  onProfileClick,
   isMuted,
   onToggleMute,
 }) => {
@@ -52,6 +53,10 @@ const GameHeader = ({
         <button id="header-achievement-btn" className="game-button" onClick={onAchievementClick}>
           <span className="game-button-icon achievement" style={{ color: "#DFCB93", fontSize: "1.2em" }}>✦</span>
           <span className="game-button-text">업적</span>
+        </button>
+        <button id="header-profile-btn" className="game-button" onClick={onProfileClick}>
+          <span className="game-button-icon talk"></span>
+          <span className="game-button-text">인물</span>
         </button>
         <button id="header-reset-btn" className="game-button" onClick={onResetClick}>
           <span className="game-button-icon exit"></span>

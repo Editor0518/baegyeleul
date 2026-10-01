@@ -157,6 +157,20 @@ const headerMap = {
     "이름공개여부(name_show)": "name_show",
     "달성조건공개여부(condition_show)": "condition_show",
   },
+  profiles: {
+    "캐릭터ID(characterId)": "characterId",
+    "도감이름(name)": "name",
+    "성별(gender)": "gender",
+    "국적(nationality)": "nationality",
+    "나이(age)": "age",
+    "설명(desc)": "desc",
+  },
+  profile_entries: {
+    "캐릭터ID(characterId)": "characterId",
+    "종류(type)": "type",
+    "표시조건(condition)": "condition",
+    "내용(text)": "text",
+  },
 };
 
 function sheetToJson(workbook, sheetName, map, xlsxUtils) {
@@ -777,6 +791,40 @@ function buildAchievements(rows) {
     });
 }
 
+// profiles 시트 → [{ characterId, name, gender, nationality, age, desc }] (시트 순서 = 도감 순서)
+function buildProfiles(rows) {
+  const seen = new Set();
+  const str = (v) => (v ?? "").toString().trim();
+  const result = [];
+  (rows || []).forEach((r) => {
+    const characterId = str(r.characterId);
+    if (!characterId || seen.has(characterId)) return;
+    seen.add(characterId);
+    result.push({
+      characterId,
+      name: str(r.name),
+      gender: str(r.gender),
+      nationality: str(r.nationality),
+      age: str(r.age),
+      desc: str(r.desc),
+    });
+  });
+  return result;
+}
+
+// profile_entries 시트 → [{ characterId, type: "info"|"comment", condition, text }] (시트 순서 유지)
+function buildProfileEntries(rows) {
+  const str = (v) => (v ?? "").toString().trim();
+  return (rows || [])
+    .map((r) => ({
+      characterId: str(r.characterId),
+      type: str(r.type).toLowerCase() === "comment" ? "comment" : "info",
+      condition: str(r.condition),
+      text: str(r.text),
+    }))
+    .filter((e) => e.characterId && e.text);
+}
+
 // Apps Script JSON에서 시트 데이터를 headerMap으로 매핑
 function sheetsJsonToMapped(sheetsJson, sheetName, map) {
   const rows = sheetsJson[sheetName];
@@ -851,7 +899,14 @@ export function convertSheetsJsonToStoryData(sheetsJson) {
     sheetsJsonToMapped(sheetsJson, "achievements", headerMap.achievements)
   );
 
-  return { gameInfo, characters, places, storyScenes, endingConfig, achievements, cutscenes };
+  const profiles = buildProfiles(
+    sheetsJsonToMapped(sheetsJson, "profiles", headerMap.profiles)
+  );
+  const profileEntries = buildProfileEntries(
+    sheetsJsonToMapped(sheetsJson, "profile_entries", headerMap.profile_entries)
+  );
+
+  return { gameInfo, characters, places, storyScenes, endingConfig, achievements, cutscenes, profiles, profileEntries };
 }
 
 export function convertXlsxToStoryData(arrayBuffer, XLSX) {
@@ -930,7 +985,14 @@ export function convertXlsxToStoryData(arrayBuffer, XLSX) {
     sheetToJson(workbook, "achievements", headerMap.achievements, utils)
   );
 
-  return { gameInfo, characters, places, storyScenes, endingConfig, achievements, cutscenes };
+  const profiles = buildProfiles(
+    sheetToJson(workbook, "profiles", headerMap.profiles, utils)
+  );
+  const profileEntries = buildProfileEntries(
+    sheetToJson(workbook, "profile_entries", headerMap.profile_entries, utils)
+  );
+
+  return { gameInfo, characters, places, storyScenes, endingConfig, achievements, cutscenes, profiles, profileEntries };
 }
 
 export default convertXlsxToStoryData;

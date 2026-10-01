@@ -13,6 +13,7 @@ import GameLogModal from "./GameLogModal";
 import WarningModal from "./WarningModal";
 import CGAlbumModal from "./CGAlbumModal";
 import AchievementModal from "./AchievementModal";
+import CharacterProfileModal from "./CharacterProfileModal";
 import { MODAL_TYPES } from "@/hooks/useModal";
 
 const GameModals = ({
@@ -22,6 +23,7 @@ const GameModals = ({
   onLoad,
   currentGameState,
   logEntries,
+  profilePlayState,
 }) => {
   return (
     <>
@@ -78,6 +80,11 @@ const GameModals = ({
       {/* 업적 모달 */}
       {activeModal === MODAL_TYPES.ACHIEVEMENT && (
         <AchievementModal onClose={onCloseModal} />
+      )}
+
+      {/* 인물도감 모달 */}
+      {activeModal === MODAL_TYPES.CHARACTER_PROFILE && (
+        <CharacterProfileModal onClose={onCloseModal} playState={profilePlayState} />
       )}
     </>
   );

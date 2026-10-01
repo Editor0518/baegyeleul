@@ -20,6 +20,7 @@ export const MODAL_TYPES = {
   WARNING: "warning",
   CG_ALBUM: "cgAlbum",
   ACHIEVEMENT: "achievement",
+  CHARACTER_PROFILE: "characterProfile",
 };
 
 /**

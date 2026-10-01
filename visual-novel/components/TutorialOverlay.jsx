@@ -68,6 +68,16 @@ const TUTORIAL_STEPS = [
         action: { type: "openModal", modalType: MODAL_TYPES.ACHIEVEMENT }
     },
     {
+        text: "'인물' 버튼을 누르면 지금까지 만난 인물들을\n인물도감에서 확인할 수 있습니다.",
+        targetId: "header-profile-btn",
+        action: { type: "closeModal" }
+    },
+    {
+        text: "인물을 누르면 자세한 소개를 볼 수 있습니다.\n이야기를 진행할수록 새로운 정보가 추가됩니다.",
+        targetId: "character-profile-modal",
+        action: { type: "openModal", modalType: MODAL_TYPES.CHARACTER_PROFILE }
+    },
+    {
         text: "'처음으로' 버튼을 누르면 타이틀 화면으로 돌아갑니다.\n저장하지 않은 진행 내역은 사라지니 꼭 저장 후 눌러주세요!",
         targetId: "header-reset-btn",
         action: { type: "closeModal" }

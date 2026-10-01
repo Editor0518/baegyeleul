@@ -71,6 +71,12 @@ function parseSingleCommand(cmd) {
     return { type: 'add', varName: varsStr, value };
   }
 
+  // unlock 변수이름 (= set 변수이름 as 1, 인물도감 정보 해금용)
+  const unlockMatch = cmd.match(/^unlock\s+(\S+)$/);
+  if (unlockMatch) {
+    return { type: 'set', varName: unlockMatch[1], value: 1 };
+  }
+
   // delete 변수이름
   const deleteMatch = cmd.match(/^delete\s+(\S+)$/);
   if (deleteMatch) {
@@ -168,7 +174,7 @@ function parseIfCommand(cmd) {
   }
 
   // Step 4: then/else 파트가 명령어인지 씬 이름인지 판별
-  const isCommandStr = (str) => /^(set|add|delete)\s/.test(str);
+  const isCommandStr = (str) => /^(set|add|delete|unlock)\s/.test(str);
   const thenIsCommand = isCommandStr(thenPart);
   const elseIsCommand = elsePart ? isCommandStr(elsePart) : false;
 
