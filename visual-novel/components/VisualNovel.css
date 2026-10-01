@@ -144,12 +144,12 @@
   background: url(/assets/icon/exit.svg) center/contain no-repeat;
 }
 
-.game-button-icon.talk {
-  background: url(/assets/icon/talk.svg) center/contain no-repeat;
+.game-button-icon.person {
+  background: url(/assets/icon/person.svg) center/contain no-repeat;
 }
 
 .game-button-icon.album {
-  background: url(/assets/icon/story.svg) center/contain no-repeat;
+  background: url(/assets/icon/photo.svg) center/contain no-repeat;
 }
 
 .game-button.music-on .game-button-icon {

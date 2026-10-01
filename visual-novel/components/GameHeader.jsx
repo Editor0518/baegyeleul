@@ -55,7 +55,7 @@ const GameHeader = ({
           <span className="game-button-text">업적</span>
         </button>
         <button id="header-profile-btn" className="game-button" onClick={onProfileClick}>
-          <span className="game-button-icon talk"></span>
+          <span className="game-button-icon person"></span>
           <span className="game-button-text">인물</span>
         </button>
         <button id="header-reset-btn" className="game-button" onClick={onResetClick}>
