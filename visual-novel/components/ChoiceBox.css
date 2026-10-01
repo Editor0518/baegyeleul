@@ -135,7 +135,7 @@
 
 /* 페이지네이션 선택지(다음으로/처음으로): 일반 선택지보다 짧게, 오른쪽 정렬 */
 .choice-button-nav {
-  width: 75%;
+  width: 25%;
   align-self: flex-end;
 }
 
