@@ -1,4 +1,12 @@
+/* 인물 도감 - 앤티크풍 (금박 액자 / 살롱 병풍 컨셉) */
+
 .profile-overlay {
+  --profile-gold: #dfcb93;
+  --profile-gold-soft: rgba(223, 203, 147, 0.45);
+  --profile-gold-faint: rgba(223, 203, 147, 0.18);
+  --profile-ink: #fff5da;
+  --profile-bg: #16110c;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,7 +15,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: radial-gradient(ellipse at center, rgba(20, 14, 8, 0.75) 0%, rgba(0, 0, 0, 0.9) 100%);
   z-index: 11000;
   animation: profileFadeIn 0.3s ease-in;
 }
@@ -16,95 +24,160 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
   position: relative;
-  background: #1a1a1a;
-  border-radius: 1rem;
-  padding: 2rem;
   max-width: 80%;
-  width: 56rem;
-  max-height: 80%;
-  height: 44rem;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5);
+  width: 58rem;
+  max-height: 84%;
+  height: 46rem;
+  padding: 2.25rem 2.75rem 2rem;
+  border: 1px solid var(--profile-gold-soft);
+  border-radius: 0.25rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(223, 203, 147, 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at center, #241b12 0%, #1a140d 55%, #0f0b07 100%);
+  box-shadow:
+    0 0 0 4px #0d0a06,
+    0 0 0 5px rgba(223, 203, 147, 0.25),
+    0 1.5rem 4rem rgba(0, 0, 0, 0.8),
+    inset 0 0 6rem rgba(0, 0, 0, 0.6);
+  color: var(--profile-ink);
   animation: profileSlideUp 0.5s ease-out;
   overflow: hidden;
 }
 
-.profile-modal::before {
+/* 안쪽 금테 */
+.profile-frame {
+  position: absolute;
+  inset: 0.625rem;
+  border: 1px solid var(--profile-gold-faint);
+  pointer-events: none;
+}
+
+/* 모서리 덩굴 장식 */
+.profile-corner {
+  position: absolute;
+  width: 3.5rem;
+  height: 3.5rem;
+  color: var(--profile-gold);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.profile-corner.tl { top: 0.625rem; left: 0.625rem; }
+.profile-corner.tr { top: 0.625rem; right: 0.625rem; transform: scaleX(-1); }
+.profile-corner.bl { bottom: 0.625rem; left: 0.625rem; transform: scaleY(-1); }
+.profile-corner.br { bottom: 0.625rem; right: 0.625rem; transform: scale(-1, -1); }
+
+/* 장식 구분선 */
+.profile-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.profile-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--profile-gold-soft) 100%);
+}
+
+.profile-divider-line:last-child {
+  background: linear-gradient(90deg, var(--profile-gold-soft) 0%, transparent 100%);
+}
+
+.profile-divider-gem {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  background: var(--profile-gold);
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 3px var(--profile-bg), 0 0 0 4px var(--profile-gold-soft);
+}
+
+/* 이름 아래 장식선: 왼쪽 마름모에서 시작해 오른쪽 끝에서만 흐려짐 */
+.profile-name-rule {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  height: 1px;
+  margin: -0.25rem 0 0.25rem;
+  background: linear-gradient(90deg, var(--profile-gold) 0%, var(--profile-gold-soft) 60%, transparent 100%);
+}
+
+.profile-name-rule::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0;
-  border-radius: inherit;
-  width: 100%;
-  height: 100%;
-  border: 0.0625rem solid transparent;
-  background: linear-gradient(90deg,
-      rgba(255, 245, 218, 0.1) 0%,
-      rgba(255, 245, 218, 0.2) 20%,
-      rgba(255, 245, 218, 0.2) 80%,
-      rgba(255, 245, 218, 0.1) 100%);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
+  top: 50%;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  background: var(--profile-gold);
+  transform: translateY(-50%) rotate(45deg);
 }
 
 /* Header */
 .profile-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.profile-header-side {
   display: flex;
   align-items: center;
   gap: 1rem;
-  width: 100%;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid transparent;
-  border-image: var(--primary-line-grad2) 1;
 }
 
-.profile-header h2 {
-  font-size: 1.75rem;
-  font-weight: 500;
+.profile-header-side.right {
+  justify-content: flex-end;
+}
+
+.profile-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.profile-title h2 {
   margin: 0;
-  color: var(--primary-light);
-}
-
-.profile-back-button {
-  padding: 0.375rem 0.875rem;
-  border: 1px solid rgba(255, 245, 218, 0.3);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--primary-light);
-  font-size: 0.9375rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.profile-back-button:hover {
-  background: rgba(255, 245, 218, 0.1);
+  font-size: 1.875rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  padding-left: 0.15em; /* letter-spacing 보정 */
+  color: var(--profile-ink);
+  text-shadow: 0 0 1rem rgba(223, 203, 147, 0.25);
 }
 
 .profile-counter {
-  font-size: 1rem;
-  color: var(--primary);
-  margin-left: auto;
+  font-size: 0.9375rem;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  color: var(--profile-gold);
 }
 
 .profile-close-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--profile-gold-faint);
   border-radius: 50%;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.1) url(/assets/icon/x.svg) center/80% 80% no-repeat;
-  transition: all 0.1s;
+  background: rgba(223, 203, 147, 0.05) url(/assets/icon/x.svg) center/70% 70% no-repeat;
+  transition: all 0.15s;
   font-size: 0;
   color: transparent;
 }
 
 .profile-close-button:hover {
-  background: rgba(255, 255, 255, 0.3) url(/assets/icon/x.svg) center/80% 80% no-repeat;
+  background-color: rgba(223, 203, 147, 0.18);
+  border-color: var(--profile-gold-soft);
 }
 
 /* Content */
@@ -122,180 +195,275 @@
   align-items: center;
   height: 100%;
   font-size: 1rem;
-  color: rgba(255, 245, 218, 0.6);
+  font-style: italic;
+  color: rgba(255, 245, 218, 0.5);
+}
+
+/* 아치형 금박 액자 */
+.profile-arch {
+  position: relative;
+  border: 1px solid var(--profile-gold-soft);
+  border-radius: 999px 999px 0.25rem 0.25rem;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(223, 203, 147, 0.20) 0%, transparent 70%),
+    linear-gradient(180deg, #3a2d1d 0%, #21180f 100%);
+  box-shadow:
+    0 0 0 3px #120d08,
+    0 0 0 4px rgba(223, 203, 147, 0.22),
+    0 0.75rem 1.5rem rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* 액자 안쪽 테두리 */
+.profile-arch::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(223, 203, 147, 0.2);
+  border-radius: 999px 999px 0.125rem 0.125rem;
+  pointer-events: none;
+}
+
+/* 사각 금박 액자 (상세 화면 스탠딩) */
+.profile-picture-frame {
+  position: relative;
+  padding: 0.875rem;
+  border: 1px solid var(--profile-gold);
+  background: linear-gradient(135deg, #5a4527 0%, #2e2215 30%, #4a3920 55%, #241a10 80%, #3d2f1c 100%);
+  box-shadow:
+    0 0 0 3px #120d08,
+    0 0 0 4px rgba(223, 203, 147, 0.3),
+    0 0.75rem 1.75rem rgba(0, 0, 0, 0.6);
+}
+
+/* 그림이 들어가는 자리 (확대한 스탠딩은 이 안에서 잘림) */
+.profile-picture-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(223, 203, 147, 0.18) 0%, transparent 70%),
+    linear-gradient(180deg, #3a2d1d 0%, #1d150d 100%);
+  box-shadow: inset 0 0 1.5rem rgba(0, 0, 0, 0.7);
+  container-type: size;
+}
+
+/* 액자 바깥 금테의 가는 장식선 */
+.profile-picture-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0.3125rem;
+  border: 1px solid rgba(223, 203, 147, 0.35);
+  pointer-events: none;
+}
+
+/* 스탠딩 확대: 머리 쪽을 기준으로 키워서 상반신 위주로 보이게 */
+/* 스탠딩 배치
+ * 캐릭터마다 그림 속 머리 높이가 달라서, 분석한 머리 꼭대기(--head-top)와
+ * 얼굴 가로 중심(--face-x)을 액자의 같은 지점(--standing-top, 가로 중앙)에 맞춤
+ * 높이는 --standing-zoom 이상, 액자 너비를 가릴 만큼은 항상 확보 */
+.profile-standing {
+  position: absolute;
+  left: 50%;
+  top: var(--standing-top);
+  width: auto;
+  max-width: none;
+  height: max(var(--standing-zoom), calc(115cqw / 0.648));
+  transform: translate(calc(var(--face-x) * -100%), calc(var(--head-top) * -100%));
+  pointer-events: none;
+}
+
+.profile-detail-image {
+  --standing-top: 6cqh;
+  --standing-zoom: 135cqh;
 }
 
 /* 병풍 목록 */
 .profile-screen {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: minmax(0, 1fr);
+  grid-auto-columns: minmax(7.25rem, 11rem);
+  justify-content: center;
+  justify-content: safe center; /* 넘칠 때 왼쪽이 잘리지 않도록 */
+  column-gap: 0.75rem;
   width: 100%;
   height: 100%;
+  padding: 0.75rem 0.5rem 0.25rem;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 245, 218, 0.25) transparent;
+  scrollbar-color: rgba(223, 203, 147, 0.3) transparent;
 }
 
 .profile-panel {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
-  flex: 1 1 0;
-  min-width: 8rem;
-  max-width: 13rem;
-  height: 100%;
+  min-height: 0;
   padding: 0;
   border: none;
-  border-right: 1px solid rgba(255, 245, 218, 0.15);
-  background: linear-gradient(180deg, rgba(255, 245, 218, 0.14) 0%, rgba(255, 245, 218, 0.04) 100%);
-  overflow: hidden;
+  background: none;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-/* 넘칠 때도 스크롤이 잘리지 않도록 justify-content 대신 auto 여백으로 가운데 정렬 */
-.profile-panel:first-child {
-  margin-left: auto;
-  border-left: 1px solid rgba(255, 245, 218, 0.15);
-  border-radius: 0.75rem 0 0 0.75rem;
+.profile-panel-frame {
+  display: block;
+  container-type: size;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-panel:last-child {
-  margin-right: auto;
-  border-radius: 0 0.75rem 0.75rem 0;
-}
-
-.profile-panel:only-child {
-  border-radius: 0.75rem;
-}
-
-.profile-panel:hover {
-  background: linear-gradient(180deg, rgba(255, 245, 218, 0.24) 0%, rgba(255, 245, 218, 0.08) 100%);
+.profile-panel:hover .profile-panel-frame {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 3px #120d08,
+    0 0 0 4px rgba(223, 203, 147, 0.5),
+    0 0 1.5rem rgba(223, 203, 147, 0.2),
+    0 1rem 2rem rgba(0, 0, 0, 0.6);
 }
 
 .profile-panel-image {
+  --standing-top: 9cqh;
+  --standing-zoom: 104cqh;
+}
+
+/* 액자 안쪽 하단: 아래로 갈수록 진해지는 검은 그라데이션 위에 이름 */
+.profile-panel-caption {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 0.3s ease;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 3.5rem 0.375rem 0.75rem;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0.88) 100%);
   pointer-events: none;
 }
 
-.profile-panel:hover .profile-panel-image {
-  transform: scale(1.04);
-}
-
+/* 황동 명판 */
 .profile-panel-name {
   position: relative;
-  z-index: 1;
-  padding: 2.5rem 0.5rem 0.875rem;
-  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 60%);
-  font-size: 1.0625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--profile-gold-soft);
+  background:
+    linear-gradient(180deg, rgba(223, 203, 147, 0.16) 0%, rgba(223, 203, 147, 0.05) 100%),
+    rgba(20, 15, 10, 0.6);
+  box-shadow: inset 0 0 0 2px rgba(26, 20, 13, 0.85), inset 0 0 0 3px rgba(223, 203, 147, 0.15);
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--primary-light);
+  letter-spacing: 0;
+  line-height: 1.4;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--profile-ink);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  flex-shrink: 0;
 }
 
 .profile-panel.locked .profile-panel-name {
-  color: rgba(255, 245, 218, 0.4);
+  color: rgba(255, 245, 218, 0.35);
+  letter-spacing: 0.2em;
+  min-width: 4.5rem; /* ??? 명판이 정사각형처럼 보이지 않도록 가로로 늘림 */
 }
 
 /* 아직 스탠딩을 보지 못한 캐릭터: 검은 실루엣 */
 .silhouette {
-  filter: brightness(0) drop-shadow(0 0 1px rgba(255, 245, 218, 0.35));
+  filter: brightness(0) drop-shadow(0 0 1px rgba(223, 203, 147, 0.4));
 }
 
 .profile-no-image {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: rgba(255, 245, 218, 0.15);
+  color: rgba(223, 203, 147, 0.2);
 }
 
 /* 상세 */
 .profile-detail {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   width: 100%;
   height: 100%;
   min-height: 0;
+  padding-top: 0.5rem;
 }
 
 .profile-detail-standing {
-  flex: 0 0 38%;
+  flex: 0 0 36%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  border-radius: 0.75rem;
-  background: linear-gradient(180deg, rgba(255, 245, 218, 0.14) 0%, rgba(255, 245, 218, 0.04) 100%);
-  overflow: hidden;
-}
-
-.profile-detail-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
 }
 
 .profile-detail-info {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.125rem;
   min-width: 0;
   overflow-y: auto;
-  padding-right: 0.5rem;
+  padding: 0.5rem 0.5rem 0.25rem 0;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 245, 218, 0.25) transparent;
+  scrollbar-color: rgba(223, 203, 147, 0.3) transparent;
 }
 
 .profile-detail-name {
   margin: 0;
   font-size: 2.5rem;
   font-weight: 600;
-  color: var(--primary-light);
+  letter-spacing: 0.06em;
+  color: var(--profile-ink);
   line-height: 1.2;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 1.25rem rgba(223, 203, 147, 0.2);
 }
 
 .profile-detail-name.locked {
-  color: rgba(255, 245, 218, 0.4);
+  color: rgba(255, 245, 218, 0.35);
+  letter-spacing: 0.2em;
 }
 
 .profile-basics {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
+  gap: 0.5rem 1.75rem;
   margin: 0;
 }
 
 .profile-basic {
   display: flex;
-  gap: 0.5rem;
+  align-items: baseline;
+  gap: 0.625rem;
   font-size: 1rem;
 }
 
 .profile-basic dt {
-  color: var(--primary);
+  font-size: 0.8125rem;
+  letter-spacing: 0.15em;
+  color: var(--profile-gold);
+  opacity: 0.85;
 }
 
 .profile-basic dd {
   margin: 0;
-  color: var(--primary-light);
+  color: var(--profile-ink);
 }
 
 .profile-desc {
   margin: 0;
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.8;
   color: rgba(255, 245, 218, 0.85);
   white-space: pre-line;
 }
@@ -303,48 +471,69 @@
 .profile-infos {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.625rem;
   margin: 0;
   padding: 1rem 0 0;
   list-style: none;
-  border-top: 1px solid rgba(255, 245, 218, 0.12);
+  border-top: 1px dashed rgba(223, 203, 147, 0.2);
 }
 
 .profile-infos li {
   position: relative;
-  padding-left: 1rem;
+  padding-left: 1.25rem;
   font-size: 0.9375rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: rgba(255, 245, 218, 0.85);
   white-space: pre-line;
 }
 
 .profile-infos li::before {
-  content: "·";
+  content: "";
   position: absolute;
   left: 0.25rem;
-  color: var(--primary);
+  top: 0.7em;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  background: var(--profile-gold);
+  transform: rotate(45deg);
+  opacity: 0.8;
 }
 
+/* 한줄평: 편지 메모 */
 .profile-comment {
+  position: relative;
   margin-top: auto;
-  padding: 1rem 1.25rem;
-  border-radius: 0.75rem;
-  background: rgba(223, 203, 147, 0.08);
-  border: 1px solid rgba(223, 203, 147, 0.25);
+  padding: 1.125rem 1.5rem 0.875rem 3rem;
+  border: 1px solid var(--profile-gold-faint);
+  background:
+    linear-gradient(180deg, rgba(223, 203, 147, 0.09) 0%, rgba(223, 203, 147, 0.04) 100%);
+  box-shadow: inset 0 0 0 3px #1a140d, inset 0 0 0 4px rgba(223, 203, 147, 0.1);
+}
+
+.profile-comment::before {
+  content: "\201C";
+  position: absolute;
+  left: 0.75rem;
+  top: 0.125rem;
+  font-size: 3.25rem;
+  line-height: 1;
+  color: var(--profile-gold);
+  opacity: 0.55;
 }
 
 .profile-comment-label {
-  font-size: 0.875rem;
-  color: var(--primary);
+  font-size: 0.8125rem;
+  letter-spacing: 0.15em;
+  color: var(--profile-gold);
   margin-bottom: 0.375rem;
 }
 
 .profile-comment-text {
   margin: 0;
   font-size: 1.0625rem;
-  line-height: 1.6;
-  color: var(--primary-light);
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--profile-ink);
   white-space: pre-line;
 }
 
@@ -353,58 +542,67 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  padding-top: 1.25rem;
-  border-top: 1px solid transparent;
-  border-image: var(--primary-line-grad2) 1;
+  flex-shrink: 0;
+}
+
+.profile-footer {
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.profile-arrow-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid var(--profile-gold-soft);
+  border-radius: 0.125rem;
+  background: linear-gradient(180deg, rgba(223, 203, 147, 0.10) 0%, rgba(223, 203, 147, 0.03) 100%);
+  box-shadow: inset 0 0 0 3px #1a140d, inset 0 0 0 4px rgba(223, 203, 147, 0.12);
+  color: var(--profile-gold);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.profile-arrow-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.profile-arrow-button:hover {
+  background: linear-gradient(180deg, rgba(223, 203, 147, 0.22) 0%, rgba(223, 203, 147, 0.08) 100%);
+  border-color: var(--profile-gold);
+  color: var(--profile-ink);
+}
+
+.profile-arrow-button:active {
+  filter: brightness(1.2);
 }
 
 .profile-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
   width: 100%;
-  max-width: 20rem;
-  height: 2.75rem;
-  padding: 0.625rem 1rem;
-  background: var(--black-btn-grad);
-  border-radius: 999px;
+  max-width: 16rem;
+  height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--profile-gold-soft);
+  border-radius: 0.125rem;
+  background: linear-gradient(180deg, rgba(223, 203, 147, 0.10) 0%, rgba(223, 203, 147, 0.03) 100%);
+  box-shadow: inset 0 0 0 3px #1a140d, inset 0 0 0 4px rgba(223, 203, 147, 0.12);
   cursor: pointer;
-  transition: all 0.1s ease;
-  font-size: 1.125rem;
+  transition: background 0.2s, border-color 0.2s;
+  font-size: 1rem;
   font-weight: 500;
-  color: var(--primary-light);
+  letter-spacing: 0.3em;
+  color: var(--profile-ink);
 }
 
-.profile-button::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: inherit;
-  width: 100%;
-  height: 100%;
-  border: 0.0625rem solid transparent;
-  background: var(--primary-line-grad2);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-}
-
-.profile-button::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: inherit;
-  width: 100%;
-  height: 100%;
-  background: var(--primary-line-grad2);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.profile-button:hover::after {
-  opacity: 1;
+.profile-button:hover {
+  background: linear-gradient(180deg, rgba(223, 203, 147, 0.22) 0%, rgba(223, 203, 147, 0.08) 100%);
+  border-color: var(--profile-gold);
 }
 
 .profile-button:active {
@@ -434,37 +632,59 @@
     max-height: initial;
     width: 100%;
     height: 100%;
+    border: none;
     border-radius: 0;
-    gap: 1rem;
-    padding: 1.25rem;
+    box-shadow: inset 0 0 4rem rgba(0, 0, 0, 0.6);
+    gap: 0.75rem;
+    padding: 1.75rem 1.25rem 1.25rem;
   }
 
-  .profile-header {
-    padding-bottom: 1rem;
+  .profile-corner {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
-  .profile-header h2 {
-    font-size: 1.5rem;
+  .profile-title h2 {
+    font-size: 1.375rem;
+  }
+
+  .profile-header-side.right {
+    gap: 0.5rem;
   }
 
   .profile-close-button {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2rem;
+    height: 2rem;
   }
 
-  .profile-panel {
-    min-width: 7rem;
+  /* 세로 화면에서는 3열로 줄바꿈하고, 패널 비율을 고정 */
+  .profile-screen {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    align-content: center;
+    gap: 1rem 0.625rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .profile-panel-frame {
+    height: auto;
+    aspect-ratio: 1 / 2;
   }
 
   .profile-detail {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
     overflow-y: auto;
   }
 
   .profile-detail-standing {
     flex: 0 0 auto;
-    height: 45vh;
+    align-self: center;
+    width: 70%;
+    height: 42vh;
   }
 
   .profile-detail-info {
@@ -472,7 +692,7 @@
   }
 
   .profile-detail-name {
-    font-size: 2rem;
+    font-size: 1.875rem;
   }
 }
 
@@ -482,22 +702,15 @@
     max-height: initial;
     width: 100%;
     height: 100%;
+    border: none;
     border-radius: 0;
-    gap: 1rem;
-    padding: 1.25rem;
+    box-shadow: inset 0 0 4rem rgba(0, 0, 0, 0.6);
+    gap: 0.75rem;
+    padding: 1.5rem 2rem 1.25rem;
   }
 
-  .profile-header {
-    padding-bottom: 1rem;
-  }
-
-  .profile-header h2 {
+  .profile-title h2 {
     font-size: 1.5rem;
-  }
-
-  .profile-close-button {
-    width: 2.25rem;
-    height: 2.25rem;
   }
 
   .profile-detail-name {

@@ -68,7 +68,7 @@ const TUTORIAL_STEPS = [
         action: { type: "openModal", modalType: MODAL_TYPES.ACHIEVEMENT }
     },
     {
-        text: "'인물' 버튼을 누르면 지금까지 만난 인물들을\n인물도감에서 확인할 수 있습니다.",
+        text: "'인물' 버튼을 누르면 지금까지 만난 인물들을\n인물 도감에서 확인할 수 있습니다.",
         targetId: "header-profile-btn",
         action: { type: "closeModal" }
     },

@@ -258,8 +258,9 @@ unlock 정보이름
 - `set 정보이름 as 1`과 같음 (세이브별로 저장됨)
 - 예시: 대사 A 행의 F열(command)에 `unlock 리스트_파리출신`
 - if와 함께 사용 가능: `if liszt >= 3 then unlock 리스트_비밀`
+- 다시 숨기려면 `delete 정보이름` (예: `delete 리스트_파리출신`)
 
-### profiles 시트 (인물 기본 정보, 행 순서 = 도감 순서)
+### profiles(또는 profile) 시트 (인물 기본 정보, 행 순서 = 도감 순서)
 | 캐릭터ID(characterId) | 도감이름(name) | 성별(gender) | 국적(nationality) | 나이(age) | 설명(desc) |
 |---|---|---|---|---|---|
 | liszt | 프란츠 리스트 | 남 | 헝가리 | 25 | 당대 최고의 피아니스트. |

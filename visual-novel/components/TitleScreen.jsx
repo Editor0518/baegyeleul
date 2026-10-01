@@ -57,7 +57,7 @@ const TitleScreen = ({ onStart, onLoad, onAlbumClick, onAchievementClick, onProf
             <span className="line-deco right"></span>
           </button>
           <button className="load-button" onClick={onProfileClick}>
-            <span className="line-deco left"></span>인물도감
+            <span className="line-deco left"></span>인물 도감
             <span className="line-deco right"></span>
           </button>
         </div>
