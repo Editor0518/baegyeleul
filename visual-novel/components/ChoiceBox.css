@@ -133,6 +133,12 @@
   background-image: url(/assets/icon/lock.svg);
 }
 
+/* 페이지네이션 선택지(다음으로/처음으로): 일반 선택지보다 짧게, 오른쪽 정렬 */
+.choice-button-nav {
+  width: 75%;
+  align-self: flex-end;
+}
+
 /* 페이지네이션 선택지(다음으로/처음으로) 아이콘 */
 .icon-choice-button.icon-nav-next {
   background-image: url(/assets/icon/arrow-next.svg);
@@ -213,6 +219,10 @@
         rgba(255, 245, 218, 0.2) 100%);
   }
 
+  .choice-button-nav {
+    align-self: center;
+  }
+
   .choice-toast {
     bottom: 1.5rem;
     white-space: normal;
@@ -245,6 +255,10 @@
         rgba(255, 245, 218, 0.4) 20%,
         rgba(255, 245, 218, 0.4) 80%,
         rgba(255, 245, 218, 0.2) 100%);
+  }
+
+  .choice-button-nav {
+    align-self: center;
   }
 
   .choice-toast {
