@@ -133,6 +133,15 @@
   background-image: url(/assets/icon/lock.svg);
 }
 
+/* 페이지네이션 선택지(다음으로/처음으로) 아이콘 */
+.icon-choice-button.icon-nav-next {
+  background-image: url(/assets/icon/arrow-next.svg);
+}
+
+.icon-choice-button.icon-nav-first {
+  background-image: url(/assets/icon/arrow-first.svg);
+}
+
 /* 토스트 알림 */
 .choice-toast {
   position: absolute;

@@ -75,7 +75,7 @@ const ChoiceBox = ({ choices, onChoice, isVisible = true }) => {
             onClick={() => handleChoiceClick(choice, index)}
             disabled={!isLocallyVisible}
           >
-            <div className={`icon-choice-button ${choice.isLocked ? 'icon-locked' : ''}`}></div>
+            <div className={`icon-choice-button ${choice.isLocked ? 'icon-locked' : ''} ${choice.isNavigation ? `icon-nav-${choice.navigationAction}` : ''}`}></div>
             <p className="choice-button-text">{choice.text}</p>
           </button>
         ))}
