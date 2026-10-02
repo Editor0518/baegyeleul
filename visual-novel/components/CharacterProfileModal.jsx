@@ -199,9 +199,14 @@ const CharacterProfileModal = ({ onClose, playState }) => {
         </div>
 
         <div className="profile-detail-info">
-          <h3 className={`profile-detail-name ${seen ? '' : 'locked'}`}>
-            {seen ? profile.name : '???'}
-          </h3>
+          <div className="profile-name-block">
+            <h3 className={`profile-detail-name ${seen ? '' : 'locked'}`}>
+              {seen ? profile.name : '???'}
+            </h3>
+            {seen && profile.originalName && (
+              <div className="profile-original-name">{profile.originalName}</div>
+            )}
+          </div>
           <div className="profile-name-rule" aria-hidden="true" />
 
           {seen && (

@@ -160,6 +160,7 @@ const headerMap = {
   profiles: {
     "캐릭터ID(characterId)": "characterId",
     "도감이름(name)": "name",
+    "원어이름(original_name)": "originalName",
     "성별(gender)": "gender",
     "국적(nationality)": "nationality",
     "나이(age)": "age",
@@ -803,6 +804,7 @@ function buildProfiles(rows) {
     result.push({
       characterId,
       name: str(r.name),
+      originalName: str(r.originalName),
       gender: str(r.gender),
       nationality: str(r.nationality),
       age: str(r.age),

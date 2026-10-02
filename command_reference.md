@@ -260,13 +260,15 @@ unlock 정보이름
 - if와 함께 사용 가능: `if liszt >= 3 then unlock 리스트_비밀`
 - 다시 숨기려면 `delete 정보이름` (예: `delete 리스트_파리출신`)
 
-### profiles(또는 profile) 시트 (인물 기본 정보, 행 순서 = 도감 순서)
-| 캐릭터ID(characterId) | 도감이름(name) | 성별(gender) | 국적(nationality) | 나이(age) | 설명(desc) |
-|---|---|---|---|---|---|
-| liszt | 프란츠 리스트 | 남 | 헝가리 | 25 | 당대 최고의 피아니스트. |
+### profiles 시트 (인물 기본 정보, 행 순서 = 도감 순서)
+| 캐릭터ID(characterId) | 도감이름(name) | 원어이름(original_name) | 성별(gender) | 국적(nationality) | 나이(age) | 설명(desc) |
+|---|---|---|---|---|---|---|
+| liszt | 프란츠 리스트 | Liszt Ferenc | 남 | 헝가리 | 25 | 당대 최고의 피아니스트. |
 
 - 캐릭터ID는 characters 시트와 같아야 함
 - 도감이름이 비어 있으면 characters 시트의 이름 사용
+- 원어이름은 프로필 화면에서 이름 아래 작은 글씨로 표시 (비어 있으면 표시 안 함)
+- 나이가 숫자만 있으면 뒤에 "세"가 붙음 (예: 216 → 216세)
 - 스탠딩은 characters 시트의 기본표정 이미지 사용
 - 스탠딩이 게임 화면에 한 번이라도 나오면 공개 (세이브와 무관), 그 전에는 검은 실루엣 + `???`
 
