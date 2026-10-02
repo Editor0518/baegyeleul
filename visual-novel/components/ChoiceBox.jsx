@@ -71,7 +71,7 @@ const ChoiceBox = ({ choices, onChoice, isVisible = true }) => {
         {displayedChoices.map((choice, index) => (
           <button
             key={index}
-            className={`choice-button ${choice.isLocked ? 'choice-button-locked' : ''}`}
+            className={`choice-button ${choice.isLocked ? 'choice-button-locked' : ''} ${choice.isNavigation ? 'choice-button-nav' : ''}`}
             onClick={() => handleChoiceClick(choice, index)}
             disabled={!isLocallyVisible}
           >
