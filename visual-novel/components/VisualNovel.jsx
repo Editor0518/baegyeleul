@@ -33,6 +33,7 @@ import { useChoicePagination } from "@/hooks/useChoicePagination";
 import { useCGAlbum } from "@/hooks/useCGAlbum";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useCharacterProfile } from "@/hooks/useCharacterProfile";
+import { useProfileNotifications } from "@/hooks/useProfileNotifications";
 import { getBackgroundStyle } from "@/utils/backgroundHelper";
 import { validateSceneFlow, validateEndingInfo } from "@/utils/storyValidator";
 import { clampAffection } from "@/utils/affectionHelper";
@@ -62,6 +63,7 @@ import InGameLoadingScreen from "./InGameLoadingScreen";
 import ValidationPanel from "./ValidationPanel";
 import TutorialOverlay from "./TutorialOverlay";
 import AchievementToast from "./AchievementToast";
+import ProfileToast from "./ProfileToast";
 import DebugPanel from "./DebugPanel";
 import "./VisualNovel.css";
 
@@ -88,7 +90,7 @@ const VisualNovel = () => {
   } = useGameLog();
   const { activeModal, modalData, openModal, closeModal } = useModal();
   const { markCGAsViewed, viewedCGs } = useCGAlbum();
-  const { markCharactersAsSeen, savedPlayState, savePlayState } = useCharacterProfile();
+  const { savedPlayState, savePlayState } = useCharacterProfile();
   const {
     checkAchievements,
     toastQueue,
@@ -356,17 +358,22 @@ const VisualNovel = () => {
     }
   }, [shouldShowCutscene, currentCutsceneKey, markCGAsViewed]);
 
-  // 인물도감 - 스탠딩이 화면에 처음 나온 캐릭터 기록 (세이브와 무관한 전체 기준)
-  useEffect(() => {
-    if (showTitleScreen) return;
-    markCharactersAsSeen(Object.keys(displayedCharacters || {}));
-  }, [showTitleScreen, displayedCharacters, markCharactersAsSeen]);
-
   // 인물도감 - 게임 중 진행 상태를 보관해 두었다가 타이틀에서 도감을 열 때 사용
   const livePlayState = useMemo(
     () => ({ variables, affection, history, choiceHistory }),
     [variables, affection, history, choiceHistory]
   );
+
+  // 인물도감 - 스탠딩 첫 등장 시 해금 기록(세이브와 무관한 전체 기준) + 해금/정보 추가/한줄평 갱신 알림
+  const {
+    profileToasts,
+    dismissProfileToast,
+    resetBaseline: resetProfileBaseline,
+  } = useProfileNotifications({
+    enabled: !showTitleScreen,
+    playState: livePlayState,
+    displayedCharacters,
+  });
   useEffect(() => {
     if (showTitleScreen) return;
     savePlayState(livePlayState);
@@ -383,6 +390,7 @@ const VisualNovel = () => {
   const resetGameState = useCallback(
     (resetType) => {
       if (resetType === "restart") {
+        resetProfileBaseline();
         resetGame();
         setShowTitleScreen(false);
         setHasInteracted(true);
@@ -408,6 +416,7 @@ const VisualNovel = () => {
     },
     [
       resetGame,
+      resetProfileBaseline,
       resetToTitle,
       resetAffection,
       resetEndingState,
@@ -975,6 +984,7 @@ const VisualNovel = () => {
       setIsSkipping(false);
       setShowTitleScreen(false);
       setHasInteracted(true);
+      resetProfileBaseline();
       resetCharacterDisplay();
       goToScene(saveData.sceneId);
 
@@ -1051,6 +1061,7 @@ const VisualNovel = () => {
       clearLog,
       mergeUnlockedAchievements,
       resetCharacterDisplay,
+      resetProfileBaseline,
       storyScenes,
     ]
   );
@@ -1181,6 +1192,11 @@ const VisualNovel = () => {
                 logEntries={logEntries}
                 profilePlayState={profilePlayState}
               />
+
+              {/* 인물도감 알림 토스트 (좌측 상단, 장소 표시 아래) */}
+              {profileToasts.length > 0 && (
+                <ProfileToast toasts={profileToasts} onDismiss={dismissProfileToast} />
+              )}
 
               {isTutorialActive && (
                 <TutorialOverlay

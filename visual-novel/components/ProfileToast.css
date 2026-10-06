@@ -1,0 +1,106 @@
+.profile-toast-stack {
+  position: absolute;
+  top: 5.5rem;
+  left: 1.25rem;
+  z-index: 15000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  max-width: calc(100% - 2.5rem);
+  pointer-events: none;
+}
+
+.profile-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 24rem;
+  padding: 0.625rem 1.125rem 0.6875rem 1rem;
+  background: linear-gradient(135deg, rgba(30, 25, 15, 0.95), rgba(20, 18, 12, 0.95));
+  border-left: 3px solid var(--primary);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.5),
+              0 0 1.25rem rgba(223, 203, 147, 0.12);
+  animation: profileToastIn 0.4s ease-out;
+}
+
+.profile-toast-icon {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: url(/assets/icon/person.svg) center/contain no-repeat;
+}
+
+.profile-toast-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.profile-toast.leaving {
+  animation: profileToastOut 0.4s ease-in forwards;
+}
+
+.profile-toast-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+}
+
+.profile-toast-text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--primary-light);
+  word-break: keep-all;
+}
+
+.profile-toast-text strong {
+  font-weight: 600;
+}
+
+@keyframes profileToastIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes profileToastOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .profile-toast-stack {
+    left: 1rem;
+    max-width: calc(100% - 5.5rem); /* 우측 세로 버튼 영역 피함 */
+  }
+
+  .profile-toast {
+    gap: 0.625rem;
+    padding: 0.5rem 0.875rem 0.5625rem 0.75rem;
+  }
+
+  .profile-toast-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .profile-toast-text {
+    font-size: 0.875rem;
+  }
+}

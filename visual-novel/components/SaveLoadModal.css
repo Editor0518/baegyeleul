@@ -185,8 +185,10 @@
 }
 
 .slots-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(7.5rem, auto);
+  align-content: start;
   gap: 1rem;
   width: 100%;
   height: 100%;
@@ -226,9 +228,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 0.75rem;
   position: relative;
   width: 100%;
-  height: 100%;
+  min-width: 0;
   padding: 1.25rem;
   border-radius: 0.75rem;
   cursor: pointer;
@@ -272,11 +275,66 @@
 .slot-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .slot-number {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
   font-size: 1.25rem;
   font-weight: 500;
+}
+
+.slot-index {
+  flex-shrink: 0;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: rgba(255, 245, 218, 0.12);
+  font-size: 0.875rem;
+  line-height: 1.75rem;
+  text-align: center;
+}
+
+.slot-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.save-name-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.save-name-form .confirm-message {
+  display: block;
+}
+
+.save-name-input {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid rgba(255, 245, 218, 0.3);
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--primary-light);
+  font-size: 1.125rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.1s;
+}
+
+.save-name-input::placeholder {
+  color: rgba(255, 245, 218, 0.4);
+}
+
+.save-name-input:focus {
+  border-color: rgba(255, 245, 218, 0.7);
 }
 
 .slot-actions {
@@ -352,6 +410,10 @@
     width: 2.25rem;
     height: 2.25rem;
   }
+
+  .slots-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 1024px) and (orientation: landscape) {
@@ -378,6 +440,6 @@
   }
 
   .slots-container {
-    flex-direction: row;
+    grid-auto-rows: minmax(6.5rem, auto);
   }
 }

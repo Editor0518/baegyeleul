@@ -4,7 +4,11 @@ import { useCallback } from "react";
 import { useGameContext } from "@/contexts/GameContext";
 
 const SAVE_KEY_PREFIX = "visualNovel_save_slot_";
-const SLOT_COUNT = 3;
+const SLOT_COUNT = 10;
+const SAVE_NAME_MAX_LENGTH = 30;
+
+// 세이브 이름 미입력 시 사용하는 기본 이름
+export const getDefaultSaveName = (slotId) => `세이브 ${slotId}`;
 
 export const useSaveLoad = () => {
   const { storyScenes, characters, places } = useGameContext();
@@ -55,8 +59,8 @@ export const useSaveLoad = () => {
     },
     [places, getSpeakerName]
   );
-  // 특정 슬롯에 게임 상태 저장
-  const saveGame = useCallback((slotId, gameState) => {
+  // 특정 슬롯에 게임 상태 저장 (saveName 미입력 시 기본 이름 사용)
+  const saveGame = useCallback((slotId, gameState, saveName) => {
     // SSR 가드
     if (typeof window === 'undefined') {
       return { success: false, error: "localStorage not available" };
@@ -80,8 +84,11 @@ export const useSaveLoad = () => {
     );
     const sceneName = getSceneName(currentScene, currentPlace, dialogueIndex);
 
+    const trimmedName = (saveName || "").trim().slice(0, SAVE_NAME_MAX_LENGTH);
+
     const saveData = {
       slotId,
+      saveName: trimmedName || getDefaultSaveName(slotId),
       timestamp: new Date().toISOString(),
       sceneId: currentSceneId,
       sceneName,
@@ -288,5 +295,6 @@ export const useSaveLoad = () => {
     exportAllSaves,
     importAllSaves,
     SLOT_COUNT,
+    SAVE_NAME_MAX_LENGTH,
   };
 };

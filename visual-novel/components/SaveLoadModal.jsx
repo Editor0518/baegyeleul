@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from "react";
-import { useSaveLoad } from "@/hooks/useSaveLoad";
+import { useSaveLoad, getDefaultSaveName } from "@/hooks/useSaveLoad";
 import "./SaveLoadModal.css";
 import "./ConfirmModal.css";
 
@@ -13,6 +13,7 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
     deleteSlot,
     exportAllSaves,
     importAllSaves,
+    SAVE_NAME_MAX_LENGTH,
   } = useSaveLoad();
 
   // useState lazy initialization으로 초기 슬롯 로드
@@ -25,9 +26,10 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
   // 확인 다이얼로그 상태 통합 관리
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
-    type: null, // 'import' | 'delete'
+    type: null, // 'import' | 'delete' | 'save'
     data: null, // slotId or file
   });
+  const [saveNameInput, setSaveNameInput] = useState("");
 
   // 메시지 자동 숨기기 (3초 후)
   useEffect(() => {
@@ -44,19 +46,31 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
     setSlots(allSlots);
   }, [getAllSlots]);
 
-  const handleSave = (slotId) => {
+  // 저장 전 세이브 이름 입력 다이얼로그 표시
+  const handleSave = (slot) => {
     if (!currentGameState) {
       setMessage({ type: "error", text: "저장할 데이터가 없습니다." });
       return;
     }
 
-    const result = saveGame(slotId, currentGameState);
+    setSaveNameInput(slot.isEmpty ? "" : slot.saveName || "");
+    setConfirmDialog({
+      isOpen: true,
+      type: 'save',
+      data: slot.slotId
+    });
+  };
+
+  const confirmSave = () => {
+    const slotId = confirmDialog.data;
+    const result = saveGame(slotId, currentGameState, saveNameInput);
     if (result.success) {
-      setMessage({ type: "success", text: `슬롯 ${slotId}에 저장되었습니다.` });
+      setMessage({ type: "success", text: `"${result.data.saveName}"(으)로 저장되었습니다.` });
       refreshSlots();
     } else {
       setMessage({ type: "error", text: `저장 실패: ${result.error}` });
     }
+    closeConfirmDialog();
   };
 
   const handleLoad = (slotId) => {
@@ -213,14 +227,21 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
               className={`slot-item ${slot.isEmpty ? "empty" : "filled"}`}
               onClick={() => {
                 if (mode === "save") {
-                  handleSave(slot.slotId);
+                  handleSave(slot);
                 } else if (!slot.isEmpty) {
                   handleLoad(slot.slotId);
                 }
               }}
             >
               <div className="slot-header">
-                <span className="slot-number">슬롯 {slot.slotId}</span>
+                <span className="slot-number">
+                  <span className="slot-index">{slot.slotId}</span>
+                  {!slot.isEmpty && (
+                    <span className="slot-name">
+                      {slot.saveName || getDefaultSaveName(slot.slotId)}
+                    </span>
+                  )}
+                </span>
                 {!slot.isEmpty && (
                   <div className="slot-actions">
                     <button
@@ -266,8 +287,53 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
           <div className="confirm-dialog-overlay" onClick={handleCancel}>
             <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
               <h3 className="confirm-title">
-                {confirmDialog.type === 'delete' ? '삭제 확인' : '경고'}
+                {confirmDialog.type === 'delete'
+                  ? '삭제 확인'
+                  : confirmDialog.type === 'save'
+                    ? '저장하기'
+                    : '경고'}
               </h3>
+              {confirmDialog.type === 'save' ? (
+                <form
+                  className="save-name-form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    confirmSave();
+                  }}
+                >
+                  <label className="confirm-message" htmlFor="save-name-input">
+                    저장할 이름을 입력하세요.
+                    {!slots.find((s) => s.slotId === confirmDialog.data)?.isEmpty && (
+                      <>
+                        <br />
+                        <span style={{ fontSize: '0.9em', opacity: 0.8 }}>기존 데이터를 덮어씁니다.</span>
+                      </>
+                    )}
+                  </label>
+                  <input
+                    id="save-name-input"
+                    className="save-name-input"
+                    type="text"
+                    value={saveNameInput}
+                    maxLength={SAVE_NAME_MAX_LENGTH}
+                    placeholder={getDefaultSaveName(confirmDialog.data)}
+                    onChange={(e) => setSaveNameInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') handleCancel();
+                    }}
+                    autoFocus
+                  />
+                  <div className="confirm-buttons">
+                    <button type="button" className="confirm-btn cancel" onClick={handleCancel}>
+                      취소
+                    </button>
+                    <button type="submit" className="confirm-btn confirm">
+                      저장
+                    </button>
+                  </div>
+                </form>
+              ) : (
+              <>
               <p className="confirm-message">
                 {confirmDialog.type === 'delete' ? (
                   <>
@@ -297,6 +363,8 @@ const SaveLoadModal = ({ mode, onClose, onLoad, currentGameState }) => {
                   확인
                 </button>
               </div>
+              </>
+              )}
             </div>
           </div>
         )}
